@@ -2,7 +2,7 @@
   "name": "chat",
   "version": "1.0.0",
   "description": "",
-  "source": "index.html",
+  "source": "static/index.html",
   "scripts": {
     "dev": "parcel",
     "build": "parcel build"
@@ -11,6 +11,10 @@
   "author": "Ildar Faskhetdinov",
   "license": "ISC",
   "devDependencies": {
+    "@parcel/transformer-sass": "^2.8.2",
     "parcel": "^2.8.2"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.7"
   }
 }
