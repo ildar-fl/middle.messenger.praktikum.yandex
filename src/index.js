@@ -1,6 +1,6 @@
-import { createLoginForm } from './pages/home/modules/login';
 import './index.scss';
+import {createHome} from "./pages/home/Home";
 
 const rootNode = document.getElementById('root');
 
-rootNode.innerHTML = createLoginForm();
+rootNode.innerHTML = createHome();
