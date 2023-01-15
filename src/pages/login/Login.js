@@ -1,5 +1,6 @@
 import Handlebars from 'handlebars'
-import { createForm, createInput, createButton, createButtonText } from '../../../../ui';
+import { createForm, createInput, createButton, createButtonText } from '../../ui';
+import { createCenteredPage } from '../../layouts';
 
 const LoginTemplate = `
   {{{nameInput}}}
@@ -19,12 +20,12 @@ function createLoginForm() {
           passwordInput: createInput({ id: 'password', placeholder: 'Пароль', name: 'password', type: 'password' }),
       }),
       buttons: Handlebars.compile(ButtonsTemplate)({
-          authButton: createButton({id: 'authButton', title: 'Авторизоваться'}),
-          registrationButton: createButtonText({id: 'registrationButton', title: 'Нет аккаунта?'}),
+          authButton: createButton({id: 'authButton', title: 'Авторизоваться', type: 'submit'}),
+          registrationButton: createButtonText({id: 'registrationButton', as: 'a', href: '/registration', title: 'Нет аккаунта?'}),
       }),
   });
 
-  return formTemplate;
+  return createCenteredPage({ content: formTemplate });
 }
 
 export { createLoginForm };

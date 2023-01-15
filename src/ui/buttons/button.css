@@ -27,6 +27,7 @@
   color: #3369F3;
   font-weight: 500;
   font-size: 11px;
+  text-decoration: none;
 }
 .button-text-container .button-text:hover {
   cursor: pointer;

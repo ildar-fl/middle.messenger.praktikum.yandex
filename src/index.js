@@ -1,6 +1,20 @@
 import './index.scss';
-import {createHome} from "./pages/home/Home";
+import { createLoginForm } from './pages/login';
+import { createRegistrationForm } from './pages/registration';
+import {routing} from "./utils";
 
 const rootNode = document.getElementById('root');
 
-rootNode.innerHTML = createHome();
+const MAIN_ROUTERS = {
+    '/': createLoginForm,
+    '/login': createLoginForm,
+    '/registration': createRegistrationForm,
+    '/404': () => '404',
+}
+
+const changeUrl = (template) => {
+    rootNode.innerHTML = template();
+}
+
+routing(MAIN_ROUTERS, changeUrl);
+

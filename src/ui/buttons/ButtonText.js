@@ -3,16 +3,16 @@ import './button.css';
 
 const ButtonTemplate = `
     <div class="button-text-container">
-        <button id="{{id}}" class="button-text">
+        <{{as}} id="{{id}}" as="{{as}}" href="{{href}}" class="button-text">
             {{title}}
-        </button>
+        </{{as}}>
     </div>
 `
 
-function createButtonText({ id, title }) {
+function createButtonText({ id, title, as='button', href }) {
     const  template = Handlebars.compile(ButtonTemplate);
 
-    return template({ id, title });
+    return template({ id, as, href, title, });
 }
 
 export { createButtonText };

@@ -1,0 +1,1 @@
+export { createRegistrationForm } from './Registration';
