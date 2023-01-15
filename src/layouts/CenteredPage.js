@@ -1,5 +1,5 @@
 import Handlebars from 'handlebars'
-import './layouts.scss';
+import './style.scss';
 
 const CenteredPageTemplate = `
     <div class="centered-page-container">

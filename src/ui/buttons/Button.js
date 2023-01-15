@@ -1,5 +1,5 @@
 import Handlebars from 'handlebars';
-import './button.scss';
+import './style.scss';
 
 const ButtonTemplate = `
     <button id="{{id}}" class="button" type="{{type}}">

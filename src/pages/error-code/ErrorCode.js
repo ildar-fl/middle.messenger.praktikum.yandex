@@ -1,5 +1,5 @@
 import Handlebars from 'handlebars';
-import './error-code.scss';
+import './style.scss';
 
 const ErrorCodeTemplate = `
     <div class="error-code-container">

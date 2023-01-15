@@ -1,5 +1,5 @@
 import Handlebars from 'handlebars';
-import './button.css';
+import './style.css';
 
 const ButtonTemplate = `
     <div class="button-text-container">

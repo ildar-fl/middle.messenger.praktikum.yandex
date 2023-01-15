@@ -1,5 +1,5 @@
 import Handlebars from 'handlebars';
-import './inputs.scss';
+import './style.scss';
 
 const TextInputTemplate = `
   <div class="input-container">
