@@ -28,10 +28,21 @@ const ChatsTemplate = `
 function createChatsPage() {
   const chatTemplate = Handlebars.compile(ChatsTemplate);
 
-  const userData = JSON.parse(usersMockData);
-
   return chatTemplate({
-    userItems: [],
+    userItems: usersMockData.map(({
+                                first_name,
+                                second_nane,
+                                message,
+                                time,
+                                count
+                              }) =>
+        createUserItem({
+          firstName: first_name,
+          secondNane: second_nane,
+          message,
+          time,
+          count
+        })),
   });
 }
 
