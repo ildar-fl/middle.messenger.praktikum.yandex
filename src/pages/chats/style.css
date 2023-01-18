@@ -49,6 +49,13 @@
   max-height: 100%;
 }
 
+.user-avatar {
+  width: 47px;
+  height: 47px;
+  border-radius: 50%;
+  background: #EFEFEF;
+}
+
 .user-item {
   display: flex;
   width: 100%;
@@ -60,12 +67,6 @@
 }
 .user-item:hover {
   background: #d9d9d9;
-}
-.user-item__avatar {
-  width: 47px;
-  height: 47px;
-  border-radius: 50%;
-  background: #EFEFEF;
 }
 .user-item__message {
   flex-grow: 1;
@@ -98,6 +99,61 @@
   background: #3369F3;
   color: #FFFFFF;
   border-radius: 50%;
+}
+
+.conversation {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 0 20px;
+}
+.conversation__user-info {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  border-bottom: 1px solid #EAEAEA;
+}
+.conversation__user-info .user-info__avatar {
+  margin-right: 10px;
+}
+.conversation__user-info .user-info__author {
+  font-weight: 600;
+  font-size: 13px;
+}
+.conversation__user-message {
+  flex-grow: 1;
+}
+.conversation__user-send {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  border-top: 1px solid #EAEAEA;
+}
+.conversation__user-send input {
+  flex-grow: 1;
+  height: 32px;
+  border-radius: 30px;
+  border: none;
+  background: #EFEFEF;
+  padding: 0 20px;
+  margin-right: 10px;
+}
+.conversation__user-send input::placeholder {
+  font-weight: 500;
+  font-size: 12px;
+}
+.conversation__user-send button {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  background: #3369F3;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: background 200ms ease-in-out;
+}
+.conversation__user-send button:hover {
+  background: #1E1E1E;
 }
 
 /*# sourceMappingURL=style.css.map */

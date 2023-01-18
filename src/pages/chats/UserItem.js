@@ -3,7 +3,7 @@ import './style.scss';
 
 const userItemTemplate = `
     <div class="user-item">
-        <div class="user-item__avatar"></div>
+        <div class="user-item__avatar user-avatar"></div>
         <div class="user-item__message">
             <div class="message__author">{{author}}</div>
             <div class="message__text">{{text}}</div>

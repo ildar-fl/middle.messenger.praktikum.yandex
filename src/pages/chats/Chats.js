@@ -3,6 +3,7 @@ import './style.scss';
 import { createUserItem } from './UserItem';
 import usersMockData from './users.json';
 import { ROUTS } from '../../constants';
+import { createConversation } from "./Conversation";
 
 const ChatsTemplate = `
   <div class="chat">
@@ -43,6 +44,7 @@ function createChatsPage() {
           time,
           count
         })),
+    content: createConversation({ firstName: 'Владислав' })
   });
 }
 

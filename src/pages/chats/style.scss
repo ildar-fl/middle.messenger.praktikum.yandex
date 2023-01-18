@@ -59,6 +59,13 @@
   }
 }
 
+.user-avatar {
+  width: 47px;
+  height: 47px;
+  border-radius: 50%;
+  background: #EFEFEF;
+}
+
 .user-item {
   display: flex;
   width: 100%;
@@ -72,12 +79,7 @@
     background: #d9d9d9;
   }
 
-  &__avatar {
-    width: 47px;
-    height: 47px;
-    border-radius: 50%;
-    background: #EFEFEF;
-  }
+  &__avatar { }
 
   &__message {
     flex-grow: 1;
@@ -115,6 +117,70 @@
       background: #3369F3;
       color: #FFFFFF;
       border-radius: 50%;
+    }
+  }
+}
+
+.conversation {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 0 20px;
+
+  &__user-info {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    border-bottom: 1px solid #EAEAEA;
+
+    .user-info__avatar {
+      margin-right: 10px;
+    }
+
+    .user-info__author {
+      font-weight: 600;
+      font-size: 13px;
+    }
+  }
+
+  &__user-message {
+    flex-grow: 1;
+  }
+
+  &__user-send {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    border-top: 1px solid #EAEAEA;
+
+    input {
+      flex-grow: 1;
+      height: 32px;
+      border-radius: 30px;
+      border: none;
+      background: #EFEFEF;
+      padding: 0 20px;
+      margin-right: 10px;
+
+      &::placeholder {
+        font-weight: 500;
+        font-size: 12px;
+      }
+    }
+
+    button {
+      height: 32px;
+      width: 32px;
+      border-radius: 50%;
+      background: #3369F3;
+      color: #FFFFFF;
+      cursor: pointer;
+      transition: background 200ms ease-in-out;
+
+      &:hover {
+        background: #1E1E1E;
+      }
     }
   }
 }
