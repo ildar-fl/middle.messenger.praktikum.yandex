@@ -3,10 +3,10 @@ import './style.scss';
 
 const ConversationTemplate = `
     <div class="conversation">
-        <div class="conversation__user-info">
+        <header class="conversation__user-info">
             <div class="user-info__avatar user-avatar"></div>
             <div class="user-info__author">{{author}}</div>
-        </div>
+        </header>
         <div class="conversation__user-message">
             
         </div>

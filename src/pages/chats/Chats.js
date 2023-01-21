@@ -6,8 +6,8 @@ import { ROUTS } from '../../constants';
 import { createConversation } from "./Conversation";
 
 const ChatsTemplate = `
-  <div class="chat">
-    <div class="chat__side-panel">
+  <main class="chat">
+    <section class="chat__side-panel">
         <div class="side-panel__header">
             <div class="header__profile">
                 <a href="${ROUTS.PROFILE}">Профиль ></a>
@@ -21,9 +21,9 @@ const ChatsTemplate = `
                 {{{this}}}
             {{/each}}
         </div>
-    </div>
-    <div class="chat__window">{{{content}}}</div>
-  </div>
+    </section>
+    <section class="chat__window">{{{content}}}</section>
+  </main>
 `;
 
 function createChatsPage() {

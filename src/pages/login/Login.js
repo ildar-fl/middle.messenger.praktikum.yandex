@@ -1,5 +1,5 @@
 import Handlebars from 'handlebars'
-import { createForm, createInput, createButton, createButtonText } from '../../ui';
+import { createForm, createInput, createButton, createButtonText, flexContainer } from '../../ui';
 import { createCenteredPage } from '../../layouts';
 
 const LoginTemplate = `
@@ -21,7 +21,8 @@ function createLoginForm() {
       }),
       buttons: Handlebars.compile(ButtonsTemplate)({
           authButton: createButton({id: 'authButton', title: 'Авторизоваться', type: 'submit'}),
-          registrationButton: createButtonText({id: 'registrationButton', as: 'a', href: '/registration', title: 'Нет аккаунта?'}),
+          registrationButton: flexContainer({
+              content: createButtonText({id: 'registrationButton', as: 'a', href: '/registration', title: 'Нет аккаунта?'})}),
       }),
   });
 

@@ -2,17 +2,24 @@ import Handlebars from 'handlebars';
 import './style.css';
 
 const ButtonTemplate = `
-    <div class="button-text-container">
-        <{{as}} id="{{id}}" as="{{as}}" href="{{href}}" class="button-text">
-            {{title}}
-        </{{as}}>
-    </div>
+    <{{as}} id="{{id}}" as="{{as}}" href="{{href}}" disabled="{{disabled}}" class="{{classNames}} button-text">
+        {{title}}
+    </{{as}}>
 `
 
-function createButtonText({ id, title, as='button', href }) {
+function createButtonText({ id, title, classNames, disabled, as='button', href }) {
     const  template = Handlebars.compile(ButtonTemplate);
 
-    return template({ id, as, href, title, });
+    const classNamesStr = Array.isArray(classNames) ? classNames.join(' ') : classNames ?? '';
+
+    return template({
+        id,
+        as,
+        disabled,
+        classNames: classNamesStr,
+        href,
+        title,
+    });
 }
 
 export { createButtonText };

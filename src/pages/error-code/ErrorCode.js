@@ -1,5 +1,6 @@
 import Handlebars from 'handlebars';
 import './style.scss';
+import {flexContainer} from "../../ui";
 
 const ErrorCodeTemplate = `
     <div class="error-code-container">
@@ -12,7 +13,7 @@ const ErrorCodeTemplate = `
 function createErrorCode({ code, description, button }) {
     const  template = Handlebars.compile(ErrorCodeTemplate);
 
-    return template({ code, description, button });
+    return template({ code, description, button: flexContainer({ content: button }) });
 }
 
 export { createErrorCode };
