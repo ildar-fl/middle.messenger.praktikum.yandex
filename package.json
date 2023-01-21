@@ -6,7 +6,7 @@
   "source": "static/index.html",
   "scripts": {
     "dev": "parcel",
-    "start": "node ./server",
+    "start": "PORT=3000 node ./server",
     "build": "parcel build"
   },
   "keywords": [],
