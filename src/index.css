@@ -13,6 +13,10 @@ body #root {
   width: 100vw;
 }
 
+input {
+  outline: none;
+}
+
 a, ul, li {
   text-decoration: none;
 }
