@@ -66,7 +66,7 @@
   transition: background 200ms ease-in-out;
 }
 .user-item:hover {
-  background: #d9d9d9;
+  background: #E4EDFD;
 }
 .user-item__message {
   flex-grow: 1;

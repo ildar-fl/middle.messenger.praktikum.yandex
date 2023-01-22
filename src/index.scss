@@ -1,3 +1,5 @@
+@import "theme";
+
 * {
   margin: 0;
   padding: 0;
@@ -7,6 +9,7 @@
 body {
   font-family: 'Inter', sans-serif;
   font-size: 12px;
+  color: themeColor('text');
 
   #root {
     height: 100vh;
@@ -40,6 +43,7 @@ h3 {
   font-size: 15px;
   font-weight: 500;
 }
+
 
 
 

@@ -25,4 +25,3 @@ const changeUrl = (template) => {
 }
 
 routing(MAIN_ROUTERS, changeUrl);
-

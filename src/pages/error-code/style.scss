@@ -1,8 +1,10 @@
+@import "../../theme";
+
 .error-code-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: #1E1E1E;
+  color: themeColor('text');
   font-weight: 500;
 
   h1 {

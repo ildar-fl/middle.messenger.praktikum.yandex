@@ -1,3 +1,5 @@
+@import "../../theme";
+
 .button {
   display: flex;
   align-items: center;
@@ -5,14 +7,14 @@
   width: 100%;
   height: 37px;
   border-radius: 8px;
-  background: #3369F3;
-  color: #FFFFFF;
+  background: themeColor('primary');
+  color: themeColor('white');
   font-size: 13px;
   font-weight: 500;
 
   &:hover {
     cursor: pointer;
-    background: #002da7;
+    background: themeColor('primary', 'dark');
   }
 }
 
@@ -21,32 +23,32 @@
   align-items: center;
   height: 37px;
   width: max-content;
-  color: #3369F3;
+  color: themeColor('primary');
   font-weight: 500;
   font-size: 11px;
   text-decoration: none;
 
   &:hover {
     cursor: pointer;
-    color: #002da7;
+    color: themeColor('primary', 'dark');
   }
 
   &[disabled="true"] {
-    color: #999999;
+    color: themeColor('text', 'disabled');
     pointer-events: none;
   }
 }
 
 .colors {
   &__blue {
-    color: #3369F3;
+    color: themeColor('primary');
   }
 
   &__red {
-    color: #FF0000;
+    color: themeColor('error');
 
     &:hover {
-      color: #bb0303;;
+      color: themeColor('error', 'dark');
     }
   }
 }

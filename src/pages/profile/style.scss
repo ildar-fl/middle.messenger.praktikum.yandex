@@ -1,3 +1,5 @@
+@import "../../theme";
+
 .profile-page {
   position: relative;
 
@@ -22,7 +24,7 @@
     width: 130px;
     height: 130px;
     border-radius: 50%;
-    background: #EFEFEF;
+    background: themeColor('background', 'dark');
     margin-bottom: 20px;
   }
 }
@@ -37,7 +39,7 @@
       justify-content: space-between;
       padding-bottom: 10px;
       padding-top: 10px;
-      border-bottom: 1px solid #EAEAEA;
+      border-bottom: 1px solid themeColor('divider');
 
       &:last-child {
         border-bottom: none;
@@ -46,20 +48,20 @@
       dt {
         font-size: 13px;
         font-weight: 500;
-        color: #1E1E1E;
+        color: themeColor('text');
       }
 
       dd {
         font-size: 13px;
         font-weight: 500;
-        color: #999999
+        color: themeColor('text', 'light');
       }
     }
   }
 
   .profile-edit-input {
     text-align: right;
-    color: #999999;
+    color: themeColor('text', 'light');
     border: none;
     outline: none;
 
