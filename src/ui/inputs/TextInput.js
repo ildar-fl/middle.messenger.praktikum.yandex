@@ -6,7 +6,7 @@ const TextInputTemplate = `
     {{#if label}}
     <label id={{labelId}}>{{label}}</label>
     {{/if}}
-    <input id={{id}} for={{labelId}} type={{type}} name={{name}} placeholder={{placeholder}}>
+    <input id="{{id}}" for="{{labelId}}" type="{{type}}" name="{{name}}" placeholder="{{placeholder}}">
   </div>  
 `;
 

@@ -6,7 +6,7 @@ const LoginTemplate = `
   {{{emailInput}}}
   {{{loginInput}}}
   {{{firstNameInput}}}
-  {{{surnameInput}}}
+  {{{secondNameInput}}}
   {{{phoneInput}}}
   {{{passwordInput}}}
   {{{repeatPassword}}}

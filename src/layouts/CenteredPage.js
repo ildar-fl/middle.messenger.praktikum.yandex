@@ -2,9 +2,9 @@ import Handlebars from 'handlebars'
 import './style.scss';
 
 const CenteredPageTemplate = `
-    <div class="centered-page-container {{classNames}}">
+    <main class="centered-page-container {{classNames}}">
         {{{content}}}
-    </div>
+    </main>
 `;
 
 function createCenteredPage({ classNames, content }) {

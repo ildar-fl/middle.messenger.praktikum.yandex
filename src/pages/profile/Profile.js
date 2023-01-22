@@ -34,13 +34,13 @@ const ProfileTemplate = `
 const ProfileEditTemplate = `
     <section class="profile">
         <header class="profile-header">
-            <div class="profile-header__avatar"></div>
+            <input class="profile-header__avatar" name="avatar"/>
         </header>
         <dl>
             {{#each userInfo}}
                 <div class="user-info__container">
                     <dt>{{key}}</dt>
-                    <dd><input value="{{value}}" class="profile-edit-input"/></dd>
+                    <dd><input value="{{value}}" name="{{inputName}}" type="{{type}}" class="profile-edit-input"/></dd>
                 </div>
             {{/each}}
         </dl>
@@ -49,12 +49,12 @@ const ProfileEditTemplate = `
 `;
 
 const userInfoMock = [
-    {key: 'Почта', value: 'ildaryxa@gmail.com'},
-    {key: 'Логин', value: 'ildaryxa'},
-    {key: 'Имя', value: 'Ильдар'},
-    {key: 'Фамилия', value: 'Фасхетдинов'},
-    {key: 'Имя в чате', value: 'Ильдар'},
-    {key: 'Телефон', value: '+7 912 489 74 71'},
+    {key: 'Почта', value: 'ildaryxa@gmail.com', inputName: 'email', type: 'email'},
+    {key: 'Логин', value: 'ildaryxa', inputName: 'login', type: 'text'},
+    {key: 'Имя', value: 'Ильдар', inputName: 'first_name', type: 'text'},
+    {key: 'Фамилия', value: 'Фасхетдинов', inputName: 'second_name', type: 'text'},
+    {key: 'Имя в чате', value: 'Ильдар', inputName: 'display_name', type: 'text'},
+    {key: 'Телефон', value: '+7 912 489 74 71', inputName: 'phone', type: 'phone'},
 ];
 
 function createProfile() {
