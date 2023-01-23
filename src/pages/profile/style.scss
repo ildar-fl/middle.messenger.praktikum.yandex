@@ -1,0 +1,76 @@
+@import "../../theme";
+
+.profile-page {
+  position: relative;
+
+  &__back-button {
+    position: absolute;
+    top: 100px;
+    left: 200px;
+  }
+
+  &__user {
+    width: 500px;
+  }
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 60px;
+
+  &__avatar {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: themeColor('background', 'dark');
+    border: none;
+    margin-bottom: 20px;
+  }
+}
+
+.profile {
+
+  dl {
+    margin-bottom: 60px;
+
+    .user-info__container {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      padding-top: 10px;
+      border-bottom: 1px solid themeColor('divider');
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      dt {
+        font-size: 13px;
+        font-weight: 500;
+        color: themeColor('text');
+      }
+
+      dd {
+        font-size: 13px;
+        font-weight: 500;
+        color: themeColor('text', 'light');
+      }
+    }
+  }
+
+  .profile-edit-input {
+    text-align: right;
+    color: themeColor('text', 'light');
+    border: none;
+    outline: none;
+
+    &:focus {
+      user-select: all;
+    }
+  }
+}
+
+
+

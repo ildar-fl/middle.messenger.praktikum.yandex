@@ -1,0 +1,34 @@
+$theme-colors: (
+        'white': #FFFFFF,
+        'black': #000000,
+        'divider': #EAEAEA,
+        'error': (
+                'main': #FF2F2F,
+                'light': #d9534f,
+                'dark': #c9302c, // hover state
+        ),
+        'primary': (
+                'main': #3369F3,
+                'light': #E4EDFD,
+                'dark': #002da7, // hover state
+        ),
+        'text': (
+                'main': #1E1E1E,
+                'light': #999999,
+                'disabled': #999999,
+        ),
+        'background': (
+                'light': #FBFBFB,
+                'dark': #EFEFEF,
+        ),
+);
+
+@function themeColor($key: 'white', $variant: 'main') {
+        $color: map-get($theme-colors, $key);
+
+        @if (type-of($color) == 'map' and map-has-key($color, $variant)) {
+                @return map-get($color, $variant);
+        }
+
+        @return $color;
+}

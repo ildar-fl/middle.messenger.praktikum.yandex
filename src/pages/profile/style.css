@@ -1,0 +1,61 @@
+.profile-page {
+  position: relative;
+}
+.profile-page__back-button {
+  position: absolute;
+  top: 100px;
+  left: 200px;
+}
+.profile-page__user {
+  width: 500px;
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 60px;
+}
+.profile-header__avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: #EFEFEF;
+  border: none;
+  margin-bottom: 20px;
+}
+
+.profile dl {
+  margin-bottom: 60px;
+}
+.profile dl .user-info__container {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  border-bottom: 1px solid #EAEAEA;
+}
+.profile dl .user-info__container:last-child {
+  border-bottom: none;
+}
+.profile dl .user-info__container dt {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1E1E1E;
+}
+.profile dl .user-info__container dd {
+  font-size: 13px;
+  font-weight: 500;
+  color: #999999;
+}
+.profile .profile-edit-input {
+  text-align: right;
+  color: #999999;
+  border: none;
+  outline: none;
+}
+.profile .profile-edit-input:focus {
+  user-select: all;
+}
+
+/*# sourceMappingURL=style.css.map */

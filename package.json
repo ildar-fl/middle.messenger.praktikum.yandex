@@ -1,0 +1,26 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "description": "",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "source": "static/index.html",
+  "scripts": {
+    "dev": "parcel --open",
+    "start": "PORT=3000 node ./server",
+    "build": "parcel build"
+  },
+  "keywords": [],
+  "author": "Ildar Faskhetdinov",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.8.2",
+    "parcel": "^2.8.2"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.7",
+    "express": "^4.18.2"
+  }
+}

@@ -1,0 +1,1 @@
+export { createInput } from './TextInput';

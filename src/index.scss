@@ -1,0 +1,49 @@
+@import "theme";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: themeColor('text');
+
+  #root {
+    height: 100vh;
+    width: 100vw;
+  }
+}
+
+input {
+  outline: none;
+}
+
+a, ul, li {
+  text-decoration: none;
+}
+
+button {
+  border: none;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+h2 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+
+
+

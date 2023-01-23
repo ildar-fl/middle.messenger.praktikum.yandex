@@ -1,0 +1,18 @@
+.error-code-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #1E1E1E;
+  font-weight: 500;
+}
+.error-code-container h1 {
+  font-size: 40px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.error-code-container h2 {
+  font-size: 20px;
+  margin-bottom: 70px;
+}
+
+/*# sourceMappingURL=style.css.map */
