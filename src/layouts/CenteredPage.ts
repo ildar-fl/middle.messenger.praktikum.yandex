@@ -7,7 +7,10 @@ const CenteredPageTemplate = `
     </main>
 `;
 
-function createCenteredPage({ classNames, content }) {
+function createCenteredPage({
+    classNames,
+    content
+}: any) {
     const templateHome = Handlebars.compile(CenteredPageTemplate);
 
     return templateHome({ classNames, content });

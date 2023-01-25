@@ -9,7 +9,7 @@ import './index.css';
 
 const rootNode = document.getElementById('root');
 
-const MAIN_ROUTERS = {
+const MAIN_ROUTERS: Record<string, () => string> = {
     [ROUTS.HOME]: createLoginForm,
     [ROUTS.LOGIN]: createLoginForm,
     [ROUTS.REGISTRATION]: createRegistrationForm,
@@ -20,8 +20,10 @@ const MAIN_ROUTERS = {
     [ROUTS.INTERNAL_ERROR]: createInternalError,
 }
 
-const changeUrl = (template) => {
-    rootNode.innerHTML = template();
+const changeUrl = (template: any) => {
+    if (rootNode) {
+        rootNode.innerHTML = template();
+    }
 }
 
 routing(MAIN_ROUTERS, changeUrl);

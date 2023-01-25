@@ -8,7 +8,12 @@ const ButtonTemplate = `
     </button>
 `
 
-function createButton({ id, title, style, type='button' }) {
+function createButton({
+    id,
+    title,
+    style,
+    type='button'
+}: any) {
    const  template = Handlebars.compile(ButtonTemplate);
 
    return template({ id, title, style: parseStyle(style), type });

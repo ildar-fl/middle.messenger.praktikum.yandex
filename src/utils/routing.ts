@@ -1,4 +1,4 @@
-function resolveRoute(routes, route) {
+function resolveRoute(routes: any, route: any) {
     const template = routes[route];
 
     if (template) {
@@ -8,7 +8,7 @@ function resolveRoute(routes, route) {
     window.location.href = '/404';
 }
 
-function routing(routes, callback) {
+function routing(routes: any, callback: any) {
     function router() {
         let url = window.location.pathname || '/';
 

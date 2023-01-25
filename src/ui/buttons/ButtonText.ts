@@ -7,7 +7,14 @@ const ButtonTemplate = `
     </{{as}}>
 `
 
-function createButtonText({ id, title, classNames, disabled, as='button', href }) {
+function createButtonText({
+    id,
+    title,
+    classNames,
+    disabled,
+    as='button',
+    href
+}: any) {
     const  template = Handlebars.compile(ButtonTemplate);
 
     const classNamesStr = Array.isArray(classNames) ? classNames.join(' ') : classNames ?? '';

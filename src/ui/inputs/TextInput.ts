@@ -10,7 +10,14 @@ const TextInputTemplate = `
   </div>  
 `;
 
-function createInput({ id, labelId = 'forInput', label, placeholder, type='text', name }) {
+function createInput({
+  id,
+  labelId = 'forInput',
+  label,
+  placeholder,
+  type='text',
+  name
+}: any) {
     const template = Handlebars.compile(TextInputTemplate);
 
     return template({ id, labelId, label, placeholder, type, name });

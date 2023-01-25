@@ -17,7 +17,10 @@ const ConversationTemplate = `
     </div>
 `;
 
-function createConversation({ firstName, secondNane, }) {
+function createConversation({
+    firstName,
+    secondNane
+}: any) {
     const template = Handlebars.compile(ConversationTemplate);
 
     return template({ author: `${firstName ?? ''} ${secondNane ?? ''}` });

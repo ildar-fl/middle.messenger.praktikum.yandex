@@ -7,7 +7,9 @@ const ButtonTemplate = `
     </div>
 `
 
-function flexContainer({content}) {
+function flexContainer({
+    content
+}: any) {
   return Handlebars.compile(ButtonTemplate)({content});
 }
 

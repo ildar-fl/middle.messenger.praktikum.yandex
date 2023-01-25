@@ -1,4 +1,4 @@
-function range(start = 0, end, step, isRight) {
+function range(start = 0, end: any, step: any, isRight: any) {
     const firstEl = (typeof end === 'number') ? start : 0;
     const lastEl = (typeof end === 'number') ? end : start;
     const stepEl = (typeof step === 'number') ? step : (lastEl >= firstEl ? 1 : -1);
@@ -12,11 +12,11 @@ function range(start = 0, end, step, isRight) {
     return result
 }
 
-function rangeRight(start, end, step) {
+function rangeRight(start: any, end: any, step: any) {
     return range(start, end, step, true);
 }
 
-function isEmpty(value) {
+function isEmpty(value: any) {
     if ((typeof value !== 'object' && typeof value !== 'string') || !value) {
         return true;
     }

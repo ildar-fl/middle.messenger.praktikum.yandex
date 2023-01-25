@@ -15,7 +15,13 @@ const userItemTemplate = `
     </div>
 `;
 
-function createUserItem({ firstName, secondNane, message, time, count }) {
+function createUserItem({
+    firstName,
+    secondNane,
+    message,
+    time,
+    count
+}: any) {
     const template = Handlebars.compile(userItemTemplate);
 
     return template({ author: `${firstName} ${secondNane}`, text: message, time, count });

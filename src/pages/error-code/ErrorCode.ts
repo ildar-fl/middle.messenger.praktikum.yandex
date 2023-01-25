@@ -10,7 +10,11 @@ const ErrorCodeTemplate = `
     </div>
 `
 
-function createErrorCode({ code, description, button }) {
+function createErrorCode({
+    code,
+    description,
+    button
+}: any) {
     const  template = Handlebars.compile(ErrorCodeTemplate);
 
     return template({ code, description, button: flexContainer({ content: button }) });
