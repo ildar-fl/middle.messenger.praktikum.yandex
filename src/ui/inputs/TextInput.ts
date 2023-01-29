@@ -15,12 +15,12 @@ function createInput({
   labelId = 'forInput',
   label,
   placeholder,
-  type='text',
-  name
+  type = 'text',
+  name,
 }: any) {
-    const template = Handlebars.compile(TextInputTemplate);
+  const template = Handlebars.compile(TextInputTemplate);
 
-    return template({ id, labelId, label, placeholder, type, name });
+  return template({ id, labelId, label, placeholder, type, name });
 }
 
-export { createInput }
+export { createInput };

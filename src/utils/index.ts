@@ -1,2 +1,2 @@
-export {routing} from './routing';
-export {parseStyle} from './css-transform';
+export { routing } from './routing';
+export { parseStyle } from './css-transform';

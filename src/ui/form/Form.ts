@@ -9,15 +9,10 @@ const FormTemplate = `
   </form>
 `;
 
-function createForm({
-  title,
-  content,
-  buttons
-}: any) {
-    const  template = Handlebars.compile(FormTemplate);
+function createForm({ title, content, buttons }: any) {
+  const template = Handlebars.compile(FormTemplate);
 
-    return template({ title, content, buttons });
+  return template({ title, content, buttons });
 }
 
 export { createForm };
-

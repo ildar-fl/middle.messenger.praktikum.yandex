@@ -1,10 +1,10 @@
-import Handlebars from 'handlebars'
+import Handlebars from 'handlebars';
 import './style.scss';
 import { createUserItem } from './UserItem';
 // @ts-expect-error TS(2732): Cannot find module './users.json'. Consider using ... Remove this comment to see the full error message
 import usersMockData from './users.json';
 import { ROUTS } from '../../constants';
-import { createConversation } from "./Conversation";
+import { createConversation } from './Conversation';
 
 const ChatsTemplate = `
   <main class="chat">
@@ -31,22 +31,18 @@ function createChatsPage() {
   const chatTemplate = Handlebars.compile(ChatsTemplate);
 
   return chatTemplate({
-    userItems: usersMockData.map(({
-        first_name,
-        second_nane,
-        message,
-        time,
-        count
-    }: any) =>
+    userItems: usersMockData.map(
+      ({ first_name, second_nane, message, time, count }: any) =>
         createUserItem({
           firstName: first_name,
           secondNane: second_nane,
           message,
           time,
-          count
-        })),
-    content: createConversation({ firstName: 'Владислав' })
+          count,
+        }),
+    ),
+    content: createConversation({ firstName: 'Владислав' }),
   });
 }
 
-export { createChatsPage }
+export { createChatsPage };

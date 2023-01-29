@@ -1,4 +1,4 @@
-import Handlebars from 'handlebars'
+import Handlebars from 'handlebars';
 import './style.scss';
 
 const ConversationTemplate = `
@@ -17,13 +17,10 @@ const ConversationTemplate = `
     </div>
 `;
 
-function createConversation({
-    firstName,
-    secondNane
-}: any) {
-    const template = Handlebars.compile(ConversationTemplate);
+function createConversation({ firstName, secondNane }: any) {
+  const template = Handlebars.compile(ConversationTemplate);
 
-    return template({ author: `${firstName ?? ''} ${secondNane ?? ''}` });
+  return template({ author: `${firstName ?? ''} ${secondNane ?? ''}` });
 }
 
 export { createConversation };

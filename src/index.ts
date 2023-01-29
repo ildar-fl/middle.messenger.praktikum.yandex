@@ -10,20 +10,20 @@ import './index.css';
 const rootNode = document.getElementById('root');
 
 const MAIN_ROUTERS: Record<string, () => string> = {
-    [ROUTS.HOME]: createLoginForm,
-    [ROUTS.LOGIN]: createLoginForm,
-    [ROUTS.REGISTRATION]: createRegistrationForm,
-    [ROUTS.CHATS]: createChatsPage,
-    [ROUTS.PROFILE]: createProfile,
-    [ROUTS.PROFILE_EDIT]: createEditProfile,
-    [ROUTS.NOT_FOUND]: createNotFound,
-    [ROUTS.INTERNAL_ERROR]: createInternalError,
-}
+  [ROUTS.HOME]: createLoginForm,
+  [ROUTS.LOGIN]: createLoginForm,
+  [ROUTS.REGISTRATION]: createRegistrationForm,
+  [ROUTS.CHATS]: createChatsPage,
+  [ROUTS.PROFILE]: createProfile,
+  [ROUTS.PROFILE_EDIT]: createEditProfile,
+  [ROUTS.NOT_FOUND]: createNotFound,
+  [ROUTS.INTERNAL_ERROR]: createInternalError,
+};
 
 const changeUrl = (template: any) => {
-    if (rootNode) {
-        rootNode.innerHTML = template();
-    }
-}
+  if (rootNode) {
+    rootNode.innerHTML = template();
+  }
+};
 
 routing(MAIN_ROUTERS, changeUrl);

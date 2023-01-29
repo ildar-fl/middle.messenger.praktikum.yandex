@@ -4,13 +4,15 @@
     "target": "es2016",
     "declaration": false,
     "module": "commonjs",
-    "sourceMap": true,
     "strict": true,
-    "strictNullChecks": true,
-    "noImplicitAny": true,
     "baseUrl": "./src",
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "sourceMap": true,
+    "strictNullChecks": true
   }
 }

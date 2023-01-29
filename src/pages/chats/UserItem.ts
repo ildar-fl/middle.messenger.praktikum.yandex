@@ -1,4 +1,4 @@
-import Handlebars from 'handlebars'
+import Handlebars from 'handlebars';
 import './style.scss';
 
 const userItemTemplate = `
@@ -15,16 +15,15 @@ const userItemTemplate = `
     </div>
 `;
 
-function createUserItem({
-    firstName,
-    secondNane,
-    message,
-    time,
-    count
-}: any) {
-    const template = Handlebars.compile(userItemTemplate);
+function createUserItem({ firstName, secondNane, message, time, count }: any) {
+  const template = Handlebars.compile(userItemTemplate);
 
-    return template({ author: `${firstName} ${secondNane}`, text: message, time, count });
+  return template({
+    author: `${firstName} ${secondNane}`,
+    text: message,
+    time,
+    count,
+  });
 }
 
 export { createUserItem };

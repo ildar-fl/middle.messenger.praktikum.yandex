@@ -1,4 +1,4 @@
-import Handlebars from 'handlebars'
+import Handlebars from 'handlebars';
 import './style.scss';
 
 const CenteredPageTemplate = `
@@ -7,13 +7,10 @@ const CenteredPageTemplate = `
     </main>
 `;
 
-function createCenteredPage({
-    classNames,
-    content
-}: any) {
-    const templateHome = Handlebars.compile(CenteredPageTemplate);
+function createCenteredPage({ classNames, content }: any) {
+  const templateHome = Handlebars.compile(CenteredPageTemplate);
 
-    return templateHome({ classNames, content });
+  return templateHome({ classNames, content });
 }
 
 export { createCenteredPage };
