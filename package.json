@@ -9,7 +9,8 @@
     "prettier": "prettier",
     "dev": "parcel --open",
     "start": "PORT=3000 node ./server",
-    "build": "parcel build"
+    "build": "parcel build",
+    "stylelint": "stylelint '**/*.scss'",
   },
   "keywords": [],
   "author": "Ildar Faskhetdinov",
