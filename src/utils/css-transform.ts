@@ -1,4 +1,4 @@
-function parseStyle(style?: Record<string, string>): string {
+function parseStyle(style?: Partial<CSSStyleDeclaration>): string {
   if (!style) {
     return '';
   }

@@ -121,7 +121,6 @@ function createEditProfile() {
       content: createButton({
         style: { width: '280px' },
         title: 'Сохранить',
-        classNames: 'fs__13',
       }),
     }),
   });
