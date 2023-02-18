@@ -1,55 +1,102 @@
+import { v4 as uuid } from 'uuid';
 import { EventBus } from './EventBus';
+import { compile } from '../utils';
 
 type Nullable<T> = T | null;
+type ChildrenType = Record<string, Block>;
 
-type PropsType = Record<string, any>;
+interface ComponentsProps {
+  [key: string | symbol]: any;
+}
 
-type MetaType = {
-  tagName: string;
+interface BaseProps {
+  events?: {
+    [K in keyof GlobalEventHandlersEventMap]?: (
+      event: GlobalEventHandlersEventMap[K],
+    ) => void;
+  };
+}
+
+type MetaType<PropsType> = {
+  tagName: keyof HTMLElementTagNameMap;
   props: PropsType;
 };
 
-class Block {
+abstract class Block<
+  PropsType extends BaseProps & ComponentsProps = ComponentsProps,
+> {
   static EVENTS = {
     INIT: 'init',
-    FLOW_CDM: 'flow:component-did-mount',
     FLOW_RENDER: 'flow:render',
+    FLOW_CDM: 'flow:component-did-mount',
+    FLOW_CDU: 'flow:component-did-update',
   };
 
   _element: Nullable<HTMLElement> = null;
-  _meta: Nullable<MetaType> = null;
+  _meta: Nullable<MetaType<PropsType>> = null;
+  _id: Nullable<string> = null;
+  _children: ChildrenType;
 
+  // тоже нужно сделать приватными
   props: PropsType;
   eventBus: () => EventBus;
 
   /** JSDoc
    * @param {string} tagName
-   * @param {Object} props
+   * @param {Object} propsAndChildren
    *
    * @returns {void}
    */
-  constructor(tagName = 'div', props = {}) {
+  protected constructor(
+    tagName: keyof HTMLElementTagNameMap = 'div',
+    propsAndChildren = {} as PropsType,
+  ) {
     const eventBus = new EventBus();
+
+    const { props, children } = this._getChildren(propsAndChildren);
+
+    this._children = children;
 
     this._meta = {
       tagName,
       props,
     };
 
-    this.props = this._makePropsProxy(props);
+    this._id = uuid();
+
+    this.props = this._makePropsProxy({ ...props, _id: this._id });
     this.eventBus = () => eventBus;
 
     this._registerEvents(eventBus);
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  _registerEvents(eventBus: EventBus) {
-    eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+  private _getChildren(propsAndChildren: PropsType): {
+    props: PropsType;
+    children: ChildrenType;
+  } {
+    const children: ChildrenType = {};
+    const props: PropsType = {} as PropsType;
+
+    Object.entries(propsAndChildren).forEach(([key, value]) => {
+      if (value instanceof Block) {
+        children[key] = value;
+      } else {
+        props[key as keyof PropsType] = value;
+      }
+    });
+
+    return { props, children };
   }
 
-  init() {
+  private _registerEvents(eventBus: EventBus) {
+    eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
+    eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
+    eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+    eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+  }
+
+  _init() {
     this._createResources();
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
@@ -63,19 +110,30 @@ class Block {
 
   _componentDidMount() {
     this.componentDidMount();
+
+    Object.values(this._children).forEach(child => {
+      child.dispatchComponentDidMount();
+    });
   }
 
-  componentDidMount(oldProps?: PropsType) {
-    console.log(oldProps);
-  }
+  componentDidMount() {}
 
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
   }
 
-  // _componentDidUpdate(oldProps, newProps) {}
+  _componentDidUpdate(oldProps: PropsType, newProps: PropsType) {
+    const isNeedRender = this.componentDidUpdate(oldProps, newProps);
 
-  componentDidUpdate(oldProps: PropsType, newProps: PropsType) {
+    if (isNeedRender) {
+      this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    }
+  }
+
+  protected componentDidUpdate(
+    oldProps: PropsType,
+    newProps: PropsType,
+  ): boolean {
     console.log(oldProps, newProps);
     return true;
   }
@@ -88,42 +146,123 @@ class Block {
     Object.assign(this.props, nextProps);
   };
 
-  get element(): Nullable<HTMLElement> {
-    return this._element;
+  get id(): Nullable<string> {
+    return this._id;
+  }
+
+  private _addEvents() {
+    const { events = {} } = this.props;
+
+    (Object.keys(events) as (keyof GlobalEventHandlersEventMap)[]).forEach(
+      eventName => {
+        const listener = events[eventName];
+        if (listener && this._element) {
+          this._element.addEventListener(eventName, listener as EventListener);
+        }
+      },
+    );
+  }
+
+  private _removeEvents() {
+    const { events = {} } = this.props;
+
+    (Object.keys(events) as (keyof GlobalEventHandlersEventMap)[]).forEach(
+      eventName => {
+        const listener = events[eventName];
+        if (listener && this._element) {
+          this._element.removeEventListener(
+            eventName,
+            listener as EventListener,
+          );
+        }
+      },
+    );
   }
 
   _render(): void {
     const block = this.render();
-    // Это небезопасный метод для упрощения логики
-    // Используйте шаблонизатор из npm или напишите свой безопасный
-    // Нужно компилировать не в строку (или делать это правильно),
-    // либо сразу превращать в DOM-элементы и возвращать из compile DOM-ноду
 
     if (this._element) {
-      this._element.innerHTML = block;
+      this._removeEvents();
+
+      this._element.innerHTML = '';
+      this._element.appendChild(block);
+
+      this._addEvents();
     }
   }
 
   // Переопределяется пользователем. Необходимо вернуть разметку
-  render(): string {
-    return '';
-  }
+  abstract render(): DocumentFragment;
 
   getContent(): Nullable<HTMLElement> {
-    return this.element;
+    return this._element;
   }
 
   _makePropsProxy(props: PropsType): PropsType {
-    // Ещё один способ передачи this, но он больше не применяется с приходом ES6+
-    // const self = this;
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const self = this;
 
-    // Здесь вам предстоит реализовать метод
-    return props;
+    return new Proxy(props, {
+      set(target: any, prop: string, val: any) {
+        if (self.props[prop] !== val) {
+          self.eventBus().emit(Block.EVENTS.FLOW_CDU, self.props, {
+            ...self.props,
+            [prop]: val,
+          });
+
+          target[prop] = val;
+          return true;
+        }
+
+        return false;
+      },
+      deleteProperty() {
+        throw new Error('нет доступа');
+      },
+    });
   }
 
-  _createDocumentElement(tagName: string) {
-    // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
-    return document.createElement(tagName);
+  private _createDocumentElement<T extends keyof HTMLElementTagNameMap>(
+    tagName: T,
+  ): HTMLElementTagNameMap[T] {
+    const element = document.createElement(tagName);
+    if (this._id) {
+      element.setAttribute('data-id', this._id);
+    }
+    return element;
+  }
+
+  compile(
+    template: string,
+    props: Omit<PropsType, keyof BaseProps>,
+  ): DocumentFragment {
+    const propsAndStubs: ComponentsProps = {
+      ...props,
+    };
+
+    Object.entries(this._children).forEach(([key, child]) => {
+      propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
+    });
+
+    const fragment = this._createDocumentElement('template');
+
+    fragment.innerHTML = compile(
+      template,
+      propsAndStubs as Record<string, string | number | boolean>,
+    );
+
+    Object.values(this._children).forEach(child => {
+      const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
+
+      if (stub) {
+        stub.replaceWith(child.getContent()!);
+      } else {
+        throw new Error(`query selector data-id="${child.id}" not found.`);
+      }
+    });
+
+    return fragment.content;
   }
 
   show() {
@@ -142,4 +281,4 @@ class Block {
   }
 }
 
-export { Block };
+export { Block, BaseProps };
