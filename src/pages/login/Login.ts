@@ -36,9 +36,7 @@ function getLoginForm() {
     buttons: { authButton, registrationButton },
   });
 
-  const centeredPage = new CenteredPage({ content: form });
-
-  return centeredPage;
+  return new CenteredPage({ content: form });
 }
 
 export { getLoginForm };

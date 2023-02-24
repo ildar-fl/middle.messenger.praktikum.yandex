@@ -1,5 +1,5 @@
 import { getLoginForm } from './pages/login';
-import { createRegistrationForm } from './pages/registration';
+import { getRegistrationForm } from './pages/registration';
 import { createChatsPage } from './pages/chats';
 import { routing } from './utils';
 import { createInternalError, createNotFound } from './pages/error-code';
@@ -13,7 +13,7 @@ const rootNode = document.getElementById('root');
 const MAIN_ROUTERS: Record<string, () => Block | string> = {
   [ROUTS.HOME]: getLoginForm,
   [ROUTS.LOGIN]: getLoginForm,
-  [ROUTS.REGISTRATION]: createRegistrationForm,
+  [ROUTS.REGISTRATION]: getRegistrationForm,
   [ROUTS.CHATS]: createChatsPage,
   [ROUTS.PROFILE]: createProfile,
   [ROUTS.PROFILE_EDIT]: createEditProfile,

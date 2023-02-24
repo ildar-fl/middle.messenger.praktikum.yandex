@@ -1,89 +1,77 @@
-import Handlebars from 'handlebars';
-import {
-  createForm,
-  createInput,
-  createButton,
-  createButtonText,
-  flexContainer,
-} from '../../ui';
-import { createCenteredPage } from '../../layouts';
+import { TextInput, Button, ButtonText, Form } from '../../ui';
+import { CenteredPage } from '../../layouts';
 
-const LoginTemplate = `
-  {{{emailInput}}}
-  {{{loginInput}}}
-  {{{firstNameInput}}}
-  {{{secondNameInput}}}
-  {{{phoneInput}}}
-  {{{passwordInput}}}
-  {{{repeatPassword}}}
-`;
-
-const ButtonsTemplate = `
-  {{{registrationButton}}}
-  {{{authButton}}}
-`;
-
-function createRegistrationForm() {
-  const formTemplate = createForm({
-    title: 'Регистрация',
-    content: Handlebars.compile(LoginTemplate)({
-      emailInput: createInput({
-        id: 'email',
-        placeholder: 'Почта',
-        name: 'email',
-      }),
-      loginInput: createInput({
-        id: 'login',
-        placeholder: 'Логин',
-        name: 'login',
-      }),
-      firstNameInput: createInput({
-        id: 'first_name',
-        placeholder: 'Имя',
-        name: 'first_name',
-      }),
-      secondNameInput: createInput({
-        id: 'second_name',
-        placeholder: 'Фамилия',
-        name: 'second_name',
-      }),
-      phoneInput: createInput({
-        id: 'phone',
-        placeholder: 'Телефон',
-        type: 'phone',
-        name: 'phone',
-      }),
-      passwordInput: createInput({
-        id: 'password',
-        placeholder: 'Пароль',
-        name: 'password',
-        type: 'password',
-      }),
-      repeatPassword: createInput({
-        id: 'repeat_password',
-        placeholder: 'Пароль (еще раз)',
-        name: 'repeat_password',
-        type: 'password',
-      }),
-    }),
-    buttons: Handlebars.compile(ButtonsTemplate)({
-      registrationButton: createButton({
-        id: 'registration_button',
-        title: 'Зарегистрироваться',
-        type: 'submit',
-      }),
-      authButton: flexContainer({
-        content: createButtonText({
-          id: 'auth_button',
-          as: 'a',
-          href: '/login',
-          title: 'Войти',
-        }),
-      }),
-    }),
+function getRegistrationForm() {
+  const emailInput = new TextInput({
+    placeholder: 'Почта',
+    name: 'email',
   });
 
-  return createCenteredPage({ content: formTemplate });
+  const loginInput = new TextInput({
+    placeholder: 'Логин',
+    name: 'login',
+  });
+
+  const firstNameInput = new TextInput({
+    placeholder: 'Имя',
+    name: 'first_name',
+  });
+
+  const secondNameInput = new TextInput({
+    placeholder: 'Фамилия',
+    name: 'second_name',
+  });
+
+  const phoneInput = new TextInput({
+    placeholder: 'Телефон',
+    type: 'phone',
+    name: 'phone',
+  });
+
+  const passwordInput = new TextInput({
+    placeholder: 'Пароль',
+    name: 'password',
+    type: 'password',
+  });
+
+  const repeatPassword = new TextInput({
+    placeholder: 'Пароль (еще раз)',
+    name: 'repeat_password',
+    type: 'password',
+  });
+
+  const registrationButton = new Button({
+    attrs: {
+      type: 'submit',
+    },
+    text: 'Зарегистрироваться',
+  });
+
+  const authButton = new ButtonText({
+    attrs: {
+      as: 'a',
+      href: '/login',
+      style: { 'margin-top': '15px', 'margin-bottom': '15px' },
+      class: ['m__l-auto', 'm__r-auto'],
+    },
+    text: 'Войти',
+  });
+
+  const form = new Form({
+    title: 'Регистрация',
+    content: {
+      emailInput,
+      loginInput,
+      firstNameInput,
+      secondNameInput,
+      phoneInput,
+      passwordInput,
+      repeatPassword,
+    },
+    buttons: { registrationButton, authButton },
+  });
+
+  return new CenteredPage({ content: form });
 }
 
-export { createRegistrationForm };
+export { getRegistrationForm };
