@@ -1,52 +1,8 @@
-import Handlebars from 'handlebars';
 import './style.css';
-import { createCenteredPage } from '../../layouts';
-import { createButton, createButtonText, flexContainer } from '../../ui';
+import { CenteredPage } from '../../layouts';
+import { Button, ButtonText, Input } from '../../ui';
 import { ROUTS } from '../../constants';
-
-const ProfileContainerTemplate = `
-    <a class="profile-page__back-button" href="${ROUTS.CHATS}"><- Назад</a>
-    <section class="profile-page__user">
-        {{{content}}}
-    </section>
-`;
-
-const ProfileTemplate = `
-    <section class="profile">
-        <header class="profile-header">
-            <div class="profile-header__avatar"></div>
-            <h2>{{name}}</h2>
-        </header>
-        <dl>
-            {{#each userInfo}}
-                <div class="user-info__container">
-                    <dt>{{key}}</dt>
-                    <dd>{{value}}</dd>
-                </div>
-            {{/each}}
-        </dl>
-        {{{changeProfileButton}}}
-        {{{changePasswordButton}}}
-        {{{logoutButton}}}
-    </section>
-`;
-
-const ProfileEditTemplate = `
-    <section class="profile">
-        <header class="profile-header">
-            <input class="profile-header__avatar" name="avatar"/>
-        </header>
-        <dl>
-            {{#each userInfo}}
-                <div class="user-info__container">
-                    <dt>{{key}}</dt>
-                    <dd><input value="{{value}}" name="{{inputName}}" type="{{type}}" class="profile-edit-input"/></dd>
-                </div>
-            {{/each}}
-        </dl>
-        {{{saveProfileButton}}}
-    </section>
-`;
+import { Block, IBaseProps } from '../../core';
 
 const userInfoMock = [
   {
@@ -77,62 +33,273 @@ const userInfoMock = [
   },
 ];
 
-function createProfile() {
-  const templateProfilePage = Handlebars.compile(ProfileContainerTemplate);
-  const templateProfileStr = Handlebars.compile(ProfileTemplate)({
-    name: 'Ильдар',
-    userInfo: userInfoMock,
-    changeProfileButton: createButtonText({
-      title: 'Изменить данные',
+interface IProfileContainer extends IBaseProps {
+  content: any;
+}
+
+class ProfileContainer extends Block<IProfileContainer> {
+  constructor(props: IProfileContainer) {
+    super('div', props);
+  }
+
+  render(): DocumentFragment {
+    return this.compile(
+      `
+    <a class="profile-page__back-button" href="${ROUTS.CHATS}"><- Назад</a>
+    <section class="profile-page__user">
+        {{{content}}}
+    </section>
+    `,
+      this.props,
+    );
+  }
+}
+
+interface IUserInfo {
+  key: string;
+  value: string;
+  inputName: string;
+  type: string;
+}
+
+interface IProfileProps extends IBaseProps {
+  name: string;
+  userInfo: Array<IUserInfo>;
+  changeProfileButton: any;
+  changePasswordButton: any;
+  logoutButton: any;
+}
+
+class Profile extends Block<IProfileProps> {
+  constructor(props: IProfileProps) {
+    super('section', { ...props, attrs: { ...props.attrs, class: 'profile' } });
+  }
+
+  render(): DocumentFragment {
+    return this.compile(
+      `
+    <header class="profile-header">
+            <div class="profile-header__avatar"></div>
+            <h2>{{name}}</h2>
+        </header>
+        <dl>
+            {{#each userInfo}}
+                <div class="user-info__container">
+                    <dt>{{key}}</dt>
+                    <dd>{{value}}</dd>
+                </div>
+            {{/each}}
+        </dl>
+        {{{changeProfileButton}}}
+        {{{changePasswordButton}}}
+        {{{logoutButton}}}
+    `,
+      this.props,
+    );
+  }
+}
+
+function getProfile() {
+  const changeProfileButton = new ButtonText({
+    text: 'Изменить данные',
+    attrs: {
       as: 'a',
       href: ROUTS.PROFILE_EDIT,
-      classNames: 'fs__13',
-    }),
-    changePasswordButton: createButtonText({
-      title: 'Изменить пароль',
+      class: 'fs__13',
+    },
+  });
+
+  const changePasswordButton = new ButtonText({
+    text: 'Изменить пароль',
+    attrs: {
       as: 'a',
       disabled: true,
       href: ROUTS.PROFILE_PASSWORD_EDIT,
-      classNames: 'fs__13',
-    }),
-    logoutButton: createButtonText({
-      title: 'Выйти',
+      class: 'fs__13',
+    },
+  });
+
+  const logoutButton = new ButtonText({
+    text: 'Выйти',
+    attrs: {
       as: 'a',
       href: ROUTS.LOGIN,
-      classNames: ['fs__13', 'colors__red'],
-    }),
+      class: ['fs__13', 'colors__red'],
+    },
   });
 
-  const profileStr = templateProfilePage({
-    content: templateProfileStr,
-  });
-
-  return createCenteredPage({
-    classNames: 'profile-page',
-    content: profileStr,
-  });
-}
-
-function createEditProfile() {
-  const templateProfileEditPage = Handlebars.compile(ProfileContainerTemplate);
-  const templateProfileEditStr = Handlebars.compile(ProfileEditTemplate)({
+  const profile = new Profile({
+    name: 'Ильдар',
     userInfo: userInfoMock,
-    saveProfileButton: flexContainer({
-      content: createButton({
-        style: { width: '280px' },
-        title: 'Сохранить',
-      }),
-    }),
+    changeProfileButton,
+    changePasswordButton,
+    logoutButton,
   });
 
-  const profileStr = templateProfileEditPage({
-    content: templateProfileEditStr,
+  const profileContainer = new ProfileContainer({
+    content: profile,
   });
 
-  return createCenteredPage({
-    classNames: 'profile-page',
-    content: profileStr,
+  return new CenteredPage({
+    content: profileContainer,
   });
 }
 
-export { createProfile, createEditProfile };
+interface IEditProfileProps extends IBaseProps {
+  avatarInput: any;
+  emailInput: any;
+  nameInput: any;
+  secondInput: any;
+  loginInput: any;
+  displayInput: any;
+  phoneInput: any;
+  saveProfileButton: any;
+}
+
+class EditProfile extends Block<IEditProfileProps> {
+  constructor(props: IEditProfileProps) {
+    super('section', { ...props, attrs: { ...props.attrs, class: 'profile' } });
+  }
+
+  render(): DocumentFragment {
+    return this.compile(
+      `
+        <header class="profile-header">
+            {{{avatarInput}}}
+        </header>
+        <dl>
+          <div class="user-info__container">
+              <dt>Почта</dt>
+              <dd>
+                {{{emailInput}}}
+              </dd>
+          </div>
+          <div class="user-info__container">
+              <dt>Логин</dt>
+              <dd>
+                {{{loginInput}}}
+              </dd>
+          </div>
+          <div class="user-info__container">
+              <dt>Имя</dt>
+              <dd>
+                {{{nameInput}}}
+              </dd>
+          </div>
+          <div class="user-info__container">
+              <dt>Фамилия</dt>
+              <dd>
+                {{{secondInput}}}
+              </dd>
+          </div>
+          <div class="user-info__container">
+              <dt>Имя в чате</dt>
+              <dd>
+                {{{displayInput}}}
+              </dd>
+          </div>
+          <div class="user-info__container">
+              <dt>Телефон</dt>
+              <dd>
+                {{{phoneInput}}}
+              </dd>
+          </div>
+        </dl>
+        {{{saveProfileButton}}}
+    `,
+      this.props,
+    );
+  }
+}
+
+function getEditProfile() {
+  const avatarInput = new Input({
+    attrs: {
+      name: 'avatar',
+      class: 'profile-header__avatar',
+    },
+  });
+
+  const emailInput = new Input({
+    attrs: {
+      name: 'email',
+      type: 'email',
+      value: 'ildaryxa@gmail.com',
+      class: 'profile-edit-input',
+    },
+  });
+
+  const nameInput = new Input({
+    attrs: {
+      name: 'first_name',
+      type: 'text',
+      value: 'Ильдар',
+      class: 'profile-edit-input',
+    },
+  });
+
+  const secondInput = new Input({
+    attrs: {
+      name: 'second_name',
+      type: 'text',
+      value: 'Фасхетдинов',
+      class: 'profile-edit-input',
+    },
+  });
+
+  const loginInput = new Input({
+    attrs: {
+      name: 'login',
+      type: 'text',
+      value: 'ildaryxa',
+      class: 'profile-edit-input',
+    },
+  });
+
+  const displayInput = new Input({
+    attrs: {
+      name: 'display_name',
+      type: 'text',
+      value: 'Ильдар',
+      class: 'profile-edit-input',
+    },
+  });
+
+  const phoneInput = new Input({
+    attrs: {
+      name: 'phone',
+      type: 'phone',
+      value: '+7 912 489 74 71',
+      class: 'profile-edit-input',
+    },
+  });
+
+  const saveProfileButton = new Button({
+    text: 'Сохранить',
+    attrs: {
+      style: { width: '280px' },
+      class: ['m__l-auto', 'm__r-auto'],
+    },
+  });
+
+  const editProfile = new EditProfile({
+    avatarInput,
+    emailInput,
+    nameInput,
+    secondInput,
+    loginInput,
+    displayInput,
+    phoneInput,
+    saveProfileButton,
+  });
+
+  const profileContainer = new ProfileContainer({
+    content: editProfile,
+  });
+
+  return new CenteredPage({
+    content: profileContainer,
+  });
+}
+
+export { getProfile, getEditProfile };

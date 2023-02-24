@@ -1,37 +1,15 @@
-import Handlebars from 'handlebars';
 import { v4 as uuid } from 'uuid';
 import './style.scss';
 import { Block, IBaseProps } from '../../core';
 
-const TextInputTemplate = `
-  <div class="input-container">
-    {{#if label}}
-    <label id={{labelId}}>{{label}}</label>
-    {{/if}}
-    <input id="{{id}}" for="{{labelId}}" type="{{type}}" name="{{name}}" placeholder="{{placeholder}}">
-  </div>  
-`;
-
-function createInput({
-  id,
-  labelId = 'forInput',
-  label,
-  placeholder,
-  type = 'text',
-  name,
-}: any) {
-  const template = Handlebars.compile(TextInputTemplate);
-
-  return template({ id, labelId, label, placeholder, type, name });
-}
-
 interface IInputProps extends IBaseProps {
   attrs: {
-    labelId: string;
-    type: string;
+    labelId?: string;
+    type?: string;
     name: string;
-    placeholder: string;
+    placeholder?: string;
     value?: string;
+    class?: string;
   };
 }
 
@@ -91,4 +69,4 @@ class TextInput extends Block<ITextInputInner> {
   }
 }
 
-export { createInput, TextInput };
+export { TextInput, Input };

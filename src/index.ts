@@ -3,7 +3,7 @@ import { getRegistrationForm } from './pages/registration';
 import { createChatsPage } from './pages/chats';
 import { routing } from './utils';
 import { getInternalError, getNotFoundError } from './pages/error-code';
-import { createProfile, createEditProfile } from './pages/profile';
+import { getEditProfile, getProfile } from './pages/profile';
 import { ROUTS } from './constants';
 import './index.css';
 import { Block, render } from './core';
@@ -15,8 +15,8 @@ const MAIN_ROUTERS: Record<string, () => Block | string> = {
   [ROUTS.LOGIN]: getLoginForm,
   [ROUTS.REGISTRATION]: getRegistrationForm,
   [ROUTS.CHATS]: createChatsPage,
-  [ROUTS.PROFILE]: createProfile,
-  [ROUTS.PROFILE_EDIT]: createEditProfile,
+  [ROUTS.PROFILE]: getProfile,
+  [ROUTS.PROFILE_EDIT]: getEditProfile,
   [ROUTS.NOT_FOUND]: getNotFoundError,
   [ROUTS.INTERNAL_ERROR]: getInternalError,
 };
