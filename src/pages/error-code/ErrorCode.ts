@@ -1,23 +1,25 @@
-import Handlebars from 'handlebars';
 import './style.scss';
-import { flexContainer } from '../../ui';
+import { Block, IBaseProps } from '../../core';
 
-const ErrorCodeTemplate = `
-    <div class="error-code-container">
-        <h1>{{code}}</h1>
-        <h2>{{description}}</h2>
-        {{{button}}}
-    </div>
-`;
-
-function createErrorCode({ code, description, button }: any) {
-  const template = Handlebars.compile(ErrorCodeTemplate);
-
-  return template({
-    code,
-    description,
-    button: flexContainer({ content: button }),
-  });
+interface IErrorCodeProps extends IBaseProps {
+  code: string;
+  description: string;
+  button: any;
 }
 
-export { createErrorCode };
+class ErrorCode extends Block<IErrorCodeProps> {
+  constructor(props: IErrorCodeProps) {
+    super('div', { ...props, attrs: { class: 'error-code-container' } });
+  }
+
+  render(): DocumentFragment {
+    return this.compile(
+      `<h1>{{code}}</h1>
+        <h2>{{description}}</h2>
+        {{{button}}}`,
+      this.props,
+    );
+  }
+}
+
+export { ErrorCode };

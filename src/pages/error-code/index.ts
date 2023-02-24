@@ -1,2 +1,2 @@
-export { createInternalError } from './InternalError';
-export { createNotFound } from './NotFound';
+export { getInternalError } from './InternalError';
+export { getNotFoundError } from './NotFound';

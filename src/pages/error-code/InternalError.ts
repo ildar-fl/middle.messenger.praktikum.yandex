@@ -1,19 +1,22 @@
-import { createCenteredPage } from '../../layouts';
-import { createErrorCode } from './ErrorCode';
-import { createButtonText } from '../../ui';
+import { CenteredPage } from '../../layouts';
+import { ErrorCode } from './ErrorCode';
+import { ButtonText } from '../../ui';
 
-function createInternalError() {
-  return createCenteredPage({
-    content: createErrorCode({
-      code: '500',
-      description: 'Мы уже фиксим',
-      button: createButtonText({
-        title: 'Назад к чатам',
+function getInternalError() {
+  const errorCodeBlock = new ErrorCode({
+    code: '500',
+    description: 'Мы уже фиксим',
+    button: new ButtonText({
+      text: 'Назад к чатам',
+      attrs: {
         as: 'a',
         href: '/chats',
-      }),
+        class: ['m__l-auto', 'm__r-auto'],
+      },
     }),
   });
+
+  return new CenteredPage({ content: errorCodeBlock });
 }
 
-export { createInternalError };
+export { getInternalError };

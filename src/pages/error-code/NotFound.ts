@@ -1,19 +1,22 @@
-import { createCenteredPage } from '../../layouts';
-import { createErrorCode } from './ErrorCode';
-import { createButtonText } from '../../ui';
+import { CenteredPage } from '../../layouts';
+import { ErrorCode } from './ErrorCode';
+import { ButtonText } from '../../ui';
 
-function createNotFound() {
-  return createCenteredPage({
-    content: createErrorCode({
-      code: '404',
-      description: 'Не туда попали',
-      button: createButtonText({
-        title: 'Назад к чатам',
+function getNotFoundError() {
+  const errorCodeBlock = new ErrorCode({
+    code: '404',
+    description: 'Не туда попали',
+    button: new ButtonText({
+      text: 'Назад к чатам',
+      attrs: {
         as: 'a',
         href: '/chats',
-      }),
+        class: ['m__l-auto', 'm__r-auto'],
+      },
     }),
   });
+
+  return new CenteredPage({ content: errorCodeBlock });
 }
 
-export { createNotFound };
+export { getNotFoundError };

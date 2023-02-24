@@ -2,7 +2,7 @@ import { getLoginForm } from './pages/login';
 import { getRegistrationForm } from './pages/registration';
 import { createChatsPage } from './pages/chats';
 import { routing } from './utils';
-import { createInternalError, createNotFound } from './pages/error-code';
+import { getInternalError, getNotFoundError } from './pages/error-code';
 import { createProfile, createEditProfile } from './pages/profile';
 import { ROUTS } from './constants';
 import './index.css';
@@ -17,8 +17,8 @@ const MAIN_ROUTERS: Record<string, () => Block | string> = {
   [ROUTS.CHATS]: createChatsPage,
   [ROUTS.PROFILE]: createProfile,
   [ROUTS.PROFILE_EDIT]: createEditProfile,
-  [ROUTS.NOT_FOUND]: createNotFound,
-  [ROUTS.INTERNAL_ERROR]: createInternalError,
+  [ROUTS.NOT_FOUND]: getNotFoundError,
+  [ROUTS.INTERNAL_ERROR]: getInternalError,
 };
 
 const changeUrl = (template: any) => {

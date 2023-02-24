@@ -51,7 +51,6 @@ function getRegistrationForm() {
     attrs: {
       as: 'a',
       href: '/login',
-      style: { 'margin-top': '15px', 'margin-bottom': '15px' },
       class: ['m__l-auto', 'm__r-auto'],
     },
     text: 'Войти',
