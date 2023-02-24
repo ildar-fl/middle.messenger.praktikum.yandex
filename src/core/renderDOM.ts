@@ -1,6 +1,6 @@
-import { BaseProps, Block } from './Block';
+import { IBaseProps, Block } from './Block';
 
-export function render<T extends BaseProps>(query: string, block: Block<T>) {
+export function render<T extends IBaseProps>(query: string, block: Block<T>) {
   const root = document.querySelector(query);
 
   if (!root) {

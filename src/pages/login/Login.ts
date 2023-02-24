@@ -1,57 +1,44 @@
-import Handlebars from 'handlebars';
-import {
-  createForm,
-  createInput,
-  createButton,
-  createButtonText,
-  flexContainer,
-} from '../../ui';
-import { createCenteredPage } from '../../layouts';
+import { Form, TextInput, Button, ButtonText } from '../../ui';
+import { CenteredPage } from '../../layouts';
 
-const LoginTemplate = `
-  {{{nameInput}}}
-  {{{passwordInput}}}
-`;
-
-const ButtonsTemplate = `
-  {{{authButton}}}
-  {{{registrationButton}}}
-`;
-
-function createLoginForm() {
-  const formTemplate = createForm({
-    title: 'Вход',
-    content: Handlebars.compile(LoginTemplate)({
-      nameInput: createInput({
-        id: 'login',
-        placeholder: 'Логин',
-        name: 'login',
-      }),
-      passwordInput: createInput({
-        id: 'password',
-        placeholder: 'Пароль',
-        name: 'password',
-        type: 'password',
-      }),
-    }),
-    buttons: Handlebars.compile(ButtonsTemplate)({
-      authButton: createButton({
-        id: 'authButton',
-        title: 'Авторизоваться',
-        type: 'submit',
-      }),
-      registrationButton: flexContainer({
-        content: createButtonText({
-          id: 'registrationButton',
-          as: 'a',
-          href: '/registration',
-          title: 'Нет аккаунта?',
-        }),
-      }),
-    }),
+function getLoginForm() {
+  const nameInput = new TextInput({
+    placeholder: 'Логин',
+    name: 'login',
   });
 
-  return createCenteredPage({ content: formTemplate });
+  const passwordInput = new TextInput({
+    placeholder: 'Пароль',
+    name: 'password',
+    type: 'password',
+  });
+
+  const authButton = new Button({
+    attrs: {
+      type: 'submit',
+    },
+    text: 'Авторизоваться',
+  });
+
+  const registrationButton = new ButtonText({
+    attrs: {
+      as: 'a',
+      href: '/registration',
+      style: { 'margin-top': '15px', 'margin-bottom': '15px' },
+      class: ['m__l-auto', 'm__r-auto'],
+    },
+    text: 'Нет аккаунта?',
+  });
+
+  const form = new Form({
+    title: 'Вход',
+    content: { nameInput, passwordInput },
+    buttons: { authButton, registrationButton },
+  });
+
+  const centeredPage = new CenteredPage({ content: form });
+
+  return centeredPage;
 }
 
-export { createLoginForm };
+export { getLoginForm };

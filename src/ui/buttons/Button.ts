@@ -1,6 +1,6 @@
 import './style.scss';
-import { parseStyle, compile } from '../../utils';
-import { Block, BaseProps, render } from '../../core';
+import { parseStyle, compile, ClassNames } from '../../utils';
+import { Block, IBaseProps } from '../../core';
 
 const ButtonTemplate = `
     <button id="{{id}}" class="button" style="{{style}}" type="{{type}}">
@@ -12,7 +12,7 @@ const ButtonTemplate = `
 interface IButtonPropsOld {
   id?: string;
   title: string;
-  style?: Partial<CSSStyleDeclaration>;
+  style?: Record<string, string>;
   type?: string;
 }
 
@@ -30,58 +30,75 @@ function createButton({
   });
 }
 
-interface IButtonProps extends BaseProps {
+interface IButtonProps extends IBaseProps {
+  attrs: {
+    class?: string;
+    style?: Partial<CSSStyleDeclaration>;
+    type?: string;
+  };
   text: string;
 }
 
 class Button extends Block<IButtonProps> {
   constructor(props: IButtonProps) {
-    super('button', props);
+    super('button', { ...props, attrs: { ...props.attrs, class: 'button' } });
   }
 
   render(): DocumentFragment {
     const { text } = this.props;
 
-    return this.compile(ButtonTemplate, { text });
+    return this.compile('{{text}}', { text });
   }
 }
 
-const profileTemplate = `
-    <div>
-    {{ userName }}
-        {{{ button }}}
-    </div>
-`;
-
-interface UserProfileProps extends BaseProps {
-  userName: string;
-  button: Button;
+interface IButtonTextProps extends IBaseProps {
+  attrs: {
+    as?: 'button' | 'a';
+    href?: string;
+    disabled?: boolean;
+    class?: string | string[];
+    style?: Record<string, string>;
+  };
+  text: string;
 }
 
-class UserProfile extends Block<UserProfileProps> {
-  constructor(props: UserProfileProps) {
-    super('div', props);
-  }
-  render() {
-    return this.compile(profileTemplate, {
-      userName: this.props.userName,
-      button: this.props.button,
+interface IButtonTextInnerProps extends IBaseProps {
+  attrs: {
+    as?: 'button' | 'a';
+    href?: string;
+    disabled?: boolean;
+    class: string;
+    style?: string;
+  };
+  text: string;
+}
+
+class ButtonText extends Block<IButtonTextInnerProps> {
+  constructor(props: IButtonTextProps) {
+    const { attrs, text, ...other } = props;
+
+    const { as = 'button', class: className, style, ...otherAttrs } = attrs;
+
+    const classNames = new ClassNames(className);
+    classNames.addClassName('button-text');
+
+    super(as, {
+      ...other,
+      attrs: {
+        as,
+        class: classNames.getClass(),
+        style: parseStyle(style),
+        ...otherAttrs,
+      },
+      text,
     });
   }
+
+  render(): DocumentFragment {
+    const { text } = this.props;
+
+    return this.compile('{{text}}', { text });
+  }
 }
 
-const profile = new UserProfile({
-  userName: 'John Doe',
-  button: new Button({
-    text: 'Change name',
-    events: {
-      click: event => {
-        console.log(event);
-      },
-    },
-  }),
-});
-
-render('#root', profile);
-
-export { createButton, Button };
+export { createButton, Button, ButtonText };

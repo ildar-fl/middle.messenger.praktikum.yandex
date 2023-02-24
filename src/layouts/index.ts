@@ -1,1 +1,1 @@
-export { createCenteredPage } from './CenteredPage';
+export { createCenteredPage, CenteredPage } from './CenteredPage';

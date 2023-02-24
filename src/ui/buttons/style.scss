@@ -21,7 +21,6 @@
 .button-text {
   display: flex;
   align-items: center;
-  height: 37px;
   width: max-content;
   color: themeColor('primary');
   font-weight: 500;
@@ -62,5 +61,15 @@
 .fw {
   &__500 {
     font-weight: 500;
+  }
+}
+
+.m {
+  &__l-auto {
+    margin-left: auto;
+  }
+
+  &__r-auto {
+    margin-right: auto;
   }
 }

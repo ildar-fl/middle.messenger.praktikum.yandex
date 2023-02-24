@@ -9,7 +9,8 @@ interface ComponentsProps {
   [key: string | symbol]: any;
 }
 
-interface BaseProps {
+interface IBaseProps {
+  attrs?: Record<string, any>;
   events?: {
     [K in keyof GlobalEventHandlersEventMap]?: (
       event: GlobalEventHandlersEventMap[K],
@@ -23,7 +24,7 @@ type MetaType<PropsType> = {
 };
 
 abstract class Block<
-  PropsType extends BaseProps & ComponentsProps = ComponentsProps,
+  PropsType extends IBaseProps & ComponentsProps = ComponentsProps,
 > {
   static EVENTS = {
     INIT: 'init',
@@ -130,11 +131,9 @@ abstract class Block<
     }
   }
 
-  protected componentDidUpdate(
-    oldProps: PropsType,
-    newProps: PropsType,
-  ): boolean {
-    console.log(oldProps, newProps);
+  componentDidUpdate(oldProps: PropsType, newProps: PropsType): boolean;
+  componentDidUpdate(oldProps: PropsType): boolean;
+  componentDidUpdate(): boolean {
     return true;
   }
 
@@ -148,6 +147,18 @@ abstract class Block<
 
   get id(): Nullable<string> {
     return this._id;
+  }
+
+  private _addAttrs() {
+    const { attrs } = this.props;
+
+    if (attrs) {
+      Object.entries(attrs).forEach(([key, value]) => {
+        if (this._element && value) {
+          this._element.setAttribute(key, value);
+        }
+      });
+    }
   }
 
   private _addEvents() {
@@ -185,15 +196,21 @@ abstract class Block<
     if (this._element) {
       this._removeEvents();
 
-      this._element.innerHTML = '';
-      this._element.appendChild(block);
+      if (block) {
+        this._element.innerHTML = '';
+        this._element.appendChild(block);
+      }
+
+      this._addAttrs();
 
       this._addEvents();
     }
   }
 
   // Переопределяется пользователем. Необходимо вернуть разметку
-  abstract render(): DocumentFragment;
+  render(): null | DocumentFragment {
+    return null;
+  }
 
   getContent(): Nullable<HTMLElement> {
     return this._element;
@@ -235,7 +252,7 @@ abstract class Block<
 
   compile(
     template: string,
-    props: Omit<PropsType, keyof BaseProps>,
+    props: Omit<PropsType, keyof IBaseProps>,
   ): DocumentFragment {
     const propsAndStubs: ComponentsProps = {
       ...props,
@@ -281,4 +298,4 @@ abstract class Block<
   }
 }
 
-export { Block, BaseProps };
+export { Block, IBaseProps };

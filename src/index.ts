@@ -1,4 +1,4 @@
-import { createLoginForm } from './pages/login';
+import { getLoginForm } from './pages/login';
 import { createRegistrationForm } from './pages/registration';
 import { createChatsPage } from './pages/chats';
 import { routing } from './utils';
@@ -6,12 +6,13 @@ import { createInternalError, createNotFound } from './pages/error-code';
 import { createProfile, createEditProfile } from './pages/profile';
 import { ROUTS } from './constants';
 import './index.css';
+import { Block, render } from './core';
 
 const rootNode = document.getElementById('root');
 
-const MAIN_ROUTERS: Record<string, () => string> = {
-  [ROUTS.HOME]: createLoginForm,
-  [ROUTS.LOGIN]: createLoginForm,
+const MAIN_ROUTERS: Record<string, () => Block | string> = {
+  [ROUTS.HOME]: getLoginForm,
+  [ROUTS.LOGIN]: getLoginForm,
   [ROUTS.REGISTRATION]: createRegistrationForm,
   [ROUTS.CHATS]: createChatsPage,
   [ROUTS.PROFILE]: createProfile,
@@ -21,8 +22,12 @@ const MAIN_ROUTERS: Record<string, () => string> = {
 };
 
 const changeUrl = (template: any) => {
-  if (rootNode) {
-    rootNode.innerHTML = template();
+  const result = template();
+
+  if (result instanceof Block) {
+    render('#root', result);
+  } else if (rootNode) {
+    rootNode.innerHTML = result;
   }
 };
 
