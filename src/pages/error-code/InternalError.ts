@@ -2,7 +2,7 @@ import { CenteredPage } from '../../layouts';
 import { ErrorCode } from './ErrorCode';
 import { ButtonText } from '../../ui';
 
-function getInternalError() {
+function getInternalErrorPage() {
   const errorCodeBlock = new ErrorCode({
     code: '500',
     description: 'Мы уже фиксим',
@@ -19,4 +19,4 @@ function getInternalError() {
   return new CenteredPage({ content: errorCodeBlock });
 }
 
-export { getInternalError };
+export { getInternalErrorPage };

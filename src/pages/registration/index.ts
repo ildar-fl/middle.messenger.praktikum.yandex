@@ -1,1 +1,1 @@
-export { getRegistrationForm } from './Registration';
+export { getRegistrationPage } from './Registration';

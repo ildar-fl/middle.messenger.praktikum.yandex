@@ -3,7 +3,7 @@ import { EventBus } from './EventBus';
 import { compile } from '../utils';
 
 type Nullable<T> = T | null;
-type ChildrenType = Record<string, Block>;
+type ChildrenType = Record<string, Block | Block[]>;
 
 interface ComponentsProps {
   [key: string | symbol]: any;
@@ -80,7 +80,10 @@ abstract class Block<
     const props: PropsType = {} as PropsType;
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
-      if (value instanceof Block) {
+      if (
+        value instanceof Block ||
+        (Array.isArray(value) && value.length > 0 && value[0] instanceof Block)
+      ) {
         children[key] = value;
       } else {
         props[key as keyof PropsType] = value;
@@ -113,7 +116,11 @@ abstract class Block<
     this.componentDidMount();
 
     Object.values(this._children).forEach(child => {
-      child.dispatchComponentDidMount();
+      if (Array.isArray(child)) {
+        child.forEach(subChild => subChild.dispatchComponentDidMount());
+      } else {
+        child.dispatchComponentDidMount();
+      }
     });
   }
 
@@ -259,8 +266,16 @@ abstract class Block<
     };
 
     Object.entries(this._children).forEach(([key, child]) => {
-      propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
+      if (Array.isArray(child)) {
+        propsAndStubs[key] = child.map(
+          subChild => `<div data-id="${subChild.id}"></div>`,
+        );
+      } else {
+        propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
+      }
     });
+
+    console.log(this._children, propsAndStubs);
 
     const fragment = this._createDocumentElement('template');
 
@@ -269,13 +284,21 @@ abstract class Block<
       propsAndStubs as Record<string, string | number | boolean>,
     );
 
-    Object.values(this._children).forEach(child => {
+    const replaceChild = (child: Block) => {
       const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
 
       if (stub) {
         stub.replaceWith(child.getContent()!);
       } else {
         throw new Error(`query selector data-id="${child.id}" not found.`);
+      }
+    };
+
+    Object.values(this._children).forEach(child => {
+      if (Array.isArray(child)) {
+        child.forEach(subChild => replaceChild(subChild));
+      } else {
+        replaceChild(child);
       }
     });
 

@@ -2,7 +2,7 @@ import { CenteredPage } from '../../layouts';
 import { ErrorCode } from './ErrorCode';
 import { ButtonText } from '../../ui';
 
-function getNotFoundError() {
+function getNotFoundPage() {
   const errorCodeBlock = new ErrorCode({
     code: '404',
     description: 'Не туда попали',
@@ -19,4 +19,4 @@ function getNotFoundError() {
   return new CenteredPage({ content: errorCodeBlock });
 }
 
-export { getNotFoundError };
+export { getNotFoundPage };

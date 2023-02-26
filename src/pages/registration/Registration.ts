@@ -1,7 +1,7 @@
 import { TextInput, Button, ButtonText, Form } from '../../ui';
 import { CenteredPage } from '../../layouts';
 
-function getRegistrationForm() {
+function getRegistrationPage() {
   const emailInput = new TextInput({
     placeholder: 'Почта',
     name: 'email',
@@ -73,4 +73,4 @@ function getRegistrationForm() {
   return new CenteredPage({ content: form });
 }
 
-export { getRegistrationForm };
+export { getRegistrationPage };

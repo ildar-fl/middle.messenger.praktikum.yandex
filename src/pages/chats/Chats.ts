@@ -1,48 +1,94 @@
-import Handlebars from 'handlebars';
 import './style.scss';
-import { createUserItem } from './UserItem';
-// @ts-expect-error TS(2732): Cannot find module './users.json'. Consider using ... Remove this comment to see the full error message
-import usersMockData from './users.json';
+import { UserItem } from './UserItem';
 import { ROUTS } from '../../constants';
-import { createConversation } from './Conversation';
+import { getConversation } from './Conversation';
+import { Block, IBaseProps } from '../../core';
+
+const usersMockData = [
+  {
+    avatar: 'AL',
+    first_name: 'Ildar',
+    second_nane: '',
+    message: 'Изображение',
+    time: '10:49',
+    count: 9,
+  },
+  {
+    avatar: 'AL',
+    first_name: 'Anton',
+    second_nane: 'Aleupov',
+    message: 'Смотри Что я наделал! емае',
+    time: '10:49',
+    count: 4,
+  },
+  {
+    avatar: 'AL',
+    first_name: 'Чат чат чат',
+    second_nane: '',
+    message: 'Это техно диско мясорубка',
+    time: '10:49',
+    count: 1,
+  },
+  {
+    avatar: 'AL',
+    first_name: 'Ildar',
+    second_nane: '',
+    message: 'Изображение',
+    time: '10:49',
+    count: 9,
+  },
+];
 
 const ChatsTemplate = `
-  <main class="chat">
-    <section class="chat__side-panel">
-        <div class="side-panel__header">
-            <div class="header__profile">
-                <a href="${ROUTS.PROFILE}">Профиль ></a>
-            </div>
-            <div class="header__search">
-                <input id="input_search" placeholder="Поиск" name="input_search"/>
-            </div>
-        </div>
-        <div class="side-panel__list">
-            {{#each userItems}}
-                {{{this}}}
-            {{/each}}
-        </div>
-    </section>
-    <section class="chat__window">{{{content}}}</section>
-  </main>
+  <section class="chat__side-panel">
+      <div class="side-panel__header">
+          <div class="header__profile">
+              <a href="${ROUTS.PROFILE}">Профиль</a>
+          </div>
+          <div class="header__search">
+              <input id="input_search" placeholder="Поиск" name="input_search"/>
+          </div>
+      </div>
+      <div class="side-panel__list">
+          {{#each userItems}}
+              {{{this}}}
+          {{/each}}
+      </div>
+  </section>
+  <section class="chat__window">{{{content}}}</section>
 `;
 
-function createChatsPage() {
-  const chatTemplate = Handlebars.compile(ChatsTemplate);
+interface IChatsProps extends IBaseProps {
+  userItems: any[];
+  content: any;
+}
 
-  return chatTemplate({
-    userItems: usersMockData.map(
-      ({ first_name, second_nane, message, time, count }: any) =>
-        createUserItem({
-          firstName: first_name,
-          secondNane: second_nane,
-          message,
-          time,
-          count,
-        }),
-    ),
-    content: createConversation({ firstName: 'Владислав' }),
+class Chats extends Block<IChatsProps> {
+  constructor(props: IChatsProps) {
+    super('main', { ...props, attrs: { class: 'chat' } });
+  }
+
+  render(): DocumentFragment {
+    return this.compile(ChatsTemplate, this.props);
+  }
+}
+
+function getChatPage() {
+  const userItems = usersMockData.map(
+    ({ first_name, second_nane, message, time, count }) =>
+      new UserItem({
+        firstName: first_name,
+        secondNane: second_nane,
+        message,
+        time,
+        count,
+      }),
+  );
+
+  return new Chats({
+    userItems,
+    content: getConversation(),
   });
 }
 
-export { createChatsPage };
+export { getChatPage };

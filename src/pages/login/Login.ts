@@ -1,7 +1,7 @@
 import { Form, TextInput, Button, ButtonText } from '../../ui';
 import { CenteredPage } from '../../layouts';
 
-function getLoginForm() {
+function getLoginPage() {
   const nameInput = new TextInput({
     placeholder: 'Логин',
     name: 'login',
@@ -38,4 +38,4 @@ function getLoginForm() {
   return new CenteredPage({ content: form });
 }
 
-export { getLoginForm };
+export { getLoginPage };

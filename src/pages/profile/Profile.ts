@@ -99,7 +99,7 @@ class Profile extends Block<IProfileProps> {
   }
 }
 
-function getProfile() {
+function getProfilePage() {
   const changeProfileButton = new ButtonText({
     text: 'Изменить данные',
     attrs: {
@@ -212,7 +212,7 @@ class EditProfile extends Block<IEditProfileProps> {
   }
 }
 
-function getEditProfile() {
+function getEditProfilePage() {
   const avatarInput = new Input({
     attrs: {
       name: 'avatar',
@@ -302,4 +302,4 @@ function getEditProfile() {
   });
 }
 
-export { getProfile, getEditProfile };
+export { getProfilePage, getEditProfilePage };

@@ -1,34 +1,32 @@
-import { getLoginForm } from './pages/login';
-import { getRegistrationForm } from './pages/registration';
-import { createChatsPage } from './pages/chats';
 import { routing } from './utils';
-import { getInternalError, getNotFoundError } from './pages/error-code';
-import { getEditProfile, getProfile } from './pages/profile';
+import {
+  getChatPage,
+  getInternalErrorPage,
+  getNotFoundPage,
+  getLoginPage,
+  getProfilePage,
+  getEditProfilePage,
+  getRegistrationPage,
+} from './pages';
 import { ROUTS } from './constants';
 import './index.css';
 import { Block, render } from './core';
 
-const rootNode = document.getElementById('root');
-
-const MAIN_ROUTERS: Record<string, () => Block | string> = {
-  [ROUTS.HOME]: getLoginForm,
-  [ROUTS.LOGIN]: getLoginForm,
-  [ROUTS.REGISTRATION]: getRegistrationForm,
-  [ROUTS.CHATS]: createChatsPage,
-  [ROUTS.PROFILE]: getProfile,
-  [ROUTS.PROFILE_EDIT]: getEditProfile,
-  [ROUTS.NOT_FOUND]: getNotFoundError,
-  [ROUTS.INTERNAL_ERROR]: getInternalError,
+const MAIN_ROUTERS = {
+  [ROUTS.HOME]: getLoginPage,
+  [ROUTS.LOGIN]: getLoginPage,
+  [ROUTS.REGISTRATION]: getRegistrationPage,
+  [ROUTS.CHATS]: getChatPage,
+  [ROUTS.PROFILE]: getProfilePage,
+  [ROUTS.PROFILE_EDIT]: getEditProfilePage,
+  [ROUTS.NOT_FOUND]: getNotFoundPage,
+  [ROUTS.INTERNAL_ERROR]: getInternalErrorPage,
 };
 
-const changeUrl = (template: any) => {
+const changeUrl = (template: () => Block) => {
   const result = template();
 
-  if (result instanceof Block) {
-    render('#root', result);
-  } else if (rootNode) {
-    rootNode.innerHTML = result;
-  }
+  render('#root', result);
 };
 
 routing(MAIN_ROUTERS, changeUrl);
