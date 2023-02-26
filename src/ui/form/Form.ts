@@ -40,7 +40,7 @@ interface IFormInner extends IBaseProps {
 
 class Form extends Block<IFormInner> {
   constructor(props: IForm) {
-    const { content, buttons, ...other } = props;
+    const { content, buttons, attrs = {}, ...other } = props;
     const contentTemplate = Object.keys(content)
       .map(key => `{{{${key}}}}`)
       .join('');
@@ -52,6 +52,7 @@ class Form extends Block<IFormInner> {
       ...other,
       attrs: {
         class: 'form',
+        ...attrs,
       },
       content: new Content({
         class: 'form__content',

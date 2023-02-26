@@ -275,8 +275,6 @@ abstract class Block<
       }
     });
 
-    console.log(this._children, propsAndStubs);
-
     const fragment = this._createDocumentElement('template');
 
     fragment.innerHTML = compile(

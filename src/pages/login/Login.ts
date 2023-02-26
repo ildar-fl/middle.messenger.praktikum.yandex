@@ -1,5 +1,6 @@
 import { Form, TextInput, Button, ButtonText } from '../../ui';
 import { CenteredPage } from '../../layouts';
+import { prepareForm } from '../../utils';
 
 function getLoginPage() {
   const nameInput = new TextInput({
@@ -29,10 +30,22 @@ function getLoginPage() {
     text: 'Нет аккаунта?',
   });
 
+  const handleSubmitForm = (event: SubmitEvent) => {
+    event.preventDefault();
+
+    console.log(prepareForm(event.target as HTMLFormElement));
+  };
+
   const form = new Form({
     title: 'Вход',
+    attrs: {
+      name: 'loginForm',
+    },
     content: { nameInput, passwordInput },
     buttons: { authButton, registrationButton },
+    events: {
+      submit: handleSubmitForm,
+    },
   });
 
   return new CenteredPage({ content: form });

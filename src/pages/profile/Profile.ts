@@ -3,6 +3,7 @@ import { CenteredPage } from '../../layouts';
 import { Button, ButtonText, Input } from '../../ui';
 import { ROUTS } from '../../constants';
 import { Block, IBaseProps } from '../../core';
+import { prepareForm } from '../../utils';
 
 const userInfoMock = [
   {
@@ -158,7 +159,10 @@ interface IEditProfileProps extends IBaseProps {
 
 class EditProfile extends Block<IEditProfileProps> {
   constructor(props: IEditProfileProps) {
-    super('section', { ...props, attrs: { ...props.attrs, class: 'profile' } });
+    super('form', {
+      ...props,
+      attrs: { ...props.attrs, name: 'editProfileForm', class: 'profile' },
+    });
   }
 
   render(): DocumentFragment {
@@ -277,10 +281,17 @@ function getEditProfilePage() {
   const saveProfileButton = new Button({
     text: 'Сохранить',
     attrs: {
+      type: 'submit',
       style: { width: '280px' },
       class: ['m__l-auto', 'm__r-auto'],
     },
   });
+
+  const handleSubmitEditProfile = (event: SubmitEvent) => {
+    event.preventDefault();
+
+    console.log(prepareForm(event.target as HTMLFormElement));
+  };
 
   const editProfile = new EditProfile({
     avatarInput,
@@ -291,6 +302,9 @@ function getEditProfilePage() {
     displayInput,
     phoneInput,
     saveProfileButton,
+    events: {
+      submit: handleSubmitEditProfile,
+    },
   });
 
   const profileContainer = new ProfileContainer({

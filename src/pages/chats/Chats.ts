@@ -1,7 +1,7 @@
 import './style.scss';
 import { UserItem } from './UserItem';
 import { ROUTS } from '../../constants';
-import { getConversation } from './Conversation';
+import { getConversation } from './conversation/Conversation';
 import { Block, IBaseProps } from '../../core';
 
 const usersMockData = [
