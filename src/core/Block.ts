@@ -5,9 +5,7 @@ import { compile } from '../utils';
 type Nullable<T> = T | null;
 type ChildrenType = Record<string, Block | Block[]>;
 
-interface ComponentsProps {
-  [key: string | symbol]: any;
-}
+type ComponentsProps = Record<string | symbol, any>;
 
 interface IBaseProps {
   attrs?: Record<string, any>;
@@ -144,13 +142,13 @@ abstract class Block<
     return true;
   }
 
-  setProps = (nextProps: PropsType) => {
+  setProps(nextProps: Partial<PropsType>) {
     if (!nextProps) {
       return;
     }
 
     Object.assign(this.props, nextProps);
-  };
+  }
 
   get id(): Nullable<string> {
     return this._id;
@@ -161,7 +159,7 @@ abstract class Block<
 
     if (attrs) {
       Object.entries(attrs).forEach(([key, value]) => {
-        if (this._element && value) {
+        if (this._element && typeof value !== 'undefined') {
           this._element.setAttribute(key, value);
         }
       });
@@ -230,12 +228,13 @@ abstract class Block<
     return new Proxy(props, {
       set(target: any, prop: string, val: any) {
         if (self.props[prop] !== val) {
+          target[prop] = val;
+
           self.eventBus().emit(Block.EVENTS.FLOW_CDU, self.props, {
             ...self.props,
             [prop]: val,
           });
 
-          target[prop] = val;
           return true;
         }
 

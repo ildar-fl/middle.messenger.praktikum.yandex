@@ -6,16 +6,23 @@ interface IInputProps extends IBaseProps {
   attrs: {
     labelId?: string;
     type?: string;
-    name: string;
+    name?: string;
     placeholder?: string;
     value?: string;
     class?: string;
+    error?: boolean;
   };
 }
 
 class Input extends Block<IInputProps> {
   constructor(props: IInputProps) {
-    super('input', props);
+    super('input', {
+      ...props,
+      attrs: {
+        ...props.attrs,
+        class: 'base-input',
+      },
+    });
   }
 }
 
@@ -25,14 +32,18 @@ interface ITextInput extends IBaseProps {
   placeholder?: string;
   name: string;
   value?: string;
+  error?: boolean | string | null;
 }
 
 interface ITextInputInner extends IBaseProps {
   label?: string;
   input: Input;
+  error?: boolean | string | null;
 }
 
 class TextInput extends Block<ITextInputInner> {
+  input;
+
   constructor(props: ITextInput) {
     const {
       label,
@@ -44,16 +55,39 @@ class TextInput extends Block<ITextInputInner> {
     } = props;
     const labelId = uuid();
 
+    const input = new Input({
+      events,
+      attrs: { labelId, type, name, placeholder, value },
+    });
+
     super('div', {
       label,
       attrs: {
         class: 'input-container',
       },
-      input: new Input({
-        events,
-        attrs: { labelId, type, name, placeholder, value },
-      }),
+      input,
     });
+
+    this.input = input;
+  }
+
+  setProps(props: Partial<ITextInput>) {
+    const { label, error, attrs, events } = props;
+
+    if (label || attrs) {
+      super.setProps({ label, attrs });
+    }
+
+    if (events) {
+      this.input.setProps({ events });
+    }
+
+    if (typeof error !== 'undefined') {
+      this.input.setProps({
+        attrs: { error: !!error },
+      });
+      super.setProps({ error });
+    }
   }
 
   render(): DocumentFragment {
@@ -62,7 +96,10 @@ class TextInput extends Block<ITextInputInner> {
         {{#if label}}
         <label id={{labelId}}>{{label}}</label>
         {{/if}}
-        {{{input}}}
+          {{{input}}}
+        {{#if error}}
+          <span class='error-label'>{{error}}</span>
+        {{/if}}
     `,
       this.props,
     );
