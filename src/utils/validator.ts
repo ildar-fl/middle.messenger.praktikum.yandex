@@ -5,6 +5,8 @@ const enum ValidateMethod {
   ContainDigit = 'containDigit',
   Min = 'min',
   Max = 'max',
+  Login = 'login',
+  NotOnlyNumerals = 'notOnlyNumerals',
 }
 
 type SubConfigType = {
@@ -28,6 +30,16 @@ function validate(
   switch (validateMethod) {
     case ValidateMethod.Required: {
       statusValidate = data.trim() === '';
+      break;
+    }
+    case ValidateMethod.Login: {
+      const loginRegExp = /[\W-]+/g;
+      statusValidate = loginRegExp.test(data);
+      break;
+    }
+    case ValidateMethod.NotOnlyNumerals: {
+      const notOnlyNumeralsRegExp = /^[0-9]+$/g;
+      statusValidate = notOnlyNumeralsRegExp.test(data);
       break;
     }
     case ValidateMethod.Email: {

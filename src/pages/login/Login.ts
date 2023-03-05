@@ -17,6 +17,12 @@ const LOGIN_CONFIG: ConfigType = {
       value: 20,
       message: 'Логин не должен состоять больше 20ти символов',
     },
+    [ValidateMethod.Login]: {
+      message: 'Допустимы латинские символы,цифры, дефис и _',
+    },
+    [ValidateMethod.NotOnlyNumerals]: {
+      message: 'Логин не должен состоять только из цифр',
+    },
   },
   password: {
     [ValidateMethod.Min]: {
@@ -25,7 +31,13 @@ const LOGIN_CONFIG: ConfigType = {
     },
     [ValidateMethod.Max]: {
       value: 40,
-      message: 'Логин не должен состоять больше 40ка символов',
+      message: 'Пароль не должен состоять больше 40ка символов',
+    },
+    [ValidateMethod.CapitalSymbol]: {
+      message: 'Пароль должен содержать хотя бы один заглавный символ',
+    },
+    [ValidateMethod.ContainDigit]: {
+      message: 'Пароль должен содержать хотя бы одну цифру',
     },
   },
 };
