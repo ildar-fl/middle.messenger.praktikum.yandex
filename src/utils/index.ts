@@ -7,4 +7,5 @@ export {
   validator,
   ValidateMethod,
   ConfigType,
+  INPUT_CONFIGS,
 } from './validator';

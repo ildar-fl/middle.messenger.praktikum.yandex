@@ -3,43 +3,13 @@ import { CenteredPage } from '../../layouts';
 import {
   prepareForm,
   ConfigType,
-  ValidateMethod,
   useValidator,
+  INPUT_CONFIGS,
 } from '../../utils';
 
 const LOGIN_CONFIG: ConfigType = {
-  login: {
-    [ValidateMethod.Min]: {
-      value: 3,
-      message: 'Логин должен состоять минимум из 3х символов',
-    },
-    [ValidateMethod.Max]: {
-      value: 20,
-      message: 'Логин не должен состоять больше 20ти символов',
-    },
-    [ValidateMethod.Login]: {
-      message: 'Допустимы латинские символы,цифры, дефис и _',
-    },
-    [ValidateMethod.NotOnlyNumerals]: {
-      message: 'Логин не должен состоять только из цифр',
-    },
-  },
-  password: {
-    [ValidateMethod.Min]: {
-      value: 8,
-      message: 'Пароль должен состоять минимум из 8ми символов',
-    },
-    [ValidateMethod.Max]: {
-      value: 40,
-      message: 'Пароль не должен состоять больше 40ка символов',
-    },
-    [ValidateMethod.CapitalSymbol]: {
-      message: 'Пароль должен содержать хотя бы один заглавный символ',
-    },
-    [ValidateMethod.ContainDigit]: {
-      message: 'Пароль должен содержать хотя бы одну цифру',
-    },
-  },
+  login: INPUT_CONFIGS.login,
+  password: INPUT_CONFIGS.password,
 };
 
 function getLoginPage() {
@@ -56,8 +26,10 @@ function getLoginPage() {
 
   const { checkData } = useValidator(LOGIN_CONFIG, {
     init: ({ checkInput }) => {
-      loginInput.setProps({ events: { blur: checkInput } });
-      passwordInput.setProps({ events: { blur: checkInput } });
+      loginInput.setProps({ events: { blur: checkInput, focus: checkInput } });
+      passwordInput.setProps({
+        events: { blur: checkInput, focus: checkInput },
+      });
     },
     inputs: {
       login: errorMessage => {

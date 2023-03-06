@@ -7,6 +7,8 @@ const enum ValidateMethod {
   Max = 'max',
   Login = 'login',
   NotOnlyNumerals = 'notOnlyNumerals',
+  Name = 'name',
+  Phone = 'phone',
 }
 
 type SubConfigType = {
@@ -43,8 +45,18 @@ function validate(
       break;
     }
     case ValidateMethod.Email: {
-      const emailRegExp = /^\S+@\S+\.\S+$/g;
+      const emailRegExp = /^[\w-]+@[\w-]+\.[\w-]+$/g;
       statusValidate = !emailRegExp.test(data);
+      break;
+    }
+    case ValidateMethod.Name: {
+      const nameRegExp = /^[A-ZА-Я][a-zа-я-]*$/g;
+      statusValidate = !nameRegExp.test(data);
+      break;
+    }
+    case ValidateMethod.Phone: {
+      const phoneRegExp = /^\+?\d+$/g;
+      statusValidate = !phoneRegExp.test(data);
       break;
     }
     case ValidateMethod.CapitalSymbol: {
@@ -79,14 +91,18 @@ function validator(
   const errors: Record<string, string> = {};
 
   Object.entries(data).forEach(([fieldName, value]) => {
-    (
-      Object.entries(config[fieldName]) as [ValidateMethod, SubConfigType][]
-    ).forEach(([validateMethod, configForField]) => {
-      const error = validate(validateMethod, value, configForField);
-      if (error && !errors[fieldName]) {
-        errors[fieldName] = error;
-      }
-    });
+    const fieldConfig = config[fieldName];
+
+    if (fieldConfig) {
+      (
+        Object.entries(fieldConfig) as [ValidateMethod, SubConfigType][]
+      ).forEach(([validateMethod, configForField]) => {
+        const error = validate(validateMethod, value, configForField);
+        if (error && !errors[fieldName]) {
+          errors[fieldName] = error;
+        }
+      });
+    }
   });
 
   return errors;
@@ -130,4 +146,63 @@ function useValidator(
   return { checkInput, checkData: setErrors };
 }
 
-export { useValidator, validator, ValidateMethod, ConfigType };
+const INPUT_CONFIGS = {
+  login: {
+    [ValidateMethod.Min]: {
+      value: 3,
+      message: 'Логин должен состоять минимум из 3х символов',
+    },
+    [ValidateMethod.Max]: {
+      value: 20,
+      message: 'Логин не должен состоять больше 20ти символов',
+    },
+    [ValidateMethod.Login]: {
+      message: 'Допустимы латинские символы,цифры, дефис и _',
+    },
+    [ValidateMethod.NotOnlyNumerals]: {
+      message: 'Логин не должен состоять только из цифр',
+    },
+  },
+  password: {
+    [ValidateMethod.Min]: {
+      value: 8,
+      message: 'Пароль должен состоять минимум из 8ми символов',
+    },
+    [ValidateMethod.Max]: {
+      value: 40,
+      message: 'Пароль не должен состоять больше 40ка символов',
+    },
+    [ValidateMethod.CapitalSymbol]: {
+      message: 'Пароль должен содержать хотя бы один заглавный символ',
+    },
+    [ValidateMethod.ContainDigit]: {
+      message: 'Пароль должен содержать хотя бы одну цифру',
+    },
+  },
+  email: {
+    [ValidateMethod.Email]: {
+      message: 'Неправильный формат почты',
+    },
+  },
+  name: {
+    [ValidateMethod.Name]: {
+      message:
+        'Латиница или кириллица, первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов (допустим только дефис)',
+    },
+  },
+  phone: {
+    [ValidateMethod.Min]: {
+      value: 10,
+      message: 'Должен состоять минимум из 10ти символов',
+    },
+    [ValidateMethod.Max]: {
+      value: 15,
+      message: 'Не должен состоять больше 15ти символов',
+    },
+    [ValidateMethod.Phone]: {
+      message: 'Должен состоять только из цифр, может начинаться с символа +',
+    },
+  },
+};
+
+export { useValidator, validator, INPUT_CONFIGS, ValidateMethod, ConfigType };
