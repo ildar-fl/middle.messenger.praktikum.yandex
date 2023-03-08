@@ -1,8 +1,8 @@
 import { routing } from './utils';
 import {
   Chats,
-  getInternalErrorPage,
-  getNotFoundPage,
+  InternalErrorPage,
+  NotFoundPage,
   Login,
   Profile,
   EditProfile,
@@ -19,8 +19,8 @@ const MAIN_ROUTERS = {
   [ROUTS.CHATS]: new Chats(),
   [ROUTS.PROFILE]: new Profile(),
   [ROUTS.PROFILE_EDIT]: new EditProfile(),
-  [ROUTS.NOT_FOUND]: getNotFoundPage,
-  [ROUTS.INTERNAL_ERROR]: getInternalErrorPage,
+  [ROUTS.NOT_FOUND]: new NotFoundPage(),
+  [ROUTS.INTERNAL_ERROR]: new InternalErrorPage(),
 };
 
 const changeUrl = (template: Block) => {
