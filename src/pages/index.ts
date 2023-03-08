@@ -1,4 +1,4 @@
-export { getChatPage } from './chats';
+export { Chats } from './chats';
 export { Login } from './login';
 export { getInternalErrorPage, getNotFoundPage } from './error-code';
 export { getEditProfilePage, getProfilePage } from './profile';

@@ -20,9 +20,22 @@ interface IConversationProps extends IBaseProps {
 }
 
 class Conversation extends Block<IConversationProps> {
-  constructor(props: IConversationProps) {
+  constructor() {
+    const handleSubmitSendMessageForm = (event: SubmitEvent) => {
+      event.preventDefault();
+
+      console.log(prepareForm(event.target as HTMLFormElement));
+    };
+
+    const sendMessageForm = new SendMessageForm({
+      events: {
+        submit: handleSubmitSendMessageForm,
+      },
+    });
+
     super('div', {
-      ...props,
+      author: 'Фасхетдинов Ильдар',
+      sendMessageForm,
       attrs: { class: 'conversation' },
     });
   }
@@ -32,20 +45,4 @@ class Conversation extends Block<IConversationProps> {
   }
 }
 
-function getConversation() {
-  const handleSubmitSendMessageForm = (event: SubmitEvent) => {
-    event.preventDefault();
-
-    console.log(prepareForm(event.target as HTMLFormElement));
-  };
-
-  const sendMessageForm = new SendMessageForm({
-    events: {
-      submit: handleSubmitSendMessageForm,
-    },
-  });
-
-  return new Conversation({ author: 'Фасхетдинов Ильдар', sendMessageForm });
-}
-
-export { getConversation };
+export { Conversation };

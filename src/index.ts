@@ -1,6 +1,6 @@
 import { routing } from './utils';
 import {
-  getChatPage,
+  Chats,
   getInternalErrorPage,
   getNotFoundPage,
   Login,
@@ -16,7 +16,7 @@ const MAIN_ROUTERS = {
   [ROUTS.HOME]: new Login(),
   [ROUTS.LOGIN]: new Login(),
   [ROUTS.REGISTRATION]: new Registration(),
-  [ROUTS.CHATS]: getChatPage,
+  [ROUTS.CHATS]: new Chats(),
   [ROUTS.PROFILE]: getProfilePage,
   [ROUTS.PROFILE_EDIT]: getEditProfilePage,
   [ROUTS.NOT_FOUND]: getNotFoundPage,

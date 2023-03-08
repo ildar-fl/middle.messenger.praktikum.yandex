@@ -1,7 +1,7 @@
 import './style.scss';
 import { UserItem } from './UserItem';
 import { ROUTS } from '../../constants';
-import { getConversation } from './conversation/Conversation';
+import { Conversation } from './conversation/Conversation';
 import { Block, IBaseProps } from '../../core';
 
 const usersMockData = [
@@ -64,8 +64,23 @@ interface IChatsProps extends IBaseProps {
 }
 
 class Chats extends Block<IChatsProps> {
-  constructor(props: IChatsProps) {
-    super('main', { ...props, attrs: { class: 'chat' } });
+  constructor() {
+    const userItems = usersMockData.map(
+      ({ first_name, second_nane, message, time, count }) =>
+        new UserItem({
+          firstName: first_name,
+          secondNane: second_nane,
+          message,
+          time,
+          count,
+        }),
+    );
+
+    super('main', {
+      userItems,
+      content: new Conversation(),
+      attrs: { class: 'chat' },
+    });
   }
 
   render(): DocumentFragment {
@@ -73,22 +88,4 @@ class Chats extends Block<IChatsProps> {
   }
 }
 
-function getChatPage() {
-  const userItems = usersMockData.map(
-    ({ first_name, second_nane, message, time, count }) =>
-      new UserItem({
-        firstName: first_name,
-        secondNane: second_nane,
-        message,
-        time,
-        count,
-      }),
-  );
-
-  return new Chats({
-    userItems,
-    content: getConversation(),
-  });
-}
-
-export { getChatPage };
+export { Chats };

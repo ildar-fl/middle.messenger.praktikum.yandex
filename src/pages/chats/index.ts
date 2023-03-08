@@ -1,1 +1,1 @@
-export { getChatPage } from './Chats';
+export { Chats } from './Chats';
