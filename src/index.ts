@@ -3,7 +3,7 @@ import {
   getChatPage,
   getInternalErrorPage,
   getNotFoundPage,
-  getLoginPage,
+  Login,
   getProfilePage,
   getEditProfilePage,
   getRegistrationPage,
@@ -13,8 +13,8 @@ import './index.css';
 import { Block, render } from './core';
 
 const MAIN_ROUTERS = {
-  [ROUTS.HOME]: getLoginPage,
-  [ROUTS.LOGIN]: getLoginPage,
+  [ROUTS.HOME]: new Login(),
+  [ROUTS.LOGIN]: new Login(),
   [ROUTS.REGISTRATION]: getRegistrationPage,
   [ROUTS.CHATS]: getChatPage,
   [ROUTS.PROFILE]: getProfilePage,
@@ -23,10 +23,8 @@ const MAIN_ROUTERS = {
   [ROUTS.INTERNAL_ERROR]: getInternalErrorPage,
 };
 
-const changeUrl = (template: () => Block) => {
-  const result = template();
-
-  render('#root', result);
+const changeUrl = (template: Block) => {
+  render('#root', template);
 };
 
 routing(MAIN_ROUTERS, changeUrl);
