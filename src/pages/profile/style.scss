@@ -69,6 +69,10 @@
     &:focus {
       user-select: all;
     }
+
+    &[error="true"] {
+      background: themeColor('error', 'highlight');
+    }
   }
 }
 

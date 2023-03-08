@@ -57,5 +57,8 @@
 .profile .profile-edit-input:focus {
   user-select: all;
 }
+.profile .profile-edit-input[error=true] {
+  background: rgba(217, 83, 79, 0.2);
+}
 
 /*# sourceMappingURL=style.css.map */

@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import './style.scss';
 import { Block, IBaseProps } from '../../core';
+import { ClassNames } from '../../utils';
 
 interface IInputProps extends IBaseProps {
   attrs: {
@@ -11,16 +12,24 @@ interface IInputProps extends IBaseProps {
     value?: string;
     class?: string;
     error?: boolean;
+    title?: string;
   };
 }
 
 class Input extends Block<IInputProps> {
   constructor(props: IInputProps) {
+    const { attrs, ...other } = props;
+
+    const { class: className, ...otherAttrs } = attrs;
+
+    const classNames = new ClassNames(className);
+    classNames.addClassName('base-input');
+
     super('input', {
-      ...props,
+      ...other,
       attrs: {
-        ...props.attrs,
-        class: 'base-input',
+        ...otherAttrs,
+        class: classNames.getClass(),
       },
     });
   }

@@ -52,6 +52,7 @@
 
 .user-avatar {
   width: 47px;
+  min-width: 47px;
   height: 47px;
   border-radius: 50%;
   background: #EFEFEF;
@@ -145,9 +146,13 @@
   font-weight: 500;
   font-size: 12px;
 }
+.conversation__user-send input[error=true] {
+  border: 1px solid #d9534f;
+}
 .conversation__user-send button {
   height: 32px;
   width: 32px;
+  min-width: 32px;
   border-radius: 50%;
   background: #3369F3;
   color: #FFFFFF;

@@ -64,6 +64,7 @@
 
 .user-avatar {
   width: 47px;
+  min-width: 47px;
   height: 47px;
   border-radius: 50%;
   background: themeColor('background', 'dark');
@@ -171,11 +172,16 @@
         font-weight: 500;
         font-size: 12px;
       }
+
+      &[error="true"] {
+        border: 1px solid themeColor('error', 'light');
+      }
     }
 
     button {
       height: 32px;
       width: 32px;
+      min-width: 32px;
       border-radius: 50%;
       background: themeColor('primary');
       color: themeColor('white');

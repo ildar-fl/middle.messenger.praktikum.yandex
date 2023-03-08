@@ -3,7 +3,20 @@ import { CenteredPage } from '../../layouts';
 import { Button, ButtonText, Input } from '../../ui';
 import { ROUTS } from '../../constants';
 import { Block, IBaseProps } from '../../core';
-import { prepareForm } from '../../utils';
+import {
+  ConfigType,
+  INPUT_CONFIGS,
+  prepareForm,
+  useValidator,
+} from '../../utils';
+
+const EDIT_PROFILE_CONFIG: ConfigType = {
+  login: INPUT_CONFIGS.login,
+  email: INPUT_CONFIGS.email,
+  first_name: INPUT_CONFIGS.name,
+  second_name: INPUT_CONFIGS.name,
+  phone: INPUT_CONFIGS.phone,
+};
 
 const userInfoMock = [
   {
@@ -46,7 +59,7 @@ class ProfileContainer extends Block<IProfileContainer> {
   render(): DocumentFragment {
     return this.compile(
       `
-    <a class="profile-page__back-button" href="${ROUTS.CHATS}"><- Назад</a>
+    <a class="profile-page__back-button" href="${ROUTS.CHATS}">Назад</a>
     <section class="profile-page__user">
         {{{content}}}
     </section>
@@ -287,10 +300,54 @@ function getEditProfilePage() {
     },
   });
 
+  const { checkData } = useValidator(EDIT_PROFILE_CONFIG, {
+    init: ({ checkInput }) => {
+      loginInput.setProps({ events: { blur: checkInput, focus: checkInput } });
+      emailInput.setProps({ events: { blur: checkInput, focus: checkInput } });
+      nameInput.setProps({
+        events: { blur: checkInput, focus: checkInput },
+      });
+      secondInput.setProps({
+        events: { blur: checkInput, focus: checkInput },
+      });
+      phoneInput.setProps({
+        events: { blur: checkInput, focus: checkInput },
+      });
+    },
+    inputs: {
+      login: errorMessage => {
+        loginInput.setProps({
+          attrs: { error: !!errorMessage, title: errorMessage },
+        });
+      },
+      email: errorMessage => {
+        emailInput.setProps({
+          attrs: { error: !!errorMessage, title: errorMessage },
+        });
+      },
+      first_name: errorMessage => {
+        nameInput.setProps({
+          attrs: { error: !!errorMessage, title: errorMessage },
+        });
+      },
+      second_name: errorMessage => {
+        secondInput.setProps({
+          attrs: { error: !!errorMessage, title: errorMessage },
+        });
+      },
+      phone: errorMessage => {
+        phoneInput.setProps({
+          attrs: { error: !!errorMessage, title: errorMessage },
+        });
+      },
+    },
+  });
+
   const handleSubmitEditProfile = (event: SubmitEvent) => {
     event.preventDefault();
-
-    console.log(prepareForm(event.target as HTMLFormElement));
+    const formData = prepareForm(event.target as HTMLFormElement);
+    console.log(formData);
+    checkData(formData);
   };
 
   const editProfile = new EditProfile({
