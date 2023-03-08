@@ -84,7 +84,7 @@ interface IProfileProps extends IBaseProps {
   logoutButton: any;
 }
 
-class Profile extends Block<IProfileProps> {
+class ProfileComponent extends Block<IProfileProps> {
   constructor(props: IProfileProps) {
     super('section', { ...props, attrs: { ...props.attrs, class: 'profile' } });
   }
@@ -113,50 +113,50 @@ class Profile extends Block<IProfileProps> {
   }
 }
 
-function getProfilePage() {
-  const changeProfileButton = new ButtonText({
-    text: 'Изменить данные',
-    attrs: {
-      as: 'a',
-      href: ROUTS.PROFILE_EDIT,
-      class: 'fs__13',
-    },
-  });
+class Profile extends CenteredPage {
+  constructor() {
+    const changeProfileButton = new ButtonText({
+      text: 'Изменить данные',
+      attrs: {
+        as: 'a',
+        href: ROUTS.PROFILE_EDIT,
+        class: 'fs__13',
+      },
+    });
 
-  const changePasswordButton = new ButtonText({
-    text: 'Изменить пароль',
-    attrs: {
-      as: 'a',
-      disabled: true,
-      href: ROUTS.PROFILE_PASSWORD_EDIT,
-      class: 'fs__13',
-    },
-  });
+    const changePasswordButton = new ButtonText({
+      text: 'Изменить пароль',
+      attrs: {
+        as: 'a',
+        disabled: true,
+        href: ROUTS.PROFILE_PASSWORD_EDIT,
+        class: 'fs__13',
+      },
+    });
 
-  const logoutButton = new ButtonText({
-    text: 'Выйти',
-    attrs: {
-      as: 'a',
-      href: ROUTS.LOGIN,
-      class: ['fs__13', 'colors__red'],
-    },
-  });
+    const logoutButton = new ButtonText({
+      text: 'Выйти',
+      attrs: {
+        as: 'a',
+        href: ROUTS.LOGIN,
+        class: ['fs__13', 'colors__red'],
+      },
+    });
 
-  const profile = new Profile({
-    name: 'Ильдар',
-    userInfo: userInfoMock,
-    changeProfileButton,
-    changePasswordButton,
-    logoutButton,
-  });
+    const profile = new ProfileComponent({
+      name: 'Ильдар',
+      userInfo: userInfoMock,
+      changeProfileButton,
+      changePasswordButton,
+      logoutButton,
+    });
 
-  const profileContainer = new ProfileContainer({
-    content: profile,
-  });
-
-  return new CenteredPage({
-    content: profileContainer,
-  });
+    super({
+      content: new ProfileContainer({
+        content: profile,
+      }),
+    });
+  }
 }
 
 interface IEditProfileProps extends IBaseProps {
@@ -170,7 +170,7 @@ interface IEditProfileProps extends IBaseProps {
   saveProfileButton: any;
 }
 
-class EditProfile extends Block<IEditProfileProps> {
+class EditProfileComponent extends Block<IEditProfileProps> {
   constructor(props: IEditProfileProps) {
     super('form', {
       ...props,
@@ -229,148 +229,154 @@ class EditProfile extends Block<IEditProfileProps> {
   }
 }
 
-function getEditProfilePage() {
-  const avatarInput = new Input({
-    attrs: {
-      name: 'avatar',
-      class: 'profile-header__avatar',
-    },
-  });
+class EditProfile extends CenteredPage {
+  constructor() {
+    const avatarInput = new Input({
+      attrs: {
+        name: 'avatar',
+        class: 'profile-header__avatar',
+      },
+    });
 
-  const emailInput = new Input({
-    attrs: {
-      name: 'email',
-      type: 'email',
-      value: 'ildaryxa@gmail.com',
-      class: 'profile-edit-input',
-    },
-  });
+    const emailInput = new Input({
+      attrs: {
+        name: 'email',
+        type: 'email',
+        value: 'ildaryxa@gmail.com',
+        class: 'profile-edit-input',
+      },
+    });
 
-  const nameInput = new Input({
-    attrs: {
-      name: 'first_name',
-      type: 'text',
-      value: 'Ильдар',
-      class: 'profile-edit-input',
-    },
-  });
+    const nameInput = new Input({
+      attrs: {
+        name: 'first_name',
+        type: 'text',
+        value: 'Ильдар',
+        class: 'profile-edit-input',
+      },
+    });
 
-  const secondInput = new Input({
-    attrs: {
-      name: 'second_name',
-      type: 'text',
-      value: 'Фасхетдинов',
-      class: 'profile-edit-input',
-    },
-  });
+    const secondInput = new Input({
+      attrs: {
+        name: 'second_name',
+        type: 'text',
+        value: 'Фасхетдинов',
+        class: 'profile-edit-input',
+      },
+    });
 
-  const loginInput = new Input({
-    attrs: {
-      name: 'login',
-      type: 'text',
-      value: 'ildaryxa',
-      class: 'profile-edit-input',
-    },
-  });
+    const loginInput = new Input({
+      attrs: {
+        name: 'login',
+        type: 'text',
+        value: 'ildaryxa',
+        class: 'profile-edit-input',
+      },
+    });
 
-  const displayInput = new Input({
-    attrs: {
-      name: 'display_name',
-      type: 'text',
-      value: 'Ильдар',
-      class: 'profile-edit-input',
-    },
-  });
+    const displayInput = new Input({
+      attrs: {
+        name: 'display_name',
+        type: 'text',
+        value: 'Ильдар',
+        class: 'profile-edit-input',
+      },
+    });
 
-  const phoneInput = new Input({
-    attrs: {
-      name: 'phone',
-      type: 'phone',
-      value: '+7 912 489 74 71',
-      class: 'profile-edit-input',
-    },
-  });
+    const phoneInput = new Input({
+      attrs: {
+        name: 'phone',
+        type: 'phone',
+        value: '+7 912 489 74 71',
+        class: 'profile-edit-input',
+      },
+    });
 
-  const saveProfileButton = new Button({
-    text: 'Сохранить',
-    attrs: {
-      type: 'submit',
-      style: { width: '280px' },
-      class: ['m__l-auto', 'm__r-auto'],
-    },
-  });
+    const saveProfileButton = new Button({
+      text: 'Сохранить',
+      attrs: {
+        type: 'submit',
+        style: { width: '280px' },
+        class: ['m__l-auto', 'm__r-auto'],
+      },
+    });
 
-  const { checkData } = useValidator(EDIT_PROFILE_CONFIG, {
-    init: ({ checkInput }) => {
-      loginInput.setProps({ events: { blur: checkInput, focus: checkInput } });
-      emailInput.setProps({ events: { blur: checkInput, focus: checkInput } });
-      nameInput.setProps({
-        events: { blur: checkInput, focus: checkInput },
-      });
-      secondInput.setProps({
-        events: { blur: checkInput, focus: checkInput },
-      });
-      phoneInput.setProps({
-        events: { blur: checkInput, focus: checkInput },
-      });
-    },
-    inputs: {
-      login: errorMessage => {
+    const { checkData } = useValidator(EDIT_PROFILE_CONFIG, {
+      init: ({ checkInput }) => {
         loginInput.setProps({
-          attrs: { error: !!errorMessage, title: errorMessage },
+          events: { blur: checkInput, focus: checkInput },
         });
-      },
-      email: errorMessage => {
         emailInput.setProps({
-          attrs: { error: !!errorMessage, title: errorMessage },
+          events: { blur: checkInput, focus: checkInput },
         });
-      },
-      first_name: errorMessage => {
         nameInput.setProps({
-          attrs: { error: !!errorMessage, title: errorMessage },
+          events: { blur: checkInput, focus: checkInput },
         });
-      },
-      second_name: errorMessage => {
         secondInput.setProps({
-          attrs: { error: !!errorMessage, title: errorMessage },
+          events: { blur: checkInput, focus: checkInput },
         });
-      },
-      phone: errorMessage => {
         phoneInput.setProps({
-          attrs: { error: !!errorMessage, title: errorMessage },
+          events: { blur: checkInput, focus: checkInput },
         });
       },
-    },
-  });
+      inputs: {
+        login: errorMessage => {
+          loginInput.setProps({
+            attrs: { error: !!errorMessage, title: errorMessage },
+          });
+        },
+        email: errorMessage => {
+          emailInput.setProps({
+            attrs: { error: !!errorMessage, title: errorMessage },
+          });
+        },
+        first_name: errorMessage => {
+          nameInput.setProps({
+            attrs: { error: !!errorMessage, title: errorMessage },
+          });
+        },
+        second_name: errorMessage => {
+          secondInput.setProps({
+            attrs: { error: !!errorMessage, title: errorMessage },
+          });
+        },
+        phone: errorMessage => {
+          phoneInput.setProps({
+            attrs: { error: !!errorMessage, title: errorMessage },
+          });
+        },
+      },
+    });
 
-  const handleSubmitEditProfile = (event: SubmitEvent) => {
-    event.preventDefault();
-    const formData = prepareForm(event.target as HTMLFormElement);
-    console.log(formData);
-    checkData(formData);
-  };
+    const handleSubmitEditProfile = (event: SubmitEvent) => {
+      event.preventDefault();
+      const formData = prepareForm(event.target as HTMLFormElement);
+      console.log(formData);
+      checkData(formData);
+    };
 
-  const editProfile = new EditProfile({
-    avatarInput,
-    emailInput,
-    nameInput,
-    secondInput,
-    loginInput,
-    displayInput,
-    phoneInput,
-    saveProfileButton,
-    events: {
-      submit: handleSubmitEditProfile,
-    },
-  });
+    const editProfile = new EditProfileComponent({
+      avatarInput,
+      emailInput,
+      nameInput,
+      secondInput,
+      loginInput,
+      displayInput,
+      phoneInput,
+      saveProfileButton,
+      events: {
+        submit: handleSubmitEditProfile,
+      },
+    });
 
-  const profileContainer = new ProfileContainer({
-    content: editProfile,
-  });
+    const profileContainer = new ProfileContainer({
+      content: editProfile,
+    });
 
-  return new CenteredPage({
-    content: profileContainer,
-  });
+    super({
+      content: profileContainer,
+    });
+  }
 }
 
-export { getProfilePage, getEditProfilePage };
+export { Profile, EditProfile };

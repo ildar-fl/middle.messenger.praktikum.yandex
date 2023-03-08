@@ -1,1 +1,1 @@
-export { getProfilePage, getEditProfilePage } from './Profile';
+export { Profile, EditProfile } from './Profile';

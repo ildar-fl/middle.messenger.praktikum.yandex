@@ -4,8 +4,8 @@ import {
   getInternalErrorPage,
   getNotFoundPage,
   Login,
-  getProfilePage,
-  getEditProfilePage,
+  Profile,
+  EditProfile,
   Registration,
 } from './pages';
 import { ROUTS } from './constants';
@@ -17,8 +17,8 @@ const MAIN_ROUTERS = {
   [ROUTS.LOGIN]: new Login(),
   [ROUTS.REGISTRATION]: new Registration(),
   [ROUTS.CHATS]: new Chats(),
-  [ROUTS.PROFILE]: getProfilePage,
-  [ROUTS.PROFILE_EDIT]: getEditProfilePage,
+  [ROUTS.PROFILE]: new Profile(),
+  [ROUTS.PROFILE_EDIT]: new EditProfile(),
   [ROUTS.NOT_FOUND]: getNotFoundPage,
   [ROUTS.INTERNAL_ERROR]: getInternalErrorPage,
 };
