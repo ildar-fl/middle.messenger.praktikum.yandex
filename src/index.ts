@@ -8,6 +8,7 @@ import {
   EditProfile,
   Registration,
 } from './pages';
+import { Navigation } from './components';
 import { ROUTS } from './constants';
 import './index.css';
 import { Block, render } from './core';
@@ -25,6 +26,7 @@ const MAIN_ROUTERS = {
 
 const changeUrl = (template: Block) => {
   render('#root', template);
+  render('body', new Navigation());
 };
 
 routing(MAIN_ROUTERS, changeUrl);

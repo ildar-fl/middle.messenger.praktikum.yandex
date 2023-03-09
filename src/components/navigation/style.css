@@ -1,0 +1,14 @@
+.navigation {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 8px;
+  padding: 10px;
+  background: #EFEFEF;
+  opacity: 50%;
+}
+.navigation ul {
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=style.css.map */
