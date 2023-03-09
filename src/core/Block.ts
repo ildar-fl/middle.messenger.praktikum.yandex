@@ -226,12 +226,15 @@ abstract class Block<
 
     return new Proxy(props, {
       set(target: any, prop: string, val: any) {
-        target[prop] = val;
 
-        self.eventBus().emit(Block.EVENTS.FLOW_CDU, self.props, {
-          ...self.props,
-          [prop]: val,
-        });
+        if (target[prop] !== val) {
+          target[prop] = val;
+
+          self.eventBus().emit(Block.EVENTS.FLOW_CDU, self.props, {
+            ...self.props,
+            [prop]: val,
+          });
+        }
 
         return true;
       },

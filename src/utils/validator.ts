@@ -139,6 +139,10 @@ function useValidator(
     const target = event.target as HTMLInputElement;
 
     setErrors({ [target.name]: target.value });
+
+    if (event instanceof FocusEvent && event.type === 'focus') {
+      target.focus();
+    }
   };
 
   init({ checkInput, checkData: setErrors });
