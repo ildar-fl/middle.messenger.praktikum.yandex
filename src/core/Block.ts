@@ -36,7 +36,6 @@ abstract class Block<
   _id: Nullable<string> = null;
   _children: ChildrenType;
 
-  // тоже нужно сделать приватными
   props: PropsType;
   eventBus: () => EventBus;
 
@@ -227,18 +226,14 @@ abstract class Block<
 
     return new Proxy(props, {
       set(target: any, prop: string, val: any) {
-        if (self.props[prop] !== val) {
-          target[prop] = val;
+        target[prop] = val;
 
-          self.eventBus().emit(Block.EVENTS.FLOW_CDU, self.props, {
-            ...self.props,
-            [prop]: val,
-          });
+        self.eventBus().emit(Block.EVENTS.FLOW_CDU, self.props, {
+          ...self.props,
+          [prop]: val,
+        });
 
-          return true;
-        }
-
-        return false;
+        return true;
       },
       deleteProperty() {
         throw new Error('нет доступа');
