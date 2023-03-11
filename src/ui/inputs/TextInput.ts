@@ -10,7 +10,7 @@ interface IInputProps extends IBaseProps {
     name?: string;
     placeholder?: string;
     value?: string;
-    class?: string;
+    class?: string | string[];
     error?: boolean;
     title?: string;
   };
@@ -42,6 +42,7 @@ interface ITextInput extends IBaseProps {
   name: string;
   value?: string;
   error?: boolean | string | null;
+  class?: string | string[];
 }
 
 interface ITextInputInner extends IBaseProps {

@@ -31,8 +31,8 @@
 .profile dl .user-info__container {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 10px;
   padding-top: 10px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #EAEAEA;
 }
 .profile dl .user-info__container:last-child {
@@ -47,6 +47,38 @@
   font-size: 13px;
   font-weight: 500;
   color: #999999;
+}
+.profile dl .edit_user-info__container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  border-bottom: 1px solid #EAEAEA;
+}
+.profile dl .edit_user-info__container:last-child {
+  border-bottom: none;
+}
+.profile dl .edit_user-info__container .input-field {
+  display: flex;
+  justify-content: space-between;
+}
+.profile dl .edit_user-info__container .input-field dt {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1E1E1E;
+}
+.profile dl .edit_user-info__container .input-field dd {
+  font-size: 13px;
+  font-weight: 500;
+  color: #999999;
+}
+.profile dl .edit_user-info__container .error-container {
+  height: 10px;
+  font-size: 9px;
+  text-align: right;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: #d9534f;
 }
 .profile .profile-edit-input {
   text-align: right;

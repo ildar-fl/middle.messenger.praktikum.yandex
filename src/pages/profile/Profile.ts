@@ -1,4 +1,4 @@
-import './style.css';
+import './style.scss';
 import { CenteredPage } from '../../layouts';
 import { Button, ButtonText, Input } from '../../ui';
 import { ROUTS } from '../../constants';
@@ -159,15 +159,73 @@ class Profile extends CenteredPage {
   }
 }
 
+interface IProfileInputProps extends IBaseProps {
+  label: string;
+  name: string;
+  value?: string;
+  type?: string;
+}
+
+interface IProfileInputInnerProps extends IBaseProps {
+  label: string;
+  input: any;
+  error?: boolean | string | null;
+}
+
+class ProfileInput extends Block<IProfileInputInnerProps> {
+  input;
+
+  constructor(props: IProfileInputProps) {
+    const { name, type, label, value } = props;
+
+    const input = new Input({
+      attrs: {
+        name,
+        type,
+        value,
+        class: 'profile-edit-input',
+      },
+    });
+
+    super('div', {
+      label,
+      input,
+      attrs: { ...props.attrs, class: 'edit_user-info__container' },
+    });
+
+    this.input = input;
+  }
+
+  setProps(props: Partial<IProfileInputInnerProps>) {
+    const { error } = props;
+
+    if (typeof error !== 'undefined') {
+      this.input.setProps({
+        attrs: { error: !!error },
+      });
+    }
+
+    super.setProps(props);
+  }
+
+  render(): DocumentFragment {
+    return this.compile(
+      `
+      <div class='input-field'>
+        <dt>{{label}}</dt>
+        <dd>{{{input}}}</dd>
+      </div>
+      <div class='error-container' title='{{error}}'>{{error}}</div>
+    `,
+      this.props,
+    );
+  }
+}
+
 interface IEditProfileProps extends IBaseProps {
   avatarInput: any;
-  emailInput: any;
-  nameInput: any;
-  secondInput: any;
-  loginInput: any;
-  displayInput: any;
-  phoneInput: any;
   saveProfileButton: any;
+  inputs: any[];
 }
 
 class EditProfileComponent extends Block<IEditProfileProps> {
@@ -185,42 +243,9 @@ class EditProfileComponent extends Block<IEditProfileProps> {
             {{{avatarInput}}}
         </header>
         <dl>
-          <div class="user-info__container">
-              <dt>Почта</dt>
-              <dd>
-                {{{emailInput}}}
-              </dd>
-          </div>
-          <div class="user-info__container">
-              <dt>Логин</dt>
-              <dd>
-                {{{loginInput}}}
-              </dd>
-          </div>
-          <div class="user-info__container">
-              <dt>Имя</dt>
-              <dd>
-                {{{nameInput}}}
-              </dd>
-          </div>
-          <div class="user-info__container">
-              <dt>Фамилия</dt>
-              <dd>
-                {{{secondInput}}}
-              </dd>
-          </div>
-          <div class="user-info__container">
-              <dt>Имя в чате</dt>
-              <dd>
-                {{{displayInput}}}
-              </dd>
-          </div>
-          <div class="user-info__container">
-              <dt>Телефон</dt>
-              <dd>
-                {{{phoneInput}}}
-              </dd>
-          </div>
+          {{#each inputs}}
+            {{{this}}}
+          {{/each}}
         </dl>
         {{{saveProfileButton}}}
     `,
@@ -238,58 +263,46 @@ class EditProfile extends CenteredPage {
       },
     });
 
-    const emailInput = new Input({
-      attrs: {
-        name: 'email',
-        type: 'email',
-        value: 'ildaryxa@gmail.com',
-        class: 'profile-edit-input',
-      },
+    const emailInput = new ProfileInput({
+      label: 'Почта',
+      name: 'email',
+      type: 'email',
+      value: 'ildaryxa@gmail.com',
     });
 
-    const nameInput = new Input({
-      attrs: {
-        name: 'first_name',
-        type: 'text',
-        value: 'Ильдар',
-        class: 'profile-edit-input',
-      },
+    const nameInput = new ProfileInput({
+      name: 'first_name',
+      type: 'text',
+      value: 'Ильдар',
+      label: 'Имя',
     });
 
-    const secondInput = new Input({
-      attrs: {
-        name: 'second_name',
-        type: 'text',
-        value: 'Фасхетдинов',
-        class: 'profile-edit-input',
-      },
+    const secondInput = new ProfileInput({
+      name: 'second_name',
+      type: 'text',
+      value: 'Фасхетдинов',
+      label: 'Фамилия',
     });
 
-    const loginInput = new Input({
-      attrs: {
-        name: 'login',
-        type: 'text',
-        value: 'ildaryxa',
-        class: 'profile-edit-input',
-      },
+    const loginInput = new ProfileInput({
+      label: 'Логин',
+      name: 'login',
+      type: 'text',
+      value: 'ildaryxa',
     });
 
-    const displayInput = new Input({
-      attrs: {
-        name: 'display_name',
-        type: 'text',
-        value: 'Ильдар',
-        class: 'profile-edit-input',
-      },
+    const displayInput = new ProfileInput({
+      label: 'Имя в чате',
+      name: 'display_name',
+      type: 'text',
+      value: 'Ильдар',
     });
 
-    const phoneInput = new Input({
-      attrs: {
-        name: 'phone',
-        type: 'phone',
-        value: '+7 912 489 74 71',
-        class: 'profile-edit-input',
-      },
+    const phoneInput = new ProfileInput({
+      label: 'Телефон',
+      name: 'phone',
+      type: 'phone',
+      value: '+79124897471',
     });
 
     const saveProfileButton = new Button({
@@ -303,46 +316,39 @@ class EditProfile extends CenteredPage {
 
     const { checkData } = useValidator(EDIT_PROFILE_CONFIG, {
       init: ({ checkInput }) => {
-        loginInput.setProps({
+        const eventsObject = {
           events: { blur: checkInput, focus: checkInput },
-        });
-        emailInput.setProps({
-          events: { blur: checkInput, focus: checkInput },
-        });
-        nameInput.setProps({
-          events: { blur: checkInput, focus: checkInput },
-        });
-        secondInput.setProps({
-          events: { blur: checkInput, focus: checkInput },
-        });
-        phoneInput.setProps({
-          events: { blur: checkInput, focus: checkInput },
-        });
+        };
+        loginInput.input.setProps(eventsObject);
+        emailInput.input.setProps(eventsObject);
+        nameInput.input.setProps(eventsObject);
+        secondInput.input.setProps(eventsObject);
+        phoneInput.input.setProps(eventsObject);
       },
       inputs: {
         login: errorMessage => {
           loginInput.setProps({
-            attrs: { error: !!errorMessage, title: errorMessage },
+            error: errorMessage,
           });
         },
         email: errorMessage => {
           emailInput.setProps({
-            attrs: { error: !!errorMessage, title: errorMessage },
+            error: errorMessage,
           });
         },
         first_name: errorMessage => {
           nameInput.setProps({
-            attrs: { error: !!errorMessage, title: errorMessage },
+            error: errorMessage,
           });
         },
         second_name: errorMessage => {
           secondInput.setProps({
-            attrs: { error: !!errorMessage, title: errorMessage },
+            error: errorMessage,
           });
         },
         phone: errorMessage => {
           phoneInput.setProps({
-            attrs: { error: !!errorMessage, title: errorMessage },
+            error: errorMessage,
           });
         },
       },
@@ -357,13 +363,15 @@ class EditProfile extends CenteredPage {
 
     const editProfile = new EditProfileComponent({
       avatarInput,
-      emailInput,
-      nameInput,
-      secondInput,
-      loginInput,
-      displayInput,
-      phoneInput,
       saveProfileButton,
+      inputs: [
+        emailInput,
+        nameInput,
+        secondInput,
+        loginInput,
+        displayInput,
+        phoneInput,
+      ],
       events: {
         submit: handleSubmitEditProfile,
       },

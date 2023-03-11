@@ -58,24 +58,15 @@ class Registration extends CenteredPage {
 
     const { checkData } = useValidator(REGISTRATION_CONFIG, {
       init: ({ checkInput }) => {
-        loginInput.setProps({
+        const eventsObject = {
           events: { blur: checkInput, focus: checkInput },
-        });
-        emailInput.setProps({
-          events: { blur: checkInput, focus: checkInput },
-        });
-        passwordInput.setProps({
-          events: { blur: checkInput, focus: checkInput },
-        });
-        firstNameInput.setProps({
-          events: { blur: checkInput, focus: checkInput },
-        });
-        secondNameInput.setProps({
-          events: { blur: checkInput, focus: checkInput },
-        });
-        phoneInput.setProps({
-          events: { blur: checkInput, focus: checkInput },
-        });
+        };
+        loginInput.setProps(eventsObject);
+        emailInput.setProps(eventsObject);
+        passwordInput.setProps(eventsObject);
+        firstNameInput.setProps(eventsObject);
+        secondNameInput.setProps(eventsObject);
+        phoneInput.setProps(eventsObject);
       },
       inputs: {
         login: errorMessage => {

@@ -29,7 +29,7 @@ abstract class Block<
     FLOW_RENDER: 'flow:render',
     FLOW_CDM: 'flow:component-did-mount',
     FLOW_CDU: 'flow:component-did-update',
-  };
+  } as const;
 
   _element: Nullable<HTMLElement> = null;
   _meta: Nullable<MetaType<PropsType>> = null;
@@ -226,7 +226,6 @@ abstract class Block<
 
     return new Proxy(props, {
       set(target: any, prop: string, val: any) {
-
         if (target[prop] !== val) {
           target[prop] = val;
 
