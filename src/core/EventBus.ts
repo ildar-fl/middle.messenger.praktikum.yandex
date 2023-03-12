@@ -1,36 +1,38 @@
-type CallbackType = (...args: any[]) => void;
+type CallbackType<C extends unknown[]> = (...args: C) => void;
 
-class EventBus {
-  private readonly listeners: Record<string, Array<CallbackType>>;
+class EventBus<E extends Record<string, unknown[]>> {
+  private readonly listeners: {
+    [K in keyof E]?: Array<CallbackType<E[K]>>;
+  };
 
   constructor() {
     this.listeners = {};
   }
 
-  on(event: string, callback: CallbackType) {
+  on<K extends keyof E>(event: K, callback: CallbackType<E[K]>) {
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }
 
-    this.listeners[event].push(callback);
+    this.listeners[event]!.push(callback);
   }
 
-  off(event: string, callback: CallbackType) {
+  off<K extends keyof E>(event: K, callback: CallbackType<E[K]>) {
     if (!this.listeners[event]) {
-      throw new Error(`Нет события: ${event}`);
+      throw new Error(`Нет события: ${event as string}`);
     }
 
-    this.listeners[event] = this.listeners[event].filter(
+    this.listeners[event] = this.listeners[event]!.filter(
       listener => listener !== callback,
     );
   }
 
-  emit(event: string, ...args: any[]) {
+  emit<K extends keyof E>(event: K, ...args: E[K]) {
     if (!this.listeners[event]) {
-      throw new Error(`Нет события: ${event}`);
+      throw new Error(`Нет события: ${event as string}`);
     }
 
-    this.listeners[event].forEach(listener => {
+    this.listeners[event]!.forEach(listener => {
       listener(...args);
     });
   }

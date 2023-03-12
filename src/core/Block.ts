@@ -2,6 +2,20 @@ import { v4 as uuid } from 'uuid';
 import { EventBus } from './EventBus';
 import { compile } from '../utils';
 
+enum EventsEnum {
+  Init = 'init',
+  FlowRender = 'flow:render',
+  FlowCDM = 'flow:component-did-mount',
+  FlowCDU = 'flow:component-did-update',
+}
+
+type BlockEvents<P = any> = {
+  [EventsEnum.Init]: [];
+  [EventsEnum.FlowRender]: [];
+  [EventsEnum.FlowCDM]: [];
+  [EventsEnum.FlowCDU]: [P, P];
+};
+
 type Nullable<T> = T | null;
 type ChildrenType = Record<string, Block | Block[]>;
 
@@ -16,19 +30,19 @@ interface IBaseProps {
   };
 }
 
-type MetaType<PropsType> = {
+type MetaType<P> = {
   tagName: keyof HTMLElementTagNameMap;
-  props: PropsType;
+  props: P;
 };
 
 abstract class Block<
   PropsType extends IBaseProps & ComponentsProps = ComponentsProps,
 > {
   static EVENTS = {
-    INIT: 'init',
-    FLOW_RENDER: 'flow:render',
-    FLOW_CDM: 'flow:component-did-mount',
-    FLOW_CDU: 'flow:component-did-update',
+    INIT: EventsEnum.Init,
+    FLOW_RENDER: EventsEnum.FlowRender,
+    FLOW_CDM: EventsEnum.FlowCDM,
+    FLOW_CDU: EventsEnum.FlowCDU,
   } as const;
 
   _element: Nullable<HTMLElement> = null;
@@ -37,7 +51,7 @@ abstract class Block<
   _children: ChildrenType;
 
   props: PropsType;
-  eventBus: () => EventBus;
+  eventBus: () => EventBus<BlockEvents>;
 
   /** JSDoc
    * @param {string} tagName
@@ -90,7 +104,7 @@ abstract class Block<
     return { props, children };
   }
 
-  private _registerEvents(eventBus: EventBus) {
+  private _registerEvents(eventBus: EventBus<BlockEvents>) {
     eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
