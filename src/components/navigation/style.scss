@@ -1,0 +1,15 @@
+@import "../../theme";
+
+.navigation {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 8px;
+  padding: 10px;
+  background: themeColor('background', 'dark');
+  opacity: 50%;
+
+  ul {
+    text-decoration: none;
+  }
+}

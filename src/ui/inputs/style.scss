@@ -1,7 +1,22 @@
+@import "../../theme";
+
 .input-container {
   width: 100%;
 
-  input {
-    width: 100%;
+  .error-label {
+    color: themeColor('error', 'light');
+    font-size: 11px;
+  }
+}
+
+.base-input {
+  width: 100%;
+
+  &[error = "true"] {
+    border-color: themeColor('error', 'main');
+  }
+
+  &[error = "false"] {
+    border-color: initial;
   }
 }

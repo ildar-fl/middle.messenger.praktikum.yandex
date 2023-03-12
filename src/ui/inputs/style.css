@@ -1,8 +1,19 @@
 .input-container {
   width: 100%;
 }
-.input-container input {
+.input-container .error-label {
+  color: #d9534f;
+  font-size: 11px;
+}
+
+.base-input {
   width: 100%;
+}
+.base-input[error=true] {
+  border-color: #FF2F2F;
+}
+.base-input[error=false] {
+  border-color: initial;
 }
 
 /*# sourceMappingURL=style.css.map */

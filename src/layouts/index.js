@@ -1,1 +1,0 @@
-export { createCenteredPage } from './CenteredPage';

@@ -1,1 +1,0 @@
-export { createRegistrationForm } from './Registration';

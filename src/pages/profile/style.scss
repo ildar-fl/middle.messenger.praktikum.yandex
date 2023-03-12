@@ -38,8 +38,8 @@
     .user-info__container {
       display: flex;
       justify-content: space-between;
-      padding-bottom: 10px;
       padding-top: 10px;
+      padding-bottom: 10px;
       border-bottom: 1px solid themeColor('divider');
 
       &:last-child {
@@ -57,6 +57,45 @@
         font-weight: 500;
         color: themeColor('text', 'light');
       }
+
+    }
+
+    .edit_user-info__container {
+      display: flex;
+      flex-direction: column;
+      padding-top: 10px;
+      border-bottom: 1px solid themeColor('divider');
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .input-field {
+        display: flex;
+        justify-content: space-between;
+
+        dt {
+          font-size: 13px;
+          font-weight: 500;
+          color: themeColor('text');
+        }
+
+        dd {
+          font-size: 13px;
+          font-weight: 500;
+          color: themeColor('text', 'light');
+        }
+      }
+
+      .error-container {
+        height: 10px;
+        font-size: 9px;
+        text-align: right;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        color: themeColor('error', 'light');
+      }
     }
   }
 
@@ -68,6 +107,10 @@
 
     &:focus {
       user-select: all;
+    }
+
+    &[error="true"] {
+      background: themeColor('error', 'highlight');
     }
   }
 }

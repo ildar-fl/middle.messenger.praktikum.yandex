@@ -20,6 +20,7 @@ input {
 
 a, ul, li {
   text-decoration: none;
+  list-style: none;
 }
 
 button {
