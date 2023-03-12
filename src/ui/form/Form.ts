@@ -1,20 +1,20 @@
 import './style.scss';
-import { Block, IBaseProps } from '../../core';
+import { Block, BaseProps } from '../../core';
 
-interface IContentProps extends IBaseProps {
+interface IContentProps {
   class: string;
   template: string;
   children: Record<string, Block>;
 }
 
-interface IContentInnerProps extends IBaseProps {
+type ContentInnerProps = {
   attrs: {
     class: string;
   };
   template: string;
-}
+};
 
-class Content extends Block<IContentInnerProps> {
+class Content extends Block<ContentInnerProps> {
   constructor(props: IContentProps) {
     const { class: className, children, ...other } = props;
 
@@ -26,19 +26,19 @@ class Content extends Block<IContentInnerProps> {
   }
 }
 
-interface IForm extends IBaseProps {
+interface IForm extends BaseProps {
   title: string;
-  content: Record<string, any>;
-  buttons: Record<string, any>;
+  content: Record<string, Block>;
+  buttons: Record<string, Block>;
 }
 
-interface IFormInner extends IBaseProps {
+type FormInner = {
   title: string;
   content: Content;
   buttons: Content;
-}
+};
 
-class Form extends Block<IFormInner> {
+class Form extends Block<FormInner> {
   constructor(props: IForm) {
     const { content, buttons, attrs = {}, ...other } = props;
     const contentTemplate = Object.keys(content)

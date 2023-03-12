@@ -19,25 +19,25 @@ type BlockEvents<P = any> = {
 type Nullable<T> = T | null;
 type ChildrenType = Record<string, Block | Block[]>;
 
-type ComponentsProps = Record<string | symbol, any>;
+type UserProps = Record<string, unknown>;
 
-interface IBaseProps {
+type BaseProps = {
   attrs?: Record<string, any>;
   events?: {
     [K in keyof GlobalEventHandlersEventMap]?: (
       event: GlobalEventHandlersEventMap[K],
     ) => void;
   };
-}
+};
+
+type BlockProps<P extends UserProps = any> = BaseProps & P;
 
 type MetaType<P> = {
   tagName: keyof HTMLElementTagNameMap;
   props: P;
 };
 
-abstract class Block<
-  PropsType extends IBaseProps & ComponentsProps = ComponentsProps,
-> {
+abstract class Block<P extends UserProps = any> {
   static EVENTS = {
     INIT: EventsEnum.Init,
     FLOW_RENDER: EventsEnum.FlowRender,
@@ -46,11 +46,11 @@ abstract class Block<
   } as const;
 
   _element: Nullable<HTMLElement> = null;
-  _meta: Nullable<MetaType<PropsType>> = null;
+  _meta: Nullable<MetaType<BlockProps<P>>> = null;
   _id: Nullable<string> = null;
   _children: ChildrenType;
 
-  props: PropsType;
+  props: BlockProps<P>;
   eventBus: () => EventBus<BlockEvents>;
 
   /** JSDoc
@@ -61,7 +61,7 @@ abstract class Block<
    */
   protected constructor(
     tagName: keyof HTMLElementTagNameMap = 'div',
-    propsAndChildren = {} as PropsType,
+    propsAndChildren: BlockProps<P> = {} as BlockProps<P>,
   ) {
     const eventBus = new EventBus();
 
@@ -83,12 +83,12 @@ abstract class Block<
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  private _getChildren(propsAndChildren: PropsType): {
-    props: PropsType;
+  private _getChildren(propsAndChildren: BlockProps<P>): {
+    props: BlockProps<P>;
     children: ChildrenType;
   } {
     const children: ChildrenType = {};
-    const props: PropsType = {} as PropsType;
+    const props = {} as UserProps;
 
     Object.entries(propsAndChildren).forEach(([key, value]) => {
       if (
@@ -97,11 +97,11 @@ abstract class Block<
       ) {
         children[key] = value;
       } else {
-        props[key as keyof PropsType] = value;
+        props[key] = value;
       }
     });
 
-    return { props, children };
+    return { props: props as BlockProps<P>, children };
   }
 
   private _registerEvents(eventBus: EventBus<BlockEvents>) {
@@ -141,7 +141,7 @@ abstract class Block<
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
   }
 
-  _componentDidUpdate(oldProps: PropsType, newProps: PropsType) {
+  _componentDidUpdate(oldProps: BlockProps<P>, newProps: BlockProps<P>) {
     const isNeedRender = this.componentDidUpdate(oldProps, newProps);
 
     if (isNeedRender) {
@@ -149,13 +149,13 @@ abstract class Block<
     }
   }
 
-  componentDidUpdate(oldProps: PropsType, newProps: PropsType): boolean;
-  componentDidUpdate(oldProps: PropsType): boolean;
+  componentDidUpdate(oldProps: BlockProps<P>, newProps: BlockProps<P>): boolean;
+  componentDidUpdate(oldProps: BlockProps<P>): boolean;
   componentDidUpdate(): boolean {
     return true;
   }
 
-  setProps(nextProps: Partial<PropsType>) {
+  setProps(nextProps: Partial<BlockProps<P>>) {
     if (!nextProps) {
       return;
     }
@@ -234,7 +234,7 @@ abstract class Block<
     return this._element;
   }
 
-  _makePropsProxy(props: PropsType): PropsType {
+  _makePropsProxy(props: BlockProps<P>): BlockProps<P> {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
 
@@ -269,9 +269,9 @@ abstract class Block<
 
   compile(
     template: string,
-    props: Omit<PropsType, keyof IBaseProps>,
+    props: Omit<BlockProps<P>, keyof BaseProps>,
   ): DocumentFragment {
-    const propsAndStubs: ComponentsProps = {
+    const propsAndStubs: UserProps = {
       ...props,
     };
 
@@ -329,4 +329,4 @@ abstract class Block<
   }
 }
 
-export { Block, IBaseProps };
+export { Block, BaseProps };

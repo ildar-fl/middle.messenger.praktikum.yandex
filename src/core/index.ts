@@ -1,2 +1,2 @@
-export { Block, IBaseProps } from './Block';
+export { Block, BaseProps } from './Block';
 export { render } from './renderDOM';

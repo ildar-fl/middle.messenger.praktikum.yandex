@@ -1,9 +1,9 @@
 import { v4 as uuid } from 'uuid';
 import './style.scss';
-import { Block, IBaseProps } from '../../core';
+import { BaseProps, Block } from '../../core';
 import { ClassNames } from '../../utils';
 
-interface IInputProps extends IBaseProps {
+type InputProps = {
   attrs: {
     labelId?: string;
     type?: string;
@@ -14,10 +14,10 @@ interface IInputProps extends IBaseProps {
     error?: boolean;
     title?: string;
   };
-}
+} & BaseProps;
 
-class Input extends Block<IInputProps> {
-  constructor(props: IInputProps) {
+class Input extends Block<InputProps> {
+  constructor(props: InputProps) {
     const { attrs, ...other } = props;
 
     const { class: className, ...otherAttrs } = attrs;
@@ -35,7 +35,7 @@ class Input extends Block<IInputProps> {
   }
 }
 
-interface ITextInput extends IBaseProps {
+interface ITextInputProps extends BaseProps {
   label?: string;
   type?: string;
   placeholder?: string;
@@ -45,16 +45,16 @@ interface ITextInput extends IBaseProps {
   class?: string | string[];
 }
 
-interface ITextInputInner extends IBaseProps {
+type TextInputInnerProps = {
   label?: string;
   input: Input;
   error?: boolean | string | null;
-}
+};
 
-class TextInput extends Block<ITextInputInner> {
+class TextInput extends Block<TextInputInnerProps> {
   input;
 
-  constructor(props: ITextInput) {
+  constructor(props: ITextInputProps) {
     const {
       label,
       type = 'text',
@@ -81,7 +81,7 @@ class TextInput extends Block<ITextInputInner> {
     this.input = input;
   }
 
-  setProps(props: Partial<ITextInput>) {
+  setProps(props: Partial<ITextInputProps>) {
     const { label, error, attrs, events } = props;
 
     if (label || attrs) {

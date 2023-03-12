@@ -1,4 +1,4 @@
-import { Block, IBaseProps } from '../../../core';
+import { Block, BaseProps } from '../../../core';
 import { Input } from '../../../ui';
 import { prepareForm, useValidator, ValidateMethod } from '../../../utils';
 
@@ -10,12 +10,12 @@ const MESSAGE_CONFIG = {
   },
 };
 
-interface ISendMessageFormProps extends IBaseProps {
-  messageInput: any;
-}
+type SendMessageFormProps = {
+  messageInput: Block;
+};
 
-class SendMessageForm extends Block<ISendMessageFormProps> {
-  constructor(props: IBaseProps = {}) {
+class SendMessageForm extends Block<SendMessageFormProps> {
+  constructor(props: BaseProps = {}) {
     const messageInput = new Input({
       attrs: {
         name: 'message',

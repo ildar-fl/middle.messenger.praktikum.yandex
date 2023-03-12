@@ -1,27 +1,27 @@
 import './style.scss';
 import { parseStyle, ClassNames } from '../../utils';
-import { Block, IBaseProps } from '../../core';
+import { Block } from '../../core';
 
-interface IButtonProps extends IBaseProps {
+type ButtonProps = {
   attrs: {
     type?: string;
     class?: string | string[];
     style?: Record<string, string>;
   };
   text: string;
-}
+};
 
-interface IButtonPropsInner extends IBaseProps {
+type ButtonPropsInner = {
   attrs: {
     type?: string;
     class?: string;
     style?: string;
   };
   text: string;
-}
+};
 
-class Button extends Block<IButtonPropsInner> {
-  constructor(props: IButtonProps) {
+class Button extends Block<ButtonPropsInner> {
+  constructor(props: ButtonProps) {
     const { attrs, text, ...other } = props;
 
     const { class: className, style, ...otherAttrs } = attrs;
@@ -47,7 +47,7 @@ class Button extends Block<IButtonPropsInner> {
   }
 }
 
-interface IButtonTextProps extends IBaseProps {
+interface IButtonTextProps {
   attrs: {
     as?: 'button' | 'a';
     href?: string;
@@ -58,7 +58,7 @@ interface IButtonTextProps extends IBaseProps {
   text: string;
 }
 
-interface IButtonTextInnerProps extends IBaseProps {
+type ButtonTextInnerProps = {
   attrs: {
     as?: 'button' | 'a';
     href?: string;
@@ -67,9 +67,9 @@ interface IButtonTextInnerProps extends IBaseProps {
     style?: string;
   };
   text: string;
-}
+};
 
-class ButtonText extends Block<IButtonTextInnerProps> {
+class ButtonText extends Block<ButtonTextInnerProps> {
   constructor(props: IButtonTextProps) {
     const { attrs, text, ...other } = props;
 

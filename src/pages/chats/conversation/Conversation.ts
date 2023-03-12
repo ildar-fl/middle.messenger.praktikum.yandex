@@ -1,5 +1,5 @@
 import '../style.scss';
-import { Block, IBaseProps } from '../../../core';
+import { Block } from '../../../core';
 import { SendMessageForm } from './SendMessageForm';
 import { prepareForm } from '../../../utils';
 
@@ -14,12 +14,12 @@ const ConversationTemplate = `
   {{{sendMessageForm}}}
 `;
 
-interface IConversationProps extends IBaseProps {
+type ConversationProps = {
   author: string;
-  sendMessageForm: any;
-}
+  sendMessageForm: Block;
+};
 
-class Conversation extends Block<IConversationProps> {
+class Conversation extends Block<ConversationProps> {
   constructor() {
     const handleSubmitSendMessageForm = (event: SubmitEvent) => {
       event.preventDefault();

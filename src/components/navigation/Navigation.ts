@@ -1,5 +1,5 @@
 import './style.scss';
-import { Block, IBaseProps } from '../../core';
+import { Block } from '../../core';
 import { ROUTS } from '../../constants';
 
 const NAVIGATIONS = [
@@ -12,11 +12,11 @@ const NAVIGATIONS = [
   { text: 'Внутренняя ошибка', to: ROUTS.INTERNAL_ERROR },
 ];
 
-interface INavigationProps extends IBaseProps {
+type NavigationProps = {
   navigation: Array<{ text: string; to: string }>;
-}
+};
 
-class Navigation extends Block<INavigationProps> {
+class Navigation extends Block<NavigationProps> {
   constructor() {
     super('nav', { navigation: NAVIGATIONS, attrs: { class: 'navigation' } });
   }

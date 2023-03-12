@@ -2,7 +2,7 @@ import './style.scss';
 import { UserItem } from './UserItem';
 import { ROUTS } from '../../constants';
 import { Conversation } from './conversation/Conversation';
-import { Block, IBaseProps } from '../../core';
+import { Block } from '../../core';
 
 const usersMockData = [
   {
@@ -58,12 +58,12 @@ const ChatsTemplate = `
   <section class="chat__window">{{{content}}}</section>
 `;
 
-interface IChatsProps extends IBaseProps {
+type ChatsProps = {
   userItems: any[];
   content: any;
-}
+};
 
-class Chats extends Block<IChatsProps> {
+class Chats extends Block<ChatsProps> {
   constructor() {
     const userItems = usersMockData.map(
       ({ first_name, second_nane, message, time, count }) =>

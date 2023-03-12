@@ -2,7 +2,7 @@ import './style.scss';
 import { CenteredPage } from '../../layouts';
 import { Button, ButtonText, Input } from '../../ui';
 import { ROUTS } from '../../constants';
-import { Block, IBaseProps } from '../../core';
+import { BaseProps, Block } from '../../core';
 import {
   ConfigType,
   INPUT_CONFIGS,
@@ -47,12 +47,12 @@ const userInfoMock = [
   },
 ];
 
-interface IProfileContainer extends IBaseProps {
-  content: any;
-}
+type ProfileContainerProps = {
+  content: Block;
+};
 
-class ProfileContainer extends Block<IProfileContainer> {
-  constructor(props: IProfileContainer) {
+class ProfileContainer extends Block<ProfileContainerProps> {
+  constructor(props: ProfileContainerProps) {
     super('div', props);
   }
 
@@ -76,16 +76,16 @@ interface IUserInfo {
   type: string;
 }
 
-interface IProfileProps extends IBaseProps {
+type ProfileProps = {
   name: string;
   userInfo: Array<IUserInfo>;
-  changeProfileButton: any;
-  changePasswordButton: any;
-  logoutButton: any;
-}
+  changeProfileButton: Block;
+  changePasswordButton: Block;
+  logoutButton: Block;
+} & BaseProps;
 
-class ProfileComponent extends Block<IProfileProps> {
-  constructor(props: IProfileProps) {
+class ProfileComponent extends Block<ProfileProps> {
+  constructor(props: ProfileProps) {
     super('section', { ...props, attrs: { ...props.attrs, class: 'profile' } });
   }
 
@@ -159,20 +159,20 @@ class Profile extends CenteredPage {
   }
 }
 
-interface IProfileInputProps extends IBaseProps {
+interface IProfileInputProps extends BaseProps {
   label: string;
   name: string;
   value?: string;
   type?: string;
 }
 
-interface IProfileInputInnerProps extends IBaseProps {
+type ProfileInputInnerProps = {
   label: string;
-  input: any;
+  input: Block;
   error?: boolean | string | null;
-}
+};
 
-class ProfileInput extends Block<IProfileInputInnerProps> {
+class ProfileInput extends Block<ProfileInputInnerProps> {
   input;
 
   constructor(props: IProfileInputProps) {
@@ -196,7 +196,7 @@ class ProfileInput extends Block<IProfileInputInnerProps> {
     this.input = input;
   }
 
-  setProps(props: Partial<IProfileInputInnerProps>) {
+  setProps(props: Partial<ProfileInputInnerProps>) {
     const { error } = props;
 
     if (typeof error !== 'undefined') {
@@ -222,14 +222,14 @@ class ProfileInput extends Block<IProfileInputInnerProps> {
   }
 }
 
-interface IEditProfileProps extends IBaseProps {
-  avatarInput: any;
-  saveProfileButton: any;
-  inputs: any[];
-}
+type EditProfileProps = {
+  avatarInput: Block;
+  saveProfileButton: Block;
+  inputs: Block[];
+} & BaseProps;
 
-class EditProfileComponent extends Block<IEditProfileProps> {
-  constructor(props: IEditProfileProps) {
+class EditProfileComponent extends Block<EditProfileProps> {
+  constructor(props: EditProfileProps) {
     super('form', {
       ...props,
       attrs: { ...props.attrs, name: 'editProfileForm', class: 'profile' },

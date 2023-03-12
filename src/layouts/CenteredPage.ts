@@ -1,6 +1,6 @@
 import Handlebars from 'handlebars';
 import './style.scss';
-import { Block, IBaseProps } from '../core';
+import { Block } from '../core';
 import { ClassNames } from '../utils';
 
 const CenteredPageTemplate = `
@@ -15,15 +15,15 @@ function createCenteredPage({ classNames, content }: any) {
   return templateHome({ classNames, content });
 }
 
-interface ICenteredPage extends IBaseProps {
+type CenteredPageProps = {
   attrs?: {
     class?: string | string[];
   };
   content: any;
-}
+};
 
-class CenteredPage extends Block<IBaseProps> {
-  constructor(props: ICenteredPage) {
+class CenteredPage extends Block {
+  constructor(props: CenteredPageProps) {
     const classNames = new ClassNames(props.attrs?.class);
     classNames.addClassName('centered-page-container');
 

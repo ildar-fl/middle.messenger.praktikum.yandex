@@ -1,14 +1,14 @@
 import './style.scss';
-import { Block, IBaseProps } from '../../core';
+import { Block } from '../../core';
 
-interface IErrorCodeProps extends IBaseProps {
+type ErrorCodeProps = {
   code: string;
   description: string;
-  button: any;
-}
+  button: Block;
+};
 
-class ErrorCode extends Block<IErrorCodeProps> {
-  constructor(props: IErrorCodeProps) {
+class ErrorCode extends Block<ErrorCodeProps> {
+  constructor(props: ErrorCodeProps) {
     super('div', { ...props, attrs: { class: 'error-code-container' } });
   }
 

@@ -1,5 +1,5 @@
 import './style.scss';
-import { Block, IBaseProps } from '../../core';
+import { Block } from '../../core';
 
 const userItemTemplate = `
   <div class="user-item__avatar user-avatar"></div>
@@ -13,7 +13,7 @@ const userItemTemplate = `
   </div>
 `;
 
-interface IUserItemProps extends IBaseProps {
+interface IUserItemProps {
   firstName: string;
   secondNane: string;
   message: string;
@@ -21,14 +21,14 @@ interface IUserItemProps extends IBaseProps {
   count: number;
 }
 
-interface IUserItemInnerProps extends IBaseProps {
+type UserItemInnerProps = {
   author: string;
   text: string;
   time: string;
   count: number;
-}
+};
 
-class UserItem extends Block<IUserItemInnerProps> {
+class UserItem extends Block<UserItemInnerProps> {
   constructor(props: IUserItemProps) {
     const { firstName, secondNane, message, time, count } = props;
 
