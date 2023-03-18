@@ -29,10 +29,10 @@ class Router {
 
   start() {
     window.onpopstate = (event: PopStateEvent) => {
-      event.preventDefault();
+      const { currentTarget } = event;
 
-      if (event.currentTarget) {
-        this._onRoute(document.location.pathname);
+      if (currentTarget) {
+        this._onRoute((currentTarget as Window).location.pathname);
       }
     };
 
@@ -45,17 +45,20 @@ class Router {
       return;
     }
 
-    if (this._currentRoute && this._currentRoute !== route) {
-      this._currentRoute.leave();
+    if (this._currentRoute !== route) {
+      if (this._currentRoute) {
+        this._currentRoute.leave();
+      }
+      this._currentRoute = route;
+      route.render();
     }
-
-    this._currentRoute = route;
-    route.render();
   }
 
   go(pathname: string) {
-    this.history.pushState({}, '', pathname);
-    this._onRoute(pathname);
+    if (this._currentRoute?._pathname !== pathname) {
+      this.history.pushState({}, '', pathname);
+      this._onRoute(pathname);
+    }
   }
 
   back() {

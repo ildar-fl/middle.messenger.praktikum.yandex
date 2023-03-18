@@ -317,7 +317,7 @@ class Block<P extends UserProps = any> {
     const el = this.getContent();
 
     if (el) {
-      el.style.display = 'block';
+      el.style.removeProperty('display');
     }
   }
 

@@ -1,4 +1,5 @@
 import './style.scss';
+import { Link } from '../../ui';
 import { Block } from '../../core';
 import { ROUTS } from '../../constants';
 
@@ -13,12 +14,14 @@ const NAVIGATIONS = [
 ];
 
 type NavigationProps = {
-  navigation: Array<{ text: string; to: string }>;
+  navigation: Link[];
 };
 
 class Navigation extends Block<NavigationProps> {
   constructor() {
-    super('nav', { navigation: NAVIGATIONS, attrs: { class: 'navigation' } });
+    const navigation = NAVIGATIONS.map(props => new Link(props));
+
+    super('nav', { navigation, attrs: { class: 'navigation' } });
   }
 
   render(): DocumentFragment {
@@ -26,7 +29,7 @@ class Navigation extends Block<NavigationProps> {
       `
       <ul>
       {{#each navigation}}
-         <li><a href='{{to}}'>{{text}}</a></li>
+         <li>{{{this}}}</li>
       {{/each}}
       </ul>
     `,
