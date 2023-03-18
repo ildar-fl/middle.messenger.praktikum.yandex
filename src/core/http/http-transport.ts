@@ -15,12 +15,22 @@ type Options = {
 
 type OptionsWithoutMethod = Omit<Options, 'method'>;
 
-class HTTPTransport {
+class HttpTransport {
+  resource;
+
+  constructor(resource: string) {
+    this.resource = resource;
+  }
+
+  _getURL(url: string): string {
+    return `${this.resource}${url}`;
+  }
+
   get(
-    url: string,
+    path: string,
     options: OptionsWithoutMethod = {},
   ): Promise<XMLHttpRequest> {
-    const urlWithQueryParams = new URL(url);
+    const urlWithQueryParams = new URL(this._getURL(path));
     const { data, ...otherOptions } = options;
 
     if (data && typeof data === 'object') {
@@ -40,11 +50,11 @@ class HTTPTransport {
   }
 
   post(
-    url: string,
+    path: string,
     options: OptionsWithoutMethod = {},
   ): Promise<XMLHttpRequest> {
     return this.request(
-      url,
+      this._getURL(path),
       {
         ...options,
         method: METHOD.POST,
@@ -54,11 +64,11 @@ class HTTPTransport {
   }
 
   put(
-    url: string,
+    path: string,
     options: OptionsWithoutMethod = {},
   ): Promise<XMLHttpRequest> {
     return this.request(
-      url,
+      this._getURL(path),
       {
         ...options,
         method: METHOD.PUT,
@@ -68,11 +78,11 @@ class HTTPTransport {
   }
 
   delete(
-    url: string,
+    path: string,
     options: OptionsWithoutMethod = {},
   ): Promise<XMLHttpRequest> {
     return this.request(
-      url,
+      this._getURL(path),
       {
         ...options,
         method: METHOD.DELETE,
@@ -117,4 +127,4 @@ class HTTPTransport {
   }
 }
 
-export { HTTPTransport };
+export { HttpTransport };

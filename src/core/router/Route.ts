@@ -1,4 +1,4 @@
-import { render } from '../renderDOM';
+import { render } from '../render-dom';
 import { isEqual } from '../../utils/my_lodash';
 import { Block } from '../Block';
 

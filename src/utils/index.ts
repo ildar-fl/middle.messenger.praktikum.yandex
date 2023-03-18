@@ -1,6 +1,6 @@
 export { parseStyle, ClassNames } from './css-transform';
 export { compile } from './templator';
-export { prepareForm } from './formData';
+export { prepareForm } from './form-data';
 export {
   useValidator,
   validator,

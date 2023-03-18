@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { EventBus } from './EventBus';
+import { EventBus } from './event-bus';
 import { compile } from '../utils';
 
 enum EventsEnum {
