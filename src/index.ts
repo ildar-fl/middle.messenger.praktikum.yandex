@@ -1,4 +1,3 @@
-import { routing } from './utils';
 import {
   Chats,
   InternalErrorPage,
@@ -11,22 +10,18 @@ import {
 import { Navigation } from './components';
 import { ROUTS } from './constants';
 import './index.css';
-import { Block, render } from './core';
+import { render, Router } from './core';
 
-const MAIN_ROUTERS = {
-  [ROUTS.HOME]: new Login(),
-  [ROUTS.LOGIN]: new Login(),
-  [ROUTS.REGISTRATION]: new Registration(),
-  [ROUTS.CHATS]: new Chats(),
-  [ROUTS.PROFILE]: new Profile(),
-  [ROUTS.PROFILE_EDIT]: new EditProfile(),
-  [ROUTS.NOT_FOUND]: new NotFoundPage(),
-  [ROUTS.INTERNAL_ERROR]: new InternalErrorPage(),
-};
+const router = new Router('#root');
+router.use(ROUTS.HOME, Login);
+router.use(ROUTS.LOGIN, Login);
+router.use(ROUTS.REGISTRATION, Registration);
+router.use(ROUTS.CHATS, Chats);
+router.use(ROUTS.PROFILE, Profile);
+router.use(ROUTS.PROFILE_EDIT, EditProfile);
+router.use(ROUTS.NOT_FOUND, NotFoundPage);
+router.use(ROUTS.INTERNAL_ERROR, InternalErrorPage);
 
-const changeUrl = (template: Block) => {
-  render('#root', template);
-  render('body', new Navigation());
-};
+router.start();
 
-routing(MAIN_ROUTERS, changeUrl);
+render('body', new Navigation());

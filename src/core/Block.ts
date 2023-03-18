@@ -37,7 +37,7 @@ type MetaType<P> = {
   props: P;
 };
 
-abstract class Block<P extends UserProps = any> {
+class Block<P extends UserProps = any> {
   static EVENTS = {
     INIT: EventsEnum.Init,
     FLOW_RENDER: EventsEnum.FlowRender,
@@ -59,7 +59,7 @@ abstract class Block<P extends UserProps = any> {
    *
    * @returns {void}
    */
-  protected constructor(
+  constructor(
     tagName: keyof HTMLElementTagNameMap = 'div',
     propsAndChildren: BlockProps<P> = {} as BlockProps<P>,
   ) {
