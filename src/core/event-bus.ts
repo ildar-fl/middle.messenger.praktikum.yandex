@@ -1,6 +1,6 @@
 type CallbackType<C extends unknown[]> = (...args: C) => void;
 
-class EventBus<E extends Record<string, unknown[]>> {
+class EventBus<E extends Record<string, unknown[]> = any> {
   private readonly listeners: {
     [K in keyof E]?: Array<CallbackType<E[K]>>;
   };

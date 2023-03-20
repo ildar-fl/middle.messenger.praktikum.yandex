@@ -3,8 +3,8 @@ class BaseApi {
     throw new Error('Not implemented');
   }
 
-  request() {
-    throw new Error('Not implemented');
+  request<Request>(props?: Request) {
+    throw new Error(`Not implemented, props = ${props}`);
   }
 
   update() {

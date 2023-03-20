@@ -8,7 +8,7 @@ class ChatAPI extends BaseApi {
     return chatAPIInstance.post('/', { data: { title: 'string' } });
   }
 
-  request() {
+  request(): Promise<XMLHttpRequest> {
     // Здесь уже не нужно писать полный путь /api/v1/chats/
     return chatAPIInstance.get('/full');
   }
