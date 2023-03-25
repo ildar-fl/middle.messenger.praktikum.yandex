@@ -108,16 +108,19 @@ function validator(
   return errors;
 }
 
+type InputsType = Record<string, (value: string) => void>;
 type CheckInputType = (event: Event) => void;
-type CheckDataType = (values: Record<string, FormDataEntryValue>) => void;
+type CheckDataType = (
+  values: Record<string, FormDataEntryValue>,
+) => Record<string, string>;
 interface IValidatorReturnProps {
   checkInput: CheckInputType;
   checkData: CheckDataType;
 }
 
 interface IValidatorProps {
-  init: (props: IValidatorReturnProps) => void;
-  inputs: Record<string, (value: string) => void>;
+  init?: (props: IValidatorReturnProps) => void;
+  inputs: InputsType;
 }
 
 function useValidator(
@@ -133,6 +136,8 @@ function useValidator(
         callback(errors[fieldName] ?? null);
       }
     });
+
+    return errors;
   };
 
   const checkInput = (event: Event) => {
@@ -145,7 +150,9 @@ function useValidator(
     }
   };
 
-  init({ checkInput, checkData: setErrors });
+  if (init) {
+    init({ checkInput, checkData: setErrors });
+  }
 
   return { checkInput, checkData: setErrors };
 }
@@ -209,4 +216,11 @@ const INPUT_CONFIGS = {
   },
 };
 
-export { useValidator, validator, INPUT_CONFIGS, ValidateMethod, ConfigType };
+export {
+  useValidator,
+  validator,
+  INPUT_CONFIGS,
+  ValidateMethod,
+  ConfigType,
+  InputsType,
+};

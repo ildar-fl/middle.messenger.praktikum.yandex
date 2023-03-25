@@ -44,10 +44,10 @@ class Login extends CenteredPage {
     const { checkData } = useValidator(LOGIN_CONFIG, {
       init: ({ checkInput }) => {
         loginInput.setProps({
-          events: { blur: checkInput, focus: checkInput },
+          events: { blur: checkInput },
         });
         passwordInput.setProps({
-          events: { blur: checkInput, focus: checkInput },
+          events: { blur: checkInput },
         });
       },
       inputs: {

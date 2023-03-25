@@ -259,6 +259,8 @@ class EditProfile extends CenteredPage {
     const avatarInput = new Input({
       attrs: {
         name: 'avatar',
+        type: 'file',
+        accept: 'image/*',
         class: 'profile-header__avatar',
       },
     });

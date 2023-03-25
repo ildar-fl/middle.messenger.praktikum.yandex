@@ -13,7 +13,7 @@ type Options = {
   timeout?: number;
 };
 
-type OptionsWithoutMethod = Omit<Options, 'method'>;
+type OptionsWithoutMethod = Omit<Options, 'method' | 'data'>;
 
 class HttpTransport {
   resource;
@@ -26,15 +26,16 @@ class HttpTransport {
     return `${this.resource}${url}`;
   }
 
-  get(
+  get<Response>(
     path: string,
+    query: Record<string, string> = {},
     options: OptionsWithoutMethod = {},
-  ): Promise<XMLHttpRequest> {
+  ): Promise<Response> {
     const urlWithQueryParams = new URL(this._getURL(path));
-    const { data, ...otherOptions } = options;
+    const { timeout, ...otherOptions } = options;
 
-    if (data && typeof data === 'object') {
-      Object.entries(data).forEach(([key, value]) => {
+    if (query && typeof query === 'object') {
+      Object.entries(query).forEach(([key, value]) => {
         urlWithQueryParams.searchParams.set(key, value);
       });
     }
@@ -45,17 +46,22 @@ class HttpTransport {
         ...otherOptions,
         method: METHOD.GET,
       },
-      options.timeout,
+      timeout,
     );
   }
 
-  post(
+  post<
+    Request extends Record<string, string> = Record<string, string>,
+    Response = never,
+  >(
     path: string,
+    data?: Request,
     options: OptionsWithoutMethod = {},
-  ): Promise<XMLHttpRequest> {
-    return this.request(
+  ): Promise<Response> {
+    return this.request<Response>(
       this._getURL(path),
       {
+        data,
         ...options,
         method: METHOD.POST,
       },
@@ -91,11 +97,11 @@ class HttpTransport {
     );
   }
 
-  request(
+  request<Response = any>(
     url: string | URL,
     options: Options = { method: METHOD.GET },
     timeout = 5000,
-  ): Promise<XMLHttpRequest> {
+  ): Promise<Response> {
     const { method, headers, data } = options;
 
     return new Promise((resolve, reject) => {
@@ -111,7 +117,7 @@ class HttpTransport {
       }
 
       xhr.onload = () => {
-        resolve(xhr);
+        resolve(xhr.response);
       };
 
       xhr.onabort = reject;
