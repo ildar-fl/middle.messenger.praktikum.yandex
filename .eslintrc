@@ -33,6 +33,8 @@
     "max-classes-per-file": "off",
     "no-param-reassign": "off",
     "consistent-return": "off",
-    "no-constructor-return": "off"
+    "no-constructor-return": "off",
+    "no-restricted-syntax": "off",
+    "no-continue": "off"
   }
 }
