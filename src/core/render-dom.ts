@@ -1,12 +1,16 @@
 import { Block } from './Block';
 
-export function render(query: string, block: Block) {
+export function getRoot(query: string): Element | never {
   const root = document.querySelector(query);
 
   if (!root) {
     throw new Error(`ROOT ${query} not found!`);
   }
 
+  return root;
+}
+
+export function renderByNode(root: Element, block: Block): Element {
   const content = block.getContent();
 
   if (content) {
@@ -15,4 +19,10 @@ export function render(query: string, block: Block) {
   }
 
   return root;
+}
+
+export function render(query: string, block: Block): Element | never {
+  const root = getRoot(query);
+
+  return renderByNode(root, block);
 }

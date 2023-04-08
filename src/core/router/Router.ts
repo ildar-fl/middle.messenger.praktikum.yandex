@@ -1,11 +1,13 @@
 import { Route } from './Route';
 import { Block } from '../Block';
+import { getRoot } from '../render-dom';
 
 class Router {
   static __instance: Router;
   routes: Route[] = [];
   history: typeof window.history = window.history;
   _rootQuery = '';
+  _root!: Element;
   _currentRoute: Route | null = null;
 
   constructor(rootQuery: string) {
@@ -15,12 +17,16 @@ class Router {
 
     this._currentRoute = null;
     this._rootQuery = rootQuery;
+    this._root = getRoot(rootQuery);
 
     Router.__instance = this;
   }
 
   use(pathname: string, block: typeof Block<any>) {
-    const route = new Route(pathname, block, { rootQuery: this._rootQuery });
+    const route = new Route(pathname, block, {
+      rootQuery: this._rootQuery,
+      root: this._root,
+    });
 
     this.routes.push(route);
 

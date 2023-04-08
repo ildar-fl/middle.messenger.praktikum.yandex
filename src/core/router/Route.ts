@@ -3,13 +3,18 @@ import { Block } from '../Block';
 
 type Nullable<T> = T | null;
 
+interface IRouteProps {
+  rootQuery: string;
+  root: Element;
+}
+
 class Route {
   _pathname: string;
   _blockClass: typeof Block;
   _block: Nullable<Block>;
-  _props;
+  _props: IRouteProps;
 
-  constructor(pathname: string, view: typeof Block, props: any) {
+  constructor(pathname: string, view: typeof Block, props: IRouteProps) {
     this._pathname = pathname;
     this._blockClass = view;
     this._block = null;
@@ -24,7 +29,10 @@ class Route {
 
   leave() {
     if (this._block) {
-      this._block.hide();
+      const component = this._block.getContent();
+      if (component) {
+        this._props.root.removeChild(component);
+      }
     }
   }
 
@@ -33,13 +41,8 @@ class Route {
   }
 
   render() {
-    if (!this._block) {
-      this._block = new this._blockClass();
-      render(this._props.rootQuery, this._block);
-      return;
-    }
-
-    this._block.show();
+    this._block = new this._blockClass();
+    render(this._props.rootQuery, this._block);
   }
 }
 
