@@ -4,7 +4,9 @@ function isPlainObject(value: unknown): value is PlainObject {
   return (
     typeof value === 'object' &&
     value !== null &&
+    // Отфильтровываем функции и массивы
     value.constructor === Object &&
+    // Отфильтровываем, что это не встроенный объект (например, Date)
     Object.prototype.toString.call(value) === '[object Object]'
   );
 }
@@ -39,4 +41,4 @@ function isEqual(lhs: PlainObject, rhs: PlainObject) {
   return true;
 }
 
-export { isEqual };
+export { isEqual, isPlainObject, isArrayOrObject, isArray };

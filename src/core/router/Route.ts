@@ -1,5 +1,4 @@
 import { render } from '../render-dom';
-import { isEqual } from '../../utils/my_lodash';
 import { Block } from '../Block';
 
 type Nullable<T> = T | null;
@@ -30,7 +29,7 @@ class Route {
   }
 
   match(pathname: string) {
-    return isEqual(pathname, this._pathname);
+    return pathname === this._pathname;
   }
 
   render() {

@@ -1,3 +1,3 @@
 export type PlainObject<T = any> = {
-  [k in string]: T;
+  [k in string | symbol]: T;
 };
