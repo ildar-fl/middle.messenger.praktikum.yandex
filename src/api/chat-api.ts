@@ -1,4 +1,4 @@
-import { HttpTransport, BaseApi } from 'core';
+import { HttpTransport, BaseApi } from '../core';
 
 const chatAPIInstance = new HttpTransport('api/v1/chats');
 

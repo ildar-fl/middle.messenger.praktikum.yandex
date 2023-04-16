@@ -36,16 +36,17 @@ class LoginController {
   public async login(data: LoginModel) {
     const errors = this.checkData(data);
 
-    if (errors) {
-      // надо что-то сделать
-    } else {
-      const userID = await this.loginApi.login(data);
+    if (errors) return;
+
+    try {
+      const userID = await this.loginApi.singIn(data);
 
       console.log(userID);
-
-      // запись данных в стору
+    } catch (error) {
+      console.log('try error in Login:', typeof error, error);
     }
+    // запись данных в стору
   }
 }
 
-export { LoginController };
+export { LoginController, LoginModel };

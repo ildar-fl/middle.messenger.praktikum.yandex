@@ -1,16 +1,7 @@
 import { Form, TextInput, Button, ButtonText } from '../../ui';
 import { CenteredPage } from '../../layouts';
-import {
-  prepareForm,
-  ConfigType,
-  useValidator,
-  INPUT_CONFIGS,
-} from '../../utils';
-
-const LOGIN_CONFIG: ConfigType = {
-  login: INPUT_CONFIGS.login,
-  password: INPUT_CONFIGS.password,
-};
+import { LoginController, LoginModel } from '../../controllers/login';
+import { prepareForm } from '../../utils';
 
 class Login extends CenteredPage {
   constructor() {
@@ -41,30 +32,29 @@ class Login extends CenteredPage {
       text: 'Нет аккаунта?',
     });
 
-    const { checkData } = useValidator(LOGIN_CONFIG, {
-      init: ({ checkInput }) => {
-        loginInput.setProps({
-          events: { blur: checkInput },
-        });
-        passwordInput.setProps({
-          events: { blur: checkInput },
-        });
+    const controller = new LoginController({
+      login: errorMessage => {
+        loginInput.setProps({ error: errorMessage });
       },
-      inputs: {
-        login: errorMessage => {
-          loginInput.setProps({ error: errorMessage });
-        },
-        password: errorMessage => {
-          passwordInput.setProps({ error: errorMessage });
-        },
+      password: errorMessage => {
+        passwordInput.setProps({ error: errorMessage });
       },
+    });
+
+    loginInput.setProps({
+      events: { blur: controller.checkInput },
+    });
+    passwordInput.setProps({
+      events: { blur: controller.checkInput },
     });
 
     const handleSubmitForm = (event: SubmitEvent) => {
       event.preventDefault();
-      const formData = prepareForm(event.target as HTMLFormElement);
-      checkData(formData);
-      console.log(formData);
+      const formData = prepareForm(
+        event.target as HTMLFormElement,
+      ) as LoginModel;
+
+      controller.login(formData);
     };
 
     const form = new Form({

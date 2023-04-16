@@ -1,27 +1,37 @@
-import { HttpTransport, BaseApi } from 'core';
-import { UserType } from './types';
+import { YaPraktikumRequest } from './ya-praktikum';
 
 type LoginRequest = {
   login: string;
   password: string;
 };
-type LoginResponse = { user_id: string };
 
-const authAPIInstance = new HttpTransport('api/v1/auth');
+type UserType = {
+  first_name: string;
+  second_name: string;
+  login: string;
+  email: string;
+  phone: string;
+};
 
-class AuthApi extends BaseApi {
-  login(user: LoginRequest): Promise<string> {
-    return authAPIInstance
-      .post<LoginRequest, LoginResponse>('/signin', user)
-      .then(({ user_id }) => user_id); // Обрабатываем получение данных из сервиса далее
+type UserResponse = UserType & {
+  id: string;
+  display_name: string;
+  avatar: string;
+};
+
+const authAPIInstance = new YaPraktikumRequest('/auth');
+
+class AuthApi {
+  singIn(user: LoginRequest): Promise<void> {
+    return authAPIInstance.post<LoginRequest, void>('/signin', user);
   }
 
-  registration(user: UserType): Promise<UserType> {
-    return authAPIInstance.post<UserType, UserType>('/signup', user);
+  signUp(user: UserType): Promise<{ id: string }> {
+    return authAPIInstance.post<UserType, { id: string }>('/signup', user);
   }
 
-  getUser(): Promise<UserType> {
-    return authAPIInstance.get<UserType>('/user');
+  getUser(): Promise<UserResponse> {
+    return authAPIInstance.get<UserResponse>('/user');
   }
 
   logout(): Promise<never> {

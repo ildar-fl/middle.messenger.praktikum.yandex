@@ -89,6 +89,7 @@ function validator(
   config: ConfigType,
 ) {
   const errors: Record<string, string> = {};
+  let hasErrors = false;
 
   Object.entries(data).forEach(([fieldName, value]) => {
     const fieldConfig = config[fieldName];
@@ -100,19 +101,20 @@ function validator(
         const error = validate(validateMethod, value, configForField);
         if (error && !errors[fieldName]) {
           errors[fieldName] = error;
+          hasErrors = true;
         }
       });
     }
   });
 
-  return errors;
+  return hasErrors ? errors : null;
 }
 
-type InputsType = Record<string, (value: string) => void>;
+type InputsType = Record<string, (value: string | null) => void>;
 type CheckInputType = (event: Event) => void;
 type CheckDataType = (
   values: Record<string, FormDataEntryValue>,
-) => Record<string, string>;
+) => Record<string, string> | null;
 interface IValidatorReturnProps {
   checkInput: CheckInputType;
   checkData: CheckDataType;
@@ -133,7 +135,7 @@ function useValidator(
     Object.keys(values).forEach(fieldName => {
       const callback = inputs[fieldName];
       if (callback) {
-        callback(errors[fieldName] ?? null);
+        callback(errors?.[fieldName] ?? null);
       }
     });
 
