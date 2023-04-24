@@ -1,2 +1,2 @@
-export { AuthApi } from './auth-api';
+export { AuthApi, AuthModel } from './auth-api';
 export { ChatAPI } from './chat-api';

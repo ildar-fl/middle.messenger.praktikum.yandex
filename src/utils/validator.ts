@@ -118,6 +118,7 @@ type CheckDataType = (
 interface IValidatorReturnProps {
   checkInput: CheckInputType;
   checkData: CheckDataType;
+  setInputError: (fieldName: string, error: string) => void;
 }
 
 interface IValidatorProps {
@@ -152,11 +153,17 @@ function useValidator(
     }
   };
 
+  const setInputError = (fieldName: string, error: string) => {
+    const callback = inputs[fieldName];
+
+    callback?.(error);
+  };
+
   if (init) {
-    init({ checkInput, checkData: setErrors });
+    init({ checkInput, checkData: setErrors, setInputError });
   }
 
-  return { checkInput, checkData: setErrors };
+  return { checkInput, checkData: setErrors, setInputError };
 }
 
 const INPUT_CONFIGS = {

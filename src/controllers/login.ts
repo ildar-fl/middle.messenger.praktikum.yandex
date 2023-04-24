@@ -19,7 +19,6 @@ interface LoginModel extends Record<string, string> {
 class LoginController {
   public checkData;
   public checkInput;
-
   private loginApi;
 
   constructor(inputCallbacks: InputsType) {
