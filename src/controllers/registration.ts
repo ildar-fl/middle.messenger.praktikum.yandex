@@ -4,15 +4,17 @@ import {
   InputsType,
   useValidator,
 } from '../utils/validator';
-import { AuthApi, AuthModel } from '../api';
+import { store } from '../core/store';
+import { UserModel } from '../common/types';
+import { AuthApi } from '../api';
 
 const REGISTRATION_MODEL = {
-  login: AuthModel.login,
-  password: AuthModel.password,
-  email: AuthModel.email,
-  firstName: AuthModel.firstName,
-  secondName: AuthModel.secondName,
-  phone: AuthModel.phone,
+  login: UserModel.login,
+  password: UserModel.password,
+  email: UserModel.email,
+  firstName: UserModel.firstName,
+  secondName: UserModel.secondName,
+  phone: UserModel.phone,
   repeatPassword: 'repeat_password',
 };
 
@@ -26,12 +28,12 @@ const REGISTRATION_CONFIG: ConfigType = {
 };
 
 interface IRegistrationModel extends Record<string, string> {
-  [AuthModel.firstName]: string;
-  [AuthModel.secondName]: string;
-  [AuthModel.login]: string;
-  [AuthModel.email]: string;
-  [AuthModel.phone]: string;
-  [AuthModel.password]: string;
+  [UserModel.firstName]: string;
+  [UserModel.secondName]: string;
+  [UserModel.login]: string;
+  [UserModel.email]: string;
+  [UserModel.phone]: string;
+  [UserModel.password]: string;
   repeat_password: string;
 }
 
@@ -66,14 +68,17 @@ class RegistrationController {
     const { password, repeat_password: repeatPassword } = data;
 
     if (password !== repeatPassword) {
-      this.setInputError(AuthModel.repeatPassword, 'Пароли не совпадают!');
+      this.setInputError(UserModel.repeatPassword, 'Пароли не совпадают!');
       return;
     }
 
     try {
-      const result = await this.registrationApi.signUp(data);
+      await this.registrationApi.signUp(data);
+      const userInfo = await this.registrationApi.getUser();
 
-      console.log('registration result: ', result);
+      store.set('user', userInfo);
+      console.log(userInfo);
+      // произвести запись в стору и произвести редирект в чаты
     } catch (error) {
       console.log('try error from registration: ', error);
     }

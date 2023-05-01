@@ -312,21 +312,6 @@ class Block<P extends UserProps = any> {
 
     return fragment.content;
   }
-
-  show() {
-    const el = this.getContent();
-
-    if (el) {
-      el.style.removeProperty('display');
-    }
-  }
-
-  hide() {
-    const el = this.getContent();
-    if (el) {
-      el.style.display = 'none';
-    }
-  }
 }
 
 export { Block, BaseProps };

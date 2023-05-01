@@ -1,35 +1,19 @@
 import { YaPraktikumRequest } from './ya-praktikum';
-
-const enum AuthModel {
-  login = 'login',
-  password = 'password',
-  repeatPassword = 'repeat_password',
-  email = 'email',
-  firstName = 'first_name',
-  secondName = 'second_name',
-  phone = 'phone',
-  displayName = 'display_name',
-  avatar = 'avatar',
-}
+import { UserModel, UserType } from '../common/types';
 
 type LoginRequest = {
-  [AuthModel.login]: string;
-  [AuthModel.password]: string;
+  [UserModel.login]: string;
+  [UserModel.password]: string;
 };
 
-type UserType = {
-  [AuthModel.firstName]: string;
-  [AuthModel.secondName]: string;
-  [AuthModel.login]: string;
-  [AuthModel.email]: string;
-  [AuthModel.phone]: string;
-  [AuthModel.password]: string;
+type UserRequest = UserType & {
+  [UserModel.password]: string;
 };
 
-type UserResponse = UserType & {
+type UserResponse = UserRequest & {
   id: string;
-  [AuthModel.displayName]: string;
-  [AuthModel.avatar]: string;
+  [UserModel.displayName]: string;
+  [UserModel.avatar]: string;
 };
 
 const authAPIInstance = new YaPraktikumRequest('/auth');
@@ -52,4 +36,4 @@ class AuthApi {
   }
 }
 
-export { AuthApi, AuthModel };
+export { AuthApi };

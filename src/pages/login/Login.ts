@@ -8,12 +8,14 @@ class Login extends CenteredPage {
     const loginInput = new TextInput({
       placeholder: 'Логин',
       name: 'login',
+      value: 'ildaryxa', // todo remove it
     });
 
     const passwordInput = new TextInput({
       placeholder: 'Пароль',
       name: 'password',
       type: 'password',
+      value: 'Password1', // todo remove it
     });
 
     const authButton = new Button({

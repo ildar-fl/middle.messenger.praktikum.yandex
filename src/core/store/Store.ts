@@ -1,19 +1,22 @@
-import { set } from 'utils/my_lodash';
+import { set } from '../../utils/my_lodash';
 import { EventBus } from '../event-bus';
+import { UserType } from '../../common/types';
 
 enum StoreEvents {
   Updated = 'updated',
 }
 
-type Indexed = any;
+type StoreType = {
+  user?: UserType;
+};
 
 /**
  * Мутабельное состояние с однонаправленным потоком данных
  */
 class Store extends EventBus {
-  private state: Indexed = {};
+  private state: StoreType = {};
 
-  public getState(): Indexed {
+  public getState(): StoreType {
     return this.state;
   }
 
@@ -25,4 +28,4 @@ class Store extends EventBus {
 }
 
 export default new Store();
-export { StoreEvents, Indexed };
+export { StoreEvents, StoreType };

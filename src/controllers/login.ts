@@ -38,9 +38,12 @@ class LoginController {
     if (errors) return;
 
     try {
-      const userID = await this.loginApi.singIn(data);
+      await this.loginApi.singIn(data);
 
-      console.log(userID);
+      const userInfo = await this.loginApi.getUser();
+
+      console.log(userInfo);
+      // произвести запись в стору и произвести редирект
     } catch (error) {
       console.log('try error in Login:', typeof error, error);
     }
