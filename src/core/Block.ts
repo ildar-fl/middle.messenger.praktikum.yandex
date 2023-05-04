@@ -133,6 +133,8 @@ class Block<P extends UserProps = any> {
         child.dispatchComponentDidMount();
       }
     });
+
+    this.init();
   }
 
   componentDidMount() {}
@@ -224,6 +226,9 @@ class Block<P extends UserProps = any> {
       this._addEvents();
     }
   }
+
+  // Переопределяется пользователем.
+  init(): void {}
 
   // Переопределяется пользователем. Необходимо вернуть разметку
   render(): null | DocumentFragment {

@@ -1,9 +1,13 @@
 import { Form, TextInput, Button, ButtonText } from '../../ui';
 import { CenteredPage } from '../../layouts';
-import { LoginController, LoginModel } from '../../controllers/login';
+import { LoginType } from '../../common/types';
+import { AuthController } from '../../controllers/authConroller';
 import { prepareForm } from '../../utils';
 
 class Login extends CenteredPage {
+  private form;
+  private controller;
+
   constructor() {
     const loginInput = new TextInput({
       placeholder: 'Логин',
@@ -34,7 +38,7 @@ class Login extends CenteredPage {
       text: 'Нет аккаунта?',
     });
 
-    const controller = new LoginController({
+    const controller = new AuthController({
       login: errorMessage => {
         loginInput.setProps({ error: errorMessage });
       },
@@ -50,15 +54,6 @@ class Login extends CenteredPage {
       events: { blur: controller.checkInput },
     });
 
-    const handleSubmitForm = (event: SubmitEvent) => {
-      event.preventDefault();
-      const formData = prepareForm(
-        event.target as HTMLFormElement,
-      ) as LoginModel;
-
-      controller.login(formData);
-    };
-
     const form = new Form({
       title: 'Вход',
       attrs: {
@@ -66,12 +61,29 @@ class Login extends CenteredPage {
       },
       content: { loginInput, passwordInput },
       buttons: { authButton, registrationButton },
-      events: {
-        submit: handleSubmitForm,
-      },
     });
 
     super({ content: form });
+
+    this.form = form;
+    this.controller = controller;
+  }
+
+  init() {
+    super.init();
+
+    this.form.setProps({
+      events: {
+        submit: this.onSubmit.bind(this),
+      },
+    });
+  }
+
+  onSubmit(event: SubmitEvent) {
+    event.preventDefault();
+    const formData = prepareForm(event.target as HTMLFormElement) as LoginType;
+
+    this.controller.login(formData);
   }
 }
 

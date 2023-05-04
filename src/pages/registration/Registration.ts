@@ -1,79 +1,79 @@
 import { TextInput, Button, ButtonText, Form } from '../../ui';
 import { CenteredPage } from '../../layouts';
 import { prepareForm } from '../../utils';
+import { UserModel } from '../../common/types';
 import {
-  RegistrationController,
-  IRegistrationModel,
-  REGISTRATION_MODEL,
-} from '../../controllers/registration';
+  AuthController,
+  RegistrationDataType,
+} from '../../controllers/authConroller';
 
 class Registration extends CenteredPage {
   constructor() {
     const emailInput = new TextInput({
       placeholder: 'Почта',
-      name: REGISTRATION_MODEL.email,
+      name: UserModel.email,
       value: 'ildaryxa@gmail.com', // todo remove it
     });
 
     const loginInput = new TextInput({
       placeholder: 'Логин',
-      name: REGISTRATION_MODEL.login,
+      name: UserModel.login,
       value: 'ildaryxa', // todo remove it
     });
 
     const firstNameInput = new TextInput({
       placeholder: 'Имя',
-      name: REGISTRATION_MODEL.firstName,
+      name: UserModel.firstName,
       value: 'Ildar', // todo remove it
     });
 
     const secondNameInput = new TextInput({
       placeholder: 'Фамилия',
-      name: REGISTRATION_MODEL.secondName,
+      name: UserModel.secondName,
       value: 'Fashet', // todo remove it
     });
 
     const phoneInput = new TextInput({
       placeholder: 'Телефон',
       type: 'phone',
-      name: REGISTRATION_MODEL.phone,
+      name: UserModel.phone,
       value: '89124897471', // todo remove it
     });
 
     const passwordInput = new TextInput({
       placeholder: 'Пароль',
-      name: REGISTRATION_MODEL.password,
+      name: UserModel.password,
       type: 'password',
       value: 'Password1', // todo remove it
     });
 
     const repeatPassword = new TextInput({
       placeholder: 'Пароль (еще раз)',
-      name: REGISTRATION_MODEL.repeatPassword,
+      name: UserModel.repeatPassword,
       type: 'password',
       value: 'Password1', // todo remove it
     });
 
-    const controller = new RegistrationController({
-      [REGISTRATION_MODEL.login]: errorMessage => {
+    const controller = new AuthController({
+      [UserModel.login]: errorMessage => {
         loginInput.setProps({ error: errorMessage });
       },
-      [REGISTRATION_MODEL.email]: errorMessage => {
+      [UserModel.email]: errorMessage => {
         emailInput.setProps({ error: errorMessage });
       },
-      [REGISTRATION_MODEL.password]: errorMessage => {
+      [UserModel.password]: errorMessage => {
         passwordInput.setProps({ error: errorMessage });
       },
-      [REGISTRATION_MODEL.firstName]: errorMessage => {
+      [UserModel.firstName]: errorMessage => {
         firstNameInput.setProps({ error: errorMessage });
       },
-      [REGISTRATION_MODEL.secondName]: errorMessage => {
+      [UserModel.secondName]: errorMessage => {
         secondNameInput.setProps({ error: errorMessage });
       },
-      [REGISTRATION_MODEL.phone]: errorMessage => {
+      [UserModel.phone]: errorMessage => {
         phoneInput.setProps({ error: errorMessage });
       },
-      [REGISTRATION_MODEL.repeatPassword]: errorMessage => {
+      [UserModel.repeatPassword]: errorMessage => {
         repeatPassword.setProps({ error: errorMessage });
       },
     });
@@ -108,7 +108,7 @@ class Registration extends CenteredPage {
       event.preventDefault();
       const formData = prepareForm(
         event.target as HTMLFormElement,
-      ) as IRegistrationModel;
+      ) as RegistrationDataType;
       controller.registration(formData);
     };
 

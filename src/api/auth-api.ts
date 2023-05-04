@@ -1,16 +1,11 @@
 import { YaPraktikumRequest } from './ya-praktikum';
-import { UserModel, UserType } from '../common/types';
-
-type LoginRequest = {
-  [UserModel.login]: string;
-  [UserModel.password]: string;
-};
+import { UserModel, UserType, LoginType } from '../common/types';
 
 type UserRequest = UserType & {
   [UserModel.password]: string;
 };
 
-type UserResponse = UserRequest & {
+type UserResponse = UserType & {
   id: string;
   [UserModel.displayName]: string;
   [UserModel.avatar]: string;
@@ -19,12 +14,12 @@ type UserResponse = UserRequest & {
 const authAPIInstance = new YaPraktikumRequest('/auth');
 
 class AuthApi {
-  singIn(user: LoginRequest): Promise<void> {
-    return authAPIInstance.post<LoginRequest, void>('/signin', user);
+  singIn(user: LoginType): Promise<void> {
+    return authAPIInstance.post<LoginType, void>('/signin', user);
   }
 
-  signUp(user: UserType): Promise<{ id: string }> {
-    return authAPIInstance.post<UserType, { id: string }>('/signup', user);
+  signUp(user: UserRequest): Promise<{ id: string }> {
+    return authAPIInstance.post<UserRequest, { id: string }>('/signup', user);
   }
 
   getUser(): Promise<UserResponse> {

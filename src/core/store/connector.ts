@@ -1,8 +1,8 @@
 import { Block } from '../Block';
 import { isEqual } from '../../utils/my_lodash';
-import store, { StoreEvents, Indexed } from './Store';
+import store, { StoreEvents, StoreType } from './Store';
 
-function connect(mapStateToProps: (state: Indexed) => Indexed) {
+function connect(mapStateToProps: (state: StoreType) => StoreType) {
   return function (Component: typeof Block) {
     return class extends Component {
       constructor(props: any) {

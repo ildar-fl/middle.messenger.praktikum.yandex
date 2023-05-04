@@ -17,3 +17,8 @@ export type UserType = {
   [UserModel.email]: string;
   [UserModel.phone]: string;
 };
+
+export type LoginType = {
+  [UserModel.login]: string;
+  [UserModel.password]: string;
+};
