@@ -1,4 +1,6 @@
 import { HttpTransport } from '../core/http';
+import { Router } from '../core';
+import { ROUTS } from '../common/constants';
 
 const BASE_URL = 'https://ya-praktikum.tech/api/v2';
 
@@ -18,12 +20,17 @@ class YaPraktikumRequest extends HttpTransport {
   interceptor(status: number, response: any): any | never {
     if (status === 401) {
       // пользователь неавторизован
-      throw new Error('Пользователь не авторизован');
+      Router.__instance.go(ROUTS.LOGIN);
+      return;
     }
 
     if (status >= 200 && status < 400) {
-      const responseJson = JSON.parse(response);
-      return responseJson;
+      try {
+        const responseJson = JSON.parse(response);
+        return responseJson;
+      } catch {
+        return response;
+      }
     }
 
     throw new Error(response);

@@ -1,7 +1,7 @@
 import './style.scss';
 import { Link } from '../../ui';
 import { Block } from '../../core';
-import { ROUTS } from '../../constants';
+import { ROUTS } from '../../common/constants';
 
 const NAVIGATIONS = [
   { text: 'Авторизация', to: ROUTS.LOGIN },

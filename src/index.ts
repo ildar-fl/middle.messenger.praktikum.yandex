@@ -8,7 +8,7 @@ import {
   Registration,
 } from './pages';
 import { Navigation } from './components';
-import { ROUTS } from './constants';
+import { ROUTS } from './common/constants';
 import './index.css';
 import { render, Router } from './core';
 

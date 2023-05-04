@@ -1,6 +1,6 @@
 import './style.scss';
 import { UserItem } from './UserItem';
-import { ROUTS } from '../../constants';
+import { ROUTS } from '../../common/constants';
 import { Conversation } from './conversation/Conversation';
 import { Block } from '../../core';
 

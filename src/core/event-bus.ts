@@ -28,11 +28,7 @@ class EventBus<E extends Record<string, unknown[]> = any> {
   }
 
   emit<K extends keyof E>(event: K, ...args: E[K]) {
-    if (!this.listeners[event]) {
-      throw new Error(`Нет события: ${event as string}`);
-    }
-
-    this.listeners[event]!.forEach(listener => {
+    this.listeners[event]?.forEach(listener => {
       listener(...args);
     });
   }

@@ -7,7 +7,11 @@ enum StoreEvents {
 }
 
 type StoreType = {
-  user?: UserType;
+  user?: {
+    isLoading: boolean;
+    data: UserType;
+    error?: string | Record<string, string>;
+  };
 };
 
 /**

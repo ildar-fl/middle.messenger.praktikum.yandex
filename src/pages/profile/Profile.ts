@@ -1,7 +1,7 @@
 import './style.scss';
 import { CenteredPage } from '../../layouts';
 import { Button, ButtonText, Input } from '../../ui';
-import { ROUTS } from '../../constants';
+import { ROUTS } from '../../common/constants';
 import { BaseProps, Block } from '../../core';
 import {
   ConfigType,
@@ -9,6 +9,7 @@ import {
   prepareForm,
   useValidator,
 } from '../../utils';
+import { AuthController } from '../../controllers/authConroller';
 
 const EDIT_PROFILE_CONFIG: ConfigType = {
   login: INPUT_CONFIGS.login,
@@ -114,6 +115,9 @@ class ProfileComponent extends Block<ProfileProps> {
 }
 
 class Profile extends CenteredPage {
+  private logoutButton;
+  private authController;
+
   constructor() {
     const changeProfileButton = new ButtonText({
       text: 'Изменить данные',
@@ -137,8 +141,6 @@ class Profile extends CenteredPage {
     const logoutButton = new ButtonText({
       text: 'Выйти',
       attrs: {
-        as: 'a',
-        href: ROUTS.LOGIN,
         class: ['fs__13', 'colors__red'],
       },
     });
@@ -156,6 +158,23 @@ class Profile extends CenteredPage {
         content: profile,
       }),
     });
+
+    this.logoutButton = logoutButton;
+    this.authController = new AuthController();
+  }
+
+  init() {
+    super.init();
+
+    this.logoutButton.setProps({
+      events: {
+        click: this.onLogout.bind(this),
+      },
+    });
+  }
+
+  onLogout() {
+    this.authController.logout();
   }
 }
 
