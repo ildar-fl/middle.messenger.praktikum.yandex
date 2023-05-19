@@ -10,6 +10,7 @@ import {
   useValidator,
 } from '../../utils';
 import { AuthController } from '../../controllers/authConroller';
+import { connect } from '../../core/store';
 
 const EDIT_PROFILE_CONFIG: ConfigType = {
   login: INPUT_CONFIGS.login,
@@ -114,7 +115,7 @@ class ProfileComponent extends Block<ProfileProps> {
   }
 }
 
-class Profile extends CenteredPage {
+class ProfileInner extends CenteredPage {
   private logoutButton;
   private authController;
 
@@ -164,8 +165,6 @@ class Profile extends CenteredPage {
   }
 
   init() {
-    super.init();
-
     this.logoutButton.setProps({
       events: {
         click: this.onLogout.bind(this),
@@ -177,6 +176,10 @@ class Profile extends CenteredPage {
     this.authController.logout();
   }
 }
+
+const Profile = connect(({ user }) => ({ user: user?.data ?? {} }))(
+  ProfileInner,
+);
 
 interface IProfileInputProps extends BaseProps {
   label: string;

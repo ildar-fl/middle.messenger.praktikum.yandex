@@ -2,7 +2,7 @@ import { Block } from '../Block';
 import { isEqual } from '../../utils/my_lodash';
 import store, { StoreEvents, StoreType } from './Store';
 
-function connect(mapStateToProps: (state: StoreType) => StoreType) {
+function connect(mapStateToProps: (state: StoreType) => object) {
   return function (Component: typeof Block) {
     return class extends Component {
       constructor(props: any) {
