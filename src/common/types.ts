@@ -13,6 +13,7 @@ export const enum UserModel {
 export type UserType = {
   [UserModel.firstName]: string;
   [UserModel.secondName]: string;
+  [UserModel.displayName]: string;
   [UserModel.login]: string;
   [UserModel.email]: string;
   [UserModel.phone]: string;

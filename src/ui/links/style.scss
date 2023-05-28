@@ -1,0 +1,46 @@
+@import "../../theme";
+
+.link {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  color: themeColor('primary');
+  font-weight: 500;
+  font-size: 11px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+
+  &:hover {
+    cursor: pointer;
+    color: themeColor('primary', 'dark');
+  }
+
+  &[disabled="true"] {
+    color: themeColor('text', 'disabled');
+    pointer-events: none;
+  }
+}
+
+.colors {
+  &__blue {
+    color: themeColor('primary');
+  }
+
+  &__red {
+    color: themeColor('error');
+
+    &:hover {
+      color: themeColor('error', 'dark');
+    }
+  }
+}
+
+.m {
+  &__l-auto {
+    margin-left: auto;
+  }
+
+  &__r-auto {
+    margin-right: auto;
+  }
+}

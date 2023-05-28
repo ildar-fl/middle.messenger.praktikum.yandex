@@ -1,1 +1,2 @@
-export { Profile, EditProfile } from './Profile';
+export { Profile } from './Profile';
+export { EditProfile } from './EditProfile';

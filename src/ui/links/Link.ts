@@ -1,8 +1,13 @@
 import { Block, Router } from '../../core';
+import { ClassNames } from '../../utils';
+import './style.scss';
 
 type LinkProps = {
   to: string;
   text: string;
+  attrs?: {
+    class?: string | string[];
+  };
   target?: '_blank' | '_self';
 };
 
@@ -12,7 +17,12 @@ type LinkInnerProps = {
 
 class Link extends Block<LinkInnerProps> {
   constructor(props: LinkProps) {
-    const { to, target = '_self', text } = props;
+    const { attrs = {}, to, target = '_self', text } = props;
+
+    const { class: className } = attrs;
+
+    const classNames = new ClassNames(className);
+    classNames.addClassName('link');
 
     const handleClick = (event: MouseEvent) => {
       event.preventDefault();
@@ -22,7 +32,7 @@ class Link extends Block<LinkInnerProps> {
 
     super('a', {
       text,
-      attrs: { href: to, target },
+      attrs: { href: to, target, class: classNames.getClass() },
       events: { click: handleClick },
     });
   }

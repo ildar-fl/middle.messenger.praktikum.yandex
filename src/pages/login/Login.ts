@@ -1,9 +1,10 @@
-import { Form, TextInput, Button, ButtonText, Notice } from '../../ui';
+import { Form, TextInput, Button, Notice, Link } from '../../ui';
 import { CenteredPage } from '../../layouts';
 import { LoginType, UserType } from '../../common/types';
 import { AuthController } from '../../controllers/authConroller';
 import { prepareForm } from '../../utils';
 import { connect } from '../../core/store';
+import { ROUTS } from '../../common/constants';
 
 type LoginProps = {
   isLoading?: boolean;
@@ -38,12 +39,11 @@ class LoginInner extends CenteredPage {
       text: 'Авторизоваться',
     });
 
-    const registrationButton = new ButtonText({
+    const registrationButton = new Link({
       attrs: {
-        as: 'a',
-        href: '/registration',
         class: ['m__l-auto', 'm__r-auto'],
       },
+      to: ROUTS.REGISTRATION,
       text: 'Нет аккаунта?',
     });
 

@@ -1,125 +1,57 @@
 import './style.scss';
 import { CenteredPage } from '../../layouts';
-import { Button, ButtonText, Input } from '../../ui';
+import { ButtonText } from '../../ui';
 import { ROUTS } from '../../common/constants';
-import { BaseProps, Block } from '../../core';
-import {
-  ConfigType,
-  INPUT_CONFIGS,
-  prepareForm,
-  useValidator,
-} from '../../utils';
 import { AuthController } from '../../controllers/authConroller';
 import { connect } from '../../core/store';
+import { ProfileComponent, ProfileContainer } from './components';
+import { UserModel, UserType } from '../../common/types';
 
-const EDIT_PROFILE_CONFIG: ConfigType = {
-  login: INPUT_CONFIGS.login,
-  email: INPUT_CONFIGS.email,
-  first_name: INPUT_CONFIGS.name,
-  second_name: INPUT_CONFIGS.name,
-  phone: INPUT_CONFIGS.phone,
-};
-
-const userInfoMock = [
+const userList: {
+  key: string;
+  value: keyof UserType;
+  inputName: string;
+  type: string;
+}[] = [
   {
     key: 'Почта',
-    value: 'ildaryxa@gmail.com',
+    value: UserModel.email,
     inputName: 'email',
     type: 'email',
   },
-  { key: 'Логин', value: 'ildaryxa', inputName: 'login', type: 'text' },
-  { key: 'Имя', value: 'Ильдар', inputName: 'first_name', type: 'text' },
+  { key: 'Логин', value: UserModel.login, inputName: 'login', type: 'text' },
+  {
+    key: 'Имя',
+    value: UserModel.firstName,
+    inputName: 'first_name',
+    type: 'text',
+  },
   {
     key: 'Фамилия',
-    value: 'Фасхетдинов',
+    value: UserModel.secondName,
     inputName: 'second_name',
     type: 'text',
   },
   {
     key: 'Имя в чате',
-    value: 'Ильдар',
+    value: UserModel.displayName,
     inputName: 'display_name',
     type: 'text',
   },
   {
     key: 'Телефон',
-    value: '+7 912 489 74 71',
+    value: UserModel.phone,
     inputName: 'phone',
     type: 'phone',
   },
 ];
 
-type ProfileContainerProps = {
-  content: Block;
-};
-
-class ProfileContainer extends Block<ProfileContainerProps> {
-  constructor(props: ProfileContainerProps) {
-    super('div', props);
-  }
-
-  render(): DocumentFragment {
-    return this.compile(
-      `
-    <a class="profile-page__back-button" href="${ROUTS.CHATS}">Назад</a>
-    <section class="profile-page__user">
-        {{{content}}}
-    </section>
-    `,
-      this.props,
-    );
-  }
-}
-
-interface IUserInfo {
-  key: string;
-  value: string;
-  inputName: string;
-  type: string;
-}
-
-type ProfileProps = {
-  name: string;
-  userInfo: Array<IUserInfo>;
-  changeProfileButton: Block;
-  changePasswordButton: Block;
-  logoutButton: Block;
-} & BaseProps;
-
-class ProfileComponent extends Block<ProfileProps> {
-  constructor(props: ProfileProps) {
-    super('section', { ...props, attrs: { ...props.attrs, class: 'profile' } });
-  }
-
-  render(): DocumentFragment {
-    return this.compile(
-      `
-    <header class="profile-header">
-            <div class="profile-header__avatar"></div>
-            <h2>{{name}}</h2>
-        </header>
-        <dl>
-            {{#each userInfo}}
-                <div class="user-info__container">
-                    <dt>{{key}}</dt>
-                    <dd>{{value}}</dd>
-                </div>
-            {{/each}}
-        </dl>
-        {{{changeProfileButton}}}
-        {{{changePasswordButton}}}
-        {{{logoutButton}}}
-    `,
-      this.props,
-    );
-  }
-}
-
 class ProfileInner extends CenteredPage {
   private logoutButton;
   private authController;
+  private profile;
 
-  constructor() {
+  constructor(props: any) {
     const changeProfileButton = new ButtonText({
       text: 'Изменить данные',
       attrs: {
@@ -146,9 +78,14 @@ class ProfileInner extends CenteredPage {
       },
     });
 
+    const { user } = props as { user: UserType };
+
     const profile = new ProfileComponent({
-      name: 'Ильдар',
-      userInfo: userInfoMock,
+      name: user[UserModel.firstName],
+      userInfo: userList.map(({ value, ...other }) => ({
+        ...other,
+        value: user[value],
+      })),
       changeProfileButton,
       changePasswordButton,
       logoutButton,
@@ -160,6 +97,7 @@ class ProfileInner extends CenteredPage {
       }),
     });
 
+    this.profile = profile;
     this.logoutButton = logoutButton;
     this.authController = new AuthController();
   }
@@ -172,243 +110,19 @@ class ProfileInner extends CenteredPage {
     });
   }
 
+  setProps(nextProps: any) {
+    const { user } = nextProps as { user: UserType };
+
+    this.profile.setProps({ name: user[UserModel.firstName] });
+  }
+
   onLogout() {
     this.authController.logout();
   }
 }
 
-const Profile = connect(({ user }) => ({ user: user?.data ?? {} }))(
-  ProfileInner,
-);
+const Profile = connect(({ user }) => ({
+  user: user?.data ?? {},
+}))(ProfileInner);
 
-interface IProfileInputProps extends BaseProps {
-  label: string;
-  name: string;
-  value?: string;
-  type?: string;
-}
-
-type ProfileInputInnerProps = {
-  label: string;
-  input: Block;
-  error?: boolean | string | null;
-};
-
-class ProfileInput extends Block<ProfileInputInnerProps> {
-  input;
-
-  constructor(props: IProfileInputProps) {
-    const { name, type, label, value } = props;
-
-    const input = new Input({
-      attrs: {
-        name,
-        type,
-        value,
-        class: 'profile-edit-input',
-      },
-    });
-
-    super('div', {
-      label,
-      input,
-      attrs: { ...props.attrs, class: 'edit_user-info__container' },
-    });
-
-    this.input = input;
-  }
-
-  setProps(props: Partial<ProfileInputInnerProps>) {
-    const { error } = props;
-
-    if (typeof error !== 'undefined') {
-      this.input.setProps({
-        attrs: { error: !!error },
-      });
-    }
-
-    super.setProps(props);
-  }
-
-  render(): DocumentFragment {
-    return this.compile(
-      `
-      <div class='input-field'>
-        <dt>{{label}}</dt>
-        <dd>{{{input}}}</dd>
-      </div>
-      <div class='error-container' title='{{error}}'>{{error}}</div>
-    `,
-      this.props,
-    );
-  }
-}
-
-type EditProfileProps = {
-  avatarInput: Block;
-  saveProfileButton: Block;
-  inputs: Block[];
-} & BaseProps;
-
-class EditProfileComponent extends Block<EditProfileProps> {
-  constructor(props: EditProfileProps) {
-    super('form', {
-      ...props,
-      attrs: { ...props.attrs, name: 'editProfileForm', class: 'profile' },
-    });
-  }
-
-  render(): DocumentFragment {
-    return this.compile(
-      `
-        <header class="profile-header">
-            {{{avatarInput}}}
-        </header>
-        <dl>
-          {{#each inputs}}
-            {{{this}}}
-          {{/each}}
-        </dl>
-        {{{saveProfileButton}}}
-    `,
-      this.props,
-    );
-  }
-}
-
-class EditProfile extends CenteredPage {
-  constructor() {
-    const avatarInput = new Input({
-      attrs: {
-        name: 'avatar',
-        type: 'file',
-        accept: 'image/*',
-        class: 'profile-header__avatar',
-      },
-    });
-
-    const emailInput = new ProfileInput({
-      label: 'Почта',
-      name: 'email',
-      type: 'email',
-      value: 'ildaryxa@gmail.com',
-    });
-
-    const nameInput = new ProfileInput({
-      name: 'first_name',
-      type: 'text',
-      value: 'Ильдар',
-      label: 'Имя',
-    });
-
-    const secondInput = new ProfileInput({
-      name: 'second_name',
-      type: 'text',
-      value: 'Фасхетдинов',
-      label: 'Фамилия',
-    });
-
-    const loginInput = new ProfileInput({
-      label: 'Логин',
-      name: 'login',
-      type: 'text',
-      value: 'ildaryxa',
-    });
-
-    const displayInput = new ProfileInput({
-      label: 'Имя в чате',
-      name: 'display_name',
-      type: 'text',
-      value: 'Ильдар',
-    });
-
-    const phoneInput = new ProfileInput({
-      label: 'Телефон',
-      name: 'phone',
-      type: 'phone',
-      value: '+79124897471',
-    });
-
-    const saveProfileButton = new Button({
-      text: 'Сохранить',
-      attrs: {
-        type: 'submit',
-        style: { width: '280px' },
-        class: ['m__l-auto', 'm__r-auto'],
-      },
-    });
-
-    const { checkData } = useValidator(EDIT_PROFILE_CONFIG, {
-      init: ({ checkInput }) => {
-        const eventsObject = {
-          events: { blur: checkInput, focus: checkInput },
-        };
-        loginInput.input.setProps(eventsObject);
-        emailInput.input.setProps(eventsObject);
-        nameInput.input.setProps(eventsObject);
-        secondInput.input.setProps(eventsObject);
-        phoneInput.input.setProps(eventsObject);
-      },
-      inputs: {
-        login: errorMessage => {
-          loginInput.setProps({
-            error: errorMessage,
-          });
-        },
-        email: errorMessage => {
-          emailInput.setProps({
-            error: errorMessage,
-          });
-        },
-        first_name: errorMessage => {
-          nameInput.setProps({
-            error: errorMessage,
-          });
-        },
-        second_name: errorMessage => {
-          secondInput.setProps({
-            error: errorMessage,
-          });
-        },
-        phone: errorMessage => {
-          phoneInput.setProps({
-            error: errorMessage,
-          });
-        },
-      },
-    });
-
-    const handleSubmitEditProfile = (event: SubmitEvent) => {
-      event.preventDefault();
-      const formData = prepareForm(event.target as HTMLFormElement);
-      console.log(formData);
-      checkData(formData);
-    };
-
-    const editProfile = new EditProfileComponent({
-      avatarInput,
-      saveProfileButton,
-      inputs: [
-        emailInput,
-        nameInput,
-        secondInput,
-        loginInput,
-        displayInput,
-        phoneInput,
-      ],
-      events: {
-        submit: handleSubmitEditProfile,
-      },
-    });
-
-    const profileContainer = new ProfileContainer({
-      content: editProfile,
-    });
-
-    super({
-      content: profileContainer,
-    });
-  }
-}
-
-export { Profile, EditProfile };
+export { Profile };

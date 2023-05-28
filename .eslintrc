@@ -36,6 +36,7 @@
     "no-constructor-return": "off",
     "no-restricted-syntax": "off",
     "no-continue": "off",
-    "default-case": "off"
+    "default-case": "off",
+    "no-console": "error"
   }
 }
