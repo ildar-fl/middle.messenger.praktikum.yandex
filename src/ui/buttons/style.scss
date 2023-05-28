@@ -16,6 +16,11 @@
     cursor: pointer;
     background: themeColor('primary', 'dark');
   }
+
+  &:disabled {
+    background: themeColor('text', 'disabled');
+    cursor: default;
+  }
 }
 
 .button-text {

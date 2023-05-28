@@ -9,6 +9,7 @@ import { Router } from '../core';
 import { UserModel, UserType, LoginType } from '../common/types';
 import { ROUTS } from '../common/constants';
 import { AuthApi } from '../api';
+import { isServerError } from '../core/http';
 
 const INPUTS_CONFIG: ConfigType = {
   [UserModel.login]: INPUT_CONFIGS.login,
@@ -93,7 +94,9 @@ class AuthController {
 
       Router.__instance.go(ROUTS.PROFILE);
     } catch (error) {
-      console.error('try error in Login:', typeof error, error);
+      if (isServerError(error)) {
+        store.set('user.error', error.reason);
+      }
     } finally {
       store.set('user.isLoading', false);
     }

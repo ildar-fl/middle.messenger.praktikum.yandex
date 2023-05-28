@@ -1,0 +1,12 @@
+.notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+}
+.notice.secondary {
+  background: #EFEFEF;
+}
+
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,18 @@
+@import "../../theme";
+
+
+.notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+
+  &.secondary {
+    background: themeColor('background', 'dark');;
+  }
+
+  &.error {
+
+  }
+}

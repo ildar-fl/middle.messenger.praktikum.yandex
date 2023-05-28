@@ -7,7 +7,7 @@
   "scripts": {
     "eslint": "eslint",
     "prettier": "prettier",
-    "dev": "parcel --open",
+    "dev": "parcel",
     "start": "PORT=3000 node ./server",
     "build": "parcel build",
     "stylelint": "stylelint '**/*.scss'"

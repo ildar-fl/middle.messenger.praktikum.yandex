@@ -24,16 +24,18 @@ class YaPraktikumRequest extends HttpTransport {
       return;
     }
 
-    if (status >= 200 && status < 400) {
-      try {
-        const responseJson = JSON.parse(response);
-        return responseJson;
-      } catch {
-        return response;
-      }
+    let responseJson;
+    try {
+      responseJson = JSON.parse(response);
+    } catch {
+      return response;
     }
 
-    throw new Error(response);
+    if (status >= 200 && status < 400) {
+      return responseJson;
+    }
+
+    throw responseJson;
   }
 }
 

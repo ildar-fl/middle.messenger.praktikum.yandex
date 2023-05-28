@@ -1,12 +1,21 @@
-import { Form, TextInput, Button, ButtonText } from '../../ui';
+import { Form, TextInput, Button, ButtonText, Notice } from '../../ui';
 import { CenteredPage } from '../../layouts';
-import { LoginType } from '../../common/types';
+import { LoginType, UserType } from '../../common/types';
 import { AuthController } from '../../controllers/authConroller';
 import { prepareForm } from '../../utils';
+import { connect } from '../../core/store';
 
-class Login extends CenteredPage {
+type LoginProps = {
+  isLoading?: boolean;
+  user?: UserType;
+  error?: string;
+};
+
+class LoginInner extends CenteredPage {
   private form;
   private controller;
+  private authButton: Button;
+  private noticeMessage: Notice;
 
   constructor() {
     const loginInput = new TextInput({
@@ -38,6 +47,8 @@ class Login extends CenteredPage {
       text: 'Нет аккаунта?',
     });
 
+    const noticeMessage = new Notice();
+
     const controller = new AuthController({
       login: errorMessage => {
         loginInput.setProps({ error: errorMessage });
@@ -59,7 +70,7 @@ class Login extends CenteredPage {
       attrs: {
         name: 'loginForm',
       },
-      content: { loginInput, passwordInput },
+      content: { loginInput, passwordInput, noticeMessage },
       buttons: { authButton, registrationButton },
     });
 
@@ -67,6 +78,8 @@ class Login extends CenteredPage {
 
     this.form = form;
     this.controller = controller;
+    this.authButton = authButton;
+    this.noticeMessage = noticeMessage;
   }
 
   init() {
@@ -79,6 +92,23 @@ class Login extends CenteredPage {
     });
   }
 
+  setProps(nextProps: any) {
+    const loginProps = nextProps as LoginProps;
+
+    if (loginProps.isLoading) {
+      this.authButton.setProps({
+        attrs: { disabled: 'true' },
+        text: 'Загрузка...',
+      });
+    }
+
+    if (loginProps.error) {
+      this.noticeMessage.setProps({ text: loginProps.error });
+    }
+
+    super.setProps(nextProps);
+  }
+
   onSubmit(event: SubmitEvent) {
     event.preventDefault();
     const formData = prepareForm(event.target as HTMLFormElement) as LoginType;
@@ -86,5 +116,11 @@ class Login extends CenteredPage {
     this.controller.login(formData);
   }
 }
+
+const Login = connect(({ user }) => ({
+  isLoading: user?.isLoading,
+  user: user?.data,
+  error: user?.error,
+}))(LoginInner);
 
 export { Login };

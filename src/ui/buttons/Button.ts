@@ -7,6 +7,7 @@ type ButtonProps = {
     type?: string;
     class?: string | string[];
     style?: Record<string, string>;
+    disabled?: boolean;
   };
   text: string;
 };
@@ -16,6 +17,7 @@ type ButtonPropsInner = {
     type?: string;
     class?: string;
     style?: string;
+    disabled?: string;
   };
   text: string;
 };
@@ -24,7 +26,7 @@ class Button extends Block<ButtonPropsInner> {
   constructor(props: ButtonProps) {
     const { attrs, text, ...other } = props;
 
-    const { class: className, style, ...otherAttrs } = attrs;
+    const { class: className, style, disabled, ...otherAttrs } = attrs;
 
     const classNames = new ClassNames(className);
     classNames.addClassName('button');
@@ -33,6 +35,7 @@ class Button extends Block<ButtonPropsInner> {
       ...other,
       attrs: {
         ...otherAttrs,
+        disabled: disabled ? 'true' : undefined,
         class: classNames.getClass(),
         style: parseStyle(style),
       },

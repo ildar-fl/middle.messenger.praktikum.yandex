@@ -14,6 +14,8 @@ function merge(lhs: PlainObject, rhs: PlainObject): PlainObject {
         lhs[key] = rhs[key];
       }
     });
+
+    return lhs;
   }
 
   return rhs;
